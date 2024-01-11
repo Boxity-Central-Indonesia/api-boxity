@@ -10,7 +10,14 @@ use Illuminate\Notifications\Notification;
 
 class WelcomeEmailNotification extends Notification
 {
-    use Queueable;
+    // use Queueable;
+
+    /**
+     * The user instance.
+     *
+     * @var \App\Models\User
+     */
+    public $user;
 
     /**
      * Create a new notification instance.
@@ -36,9 +43,11 @@ class WelcomeEmailNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+            ->subject('Welcome to Our Application')
             ->line('Welcome to our application, ' . $this->user->name)
             ->line('Thank you for using our application!');
     }
+
 
     /**
      * Get the array representation of the notification.

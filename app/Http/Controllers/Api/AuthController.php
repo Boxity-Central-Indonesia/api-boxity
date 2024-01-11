@@ -15,12 +15,14 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        // return $request;
         try {
             $validator = Validator::make($request->all(), [
                 'name'      => 'required|string|max:255',
                 'email'     => 'required|string|email|max:255|unique:users',
                 'password'  => 'required|string|min:8|confirmed',
             ]);
+
 
             if ($validator->fails()) {
                 return response()->json($validator->errors());
@@ -31,6 +33,7 @@ class AuthController extends Controller
                 'email'         => $request->email,
                 'password'      => Hash::make($request->password)
             ]);
+
 
             $user->notify(new WelcomeEmailNotification($user));
 
@@ -90,7 +93,7 @@ class AuthController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return response()->json($validator->errors());
+                return response()->json(['status' => 400, 'message' => $validator->errors()]);
             }
 
             $user = User::where('email', $request->email)->first();
@@ -101,23 +104,26 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            if ($user->token != $request->otp) {
-                return response()->json([
-                    'message' => 'OTP mismatch'
-                ], 401);
-            }
+            // if ($user->token != $request->otp) {
+            //     return response()->json([
+            //         'message' => 'OTP mismatch'
+            //     ], 401);
+            // }
 
-            if ($user->token_expires_at < now()) {
-                return response()->json([
-                    'message' => 'OTP expired'
-                ], 401);
-            }
+            // if ($user->token_expires_at < now()) {
+            //     return response()->json([
+            //         'message' => 'OTP expired'
+            //     ], 401);
+            // }
 
-            $user->tokens()->delete();
+            // $user->tokens()->delete();
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
+            setcookie('bearerToken', $token, 0, '/', null, false,true);
+
             return response()->json([
+                'status' => 200,
                 'access_token' => $token,
                 'token_type'   => 'Bearer',
             ]);
