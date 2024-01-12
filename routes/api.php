@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\MasterUsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,8 +21,12 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('otp', 'otp');
     Route::post('login', 'login');
 
-    Route::middleware('auth:sanctum')->group(function () {
 
+});
+
+Route::middleware('auth:sanctum')->group(function ()
+{
+    Route::controller(AuthController::class)->group(function() {
         Route::prefix('profile')->group(function () {
             Route::get('/', 'profile');
             Route::post('/', 'update');
@@ -29,4 +34,16 @@ Route::controller(AuthController::class)->group(function () {
 
         Route::post('logout', 'logout');
     });
+
+
+    Route::controller(MasterUsersController::class)->group(function()
+    {
+        Route::prefix('user')->group(function()
+        {
+            Route::get('/master', 'showUserMaster');
+            Route::post('/create', 'create');
+            Route::get('/read', 'read');
+        });
+    });
 });
+

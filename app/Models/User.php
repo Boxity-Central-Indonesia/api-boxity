@@ -25,6 +25,9 @@ class User extends Authenticatable
         'password',
         'token',
         'token_expires_at',
+        'no_handphone',
+        'gender',
+        'role',
     ];
 
     /**

@@ -39,7 +39,10 @@ class AuthController extends Controller
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
+            setcookie('bearerToken', $token, 0, '/', null, false,true);
+
             return response()->json([
+                'status' => 201,
                 'access_token' => $token,
                 'token_type'   => 'Bearer',
             ]);
@@ -47,7 +50,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Something went wrong',
                 'error' => $th->getMessage()
-            ], 500);
+            ], 200);
         }
     }
 
@@ -101,7 +104,7 @@ class AuthController extends Controller
             if (!Hash::check($request->password, $user->password)) {
                 return response()->json([
                     'message' => 'Password mismatch'
-                ], 401);
+                ], 400);
             }
 
             // if ($user->token != $request->otp) {
