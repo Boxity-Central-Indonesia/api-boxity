@@ -40,9 +40,11 @@ Route::middleware('auth:sanctum')->group(function ()
     {
         Route::prefix('user')->group(function()
         {
+            Route::get('/now', 'getUserNow');
             Route::get('/master', 'showUserMaster');
             Route::post('/create', 'create');
             Route::get('/read', 'read');
+            Route::post('/update', 'update');
         });
     });
 });
