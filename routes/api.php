@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CompanyListController;
 use App\Http\Controllers\Api\MasterUsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\TestStatus\Risky;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +47,18 @@ Route::middleware('auth:sanctum')->group(function ()
             Route::post('/create', 'create');
             Route::get('/read', 'read');
             Route::post('/update', 'update');
+        });
+    });
+
+
+    Route::controller(CompanyListController::class)->group(function()
+    {
+        Route::prefix('company')->group(function()
+        {
+            Route::get('/list', 'index');
+            Route::post('create', 'create');
+            Route::post('/edit', 'edit');
+            Route::get('get-by-id', 'getById');
         });
     });
 });
