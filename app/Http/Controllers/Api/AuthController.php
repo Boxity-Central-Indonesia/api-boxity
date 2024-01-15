@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\OtpNotification;
@@ -39,7 +38,7 @@ class AuthController extends Controller
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            setcookie('bearerToken', $token, 0, '/', null, false,true);
+            setcookie('bearerToken', $token, 0, '/', null, false, true);
 
             return response()->json([
                 'status' => 201,
@@ -123,7 +122,7 @@ class AuthController extends Controller
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            setcookie('bearerToken', $token, 0, '/', null, false,true);
+            setcookie('bearerToken', $token, 0, '/', null, false, true);
 
             return response()->json([
                 'status' => 200,
