@@ -19,20 +19,17 @@ class CompaniesDepartment extends Model
     public static function boot()
     {
         parent::boot();
-        self::creating(function ($model) {
+        static::creating(function ($model) {
             $model->user_created = Auth::id();
+            $model->user_updated = Auth::id();
         });
-        self::updating(function ($model) {
+
+        static::updating(function ($model) {
             $model->user_updated = Auth::id();
         });
     }
     public function company()
     {
         return $this->belongsTo(Company::class);
-    }
-
-    public function employees()
-    {
-        return $this->hasMany(Employee::class);
     }
 }

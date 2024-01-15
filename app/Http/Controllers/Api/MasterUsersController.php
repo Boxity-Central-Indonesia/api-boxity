@@ -4,20 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
-class ge extends Controller
+class MasterUsersController extends Controller
 {
-
-    public function getUserNow()
-    {
-        return User::where('id', Auth::user()->id)->first();
-    }
-
-    public function showUserMaster()
+    public function index()
     {
         $user = User::all();
 
@@ -31,6 +24,13 @@ class ge extends Controller
         return response()->json([
             'status' => 400,
             'data' => null
+        ]);
+    }
+    public function show(User $user) // Tambahkan method show untuk menampilkan detail user
+    {
+        return response()->json([
+            'status' => 200,
+            'data' => $user
         ]);
     }
 
@@ -73,23 +73,6 @@ class ge extends Controller
         }
     }
 
-    public function read(Request $request)
-    {
-        $user = User::where('id', $request->id)->first();
-
-        if ($user) {
-            return response()->json([
-                'status' => 200,
-                'data' => $user
-            ]);
-        }
-
-        return response()->json([
-            'status' => 400,
-            'message' => 'error'
-        ]);
-    }
-
     public function update(Request $request)
     {
         try {
@@ -125,5 +108,34 @@ class ge extends Controller
                 'error' => $th->getMessage()
             ], 400);
         }
+    }
+    public function destroy(User $user) // Tambahkan method destroy untuk menghapus user
+    {
+        try {
+            $user->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'User deleted successfully'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th->getMessage()
+            ], 400);
+        }
+    }
+    public function me()
+    {
+        if (!Auth::user()) {
+            return response()->json([
+                'status' => 401,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => Auth::user(),
+        ]);
     }
 }

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $tables = ['companies', 'companies_departments', 'companies_branches', 'employees', 'employees_categories', 'warehouses', 'warehouse_locations', 'products_categories', 'products_prices', 'products_movements', 'vendor_transactions', 'vendor_contacts', 'vendors', 'asset_locations', 'asset_conditions', 'assets', 'asset_depreciation', 'accounts', 'accounts_transactions', 'accounts_balances'];
+        $tables = ['companies', 'companies_departments', 'companies_branches', 'employees', 'employees_categories', 'warehouses', 'warehouse_locations', 'products', 'products_categories', 'products_prices', 'products_movements', 'vendor_transactions', 'vendor_contacts', 'vendors', 'asset_locations', 'asset_conditions', 'assets', 'asset_depreciation', 'accounts', 'accounts_transactions', 'accounts_balances'];
 
         foreach ($tables as $table) {
             Schema::table($table, function (Blueprint $table) {
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        $tables = ['companies', 'companies_departments', 'companies_branches', 'employees', 'employees_categories', 'warehouses', 'warehouse_locations', 'products_categories', 'products_prices', 'products_movements', 'vendor_transactions', 'vendor_contacts', 'vendors', 'asset_locations', 'asset_conditions', 'assets', 'asset_depreciation', 'accounts', 'accounts_transactions', 'accounts_balances'];
+        $tables = ['companies', 'companies_departments', 'companies_branches', 'employees', 'employees_categories', 'warehouses', 'warehouse_locations', 'products', 'products_categories', 'products_prices', 'products_movements', 'vendor_transactions', 'vendor_contacts', 'vendors', 'asset_locations', 'asset_conditions', 'assets', 'asset_depreciation', 'accounts', 'accounts_transactions', 'accounts_balances'];
 
         foreach ($tables as $table) {
             Schema::table($table, function (Blueprint $table) {
