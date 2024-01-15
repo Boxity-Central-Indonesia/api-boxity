@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
-class MasterUsersController extends Controller
+class ge extends Controller
 {
 
     public function getUserNow()
