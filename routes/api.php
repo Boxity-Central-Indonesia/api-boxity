@@ -82,6 +82,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('accounts.transactions', AccountsTransactionsController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::apiResource('accounts.balances', AccountsBalancesController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 });
+Route::post('login', [AuthController::class, 'login']);
 
 // Public routes
 Route::post('register', [AuthController::class, 'register']);
