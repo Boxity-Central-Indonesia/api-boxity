@@ -69,7 +69,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone_number');
             $table->unsignedInteger('company_id');
-            $table->unsignedInteger('job_title_category_id');
             $table->string('job_title');
             $table->date('date_of_birth');
             $table->string('employment_status');

@@ -16,7 +16,6 @@ class Employee extends Model
         'email',
         'phone_number',
         'company_id',
-        'job_title_category_id',
         'job_title',
         'date_of_birth',
         'employment_status',
@@ -50,10 +49,5 @@ class Employee extends Model
     public function department()
     {
         return $this->belongsTo(CompaniesDepartment::class);
-    }
-
-    public function jobTitleCategory()
-    {
-        return $this->belongsTo(EmployeesCategory::class);
     }
 }

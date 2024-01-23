@@ -51,8 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // Employees routes
-    Route::apiResource('employees.categories', EmployeesCategoryController::class);
-    Route::apiResource('employees', EmployeesController::class, ['except' => ['show']]);
+    Route::apiResource('employees', EmployeesController::class);
 
     // Products routes
     Route::apiResource('products', ProductsController::class);
