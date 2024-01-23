@@ -41,7 +41,23 @@ class VendorsController extends Controller
             'transaction_type' => 'required|in:outbound,inbound',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'address.required' => 'The address field is required.',
+            'address.string' => 'The address must be a string.',
+            'phone_number.required' => 'The phone number field is required.',
+            'phone_number.string' => 'The phone number must be a string.',
+            'email.required' => 'The email field is required.',
+            'email.string' => 'The email must be a string.',
+            'email.email' => 'Please provide a valid email address.',
+            'date_of_birth.date' => 'Please provide a valid date of birth.',
+            'transaction_type.required' => 'The transaction type field is required.',
+            'transaction_type.in' => 'The transaction type must be either "outbound" or "inbound".',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -79,15 +95,30 @@ class VendorsController extends Controller
     public function update(Request $request, Vendor $vendor)
     {
         $validationRules = [
-            'name' => 'sometimes|string|max:255',
-            'address' => 'sometimes|string',
-            'phone_number' => 'sometimes|string',
-            'email' => 'sometimes|string|email',
-            'date_of_birth' => 'sometimes|date',
-            'transaction_type' => 'sometimes|in:outbound,inbound',
+            'name' => 'required|string|max:255',
+            'address' => 'required|string',
+            'phone_number' => 'required|string',
+            'email' => 'required|string|email',
+            'date_of_birth' => 'nullable|date',
+            'transaction_type' => 'required|in:outbound,inbound',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'address.required' => 'The address field is required.',
+            'address.string' => 'The address must be a string.',
+            'phone_number.required' => 'The phone number field is required.',
+            'phone_number.string' => 'The phone number must be a string.',
+            'email.required' => 'The email field is required.',
+            'email.string' => 'The email must be a string.',
+            'email.email' => 'Please provide a valid email address.',
+            'date_of_birth.date' => 'Please provide a valid date of birth.',
+            'transaction_type.required' => 'The transaction type field is required.',
+            'transaction_type.in' => 'The transaction type must be either "outbound" or "inbound".',
+        ];
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

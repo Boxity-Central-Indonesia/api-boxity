@@ -37,7 +37,15 @@ class EmployeesCategoryController extends Controller
             'description' => 'nullable|string|max:100000',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'description.string' => 'The description must be a string.',
+            'description.max' => 'The description must not exceed 100,000 characters.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -79,7 +87,15 @@ class EmployeesCategoryController extends Controller
             'description' => 'nullable|string|max:100000',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'description.string' => 'The description must be a string.',
+            'description.max' => 'The description must not exceed 100,000 characters.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

@@ -38,7 +38,19 @@ class WarehousesController extends Controller
             'capacity' => 'required|numeric|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'address.required' => 'The address field is required.',
+            'address.string' => 'The address must be a string.',
+            'address.max' => 'The address must not exceed 255 characters.',
+            'capacity.required' => 'The capacity field is required.',
+            'capacity.numeric' => 'The capacity must be a number.',
+            'capacity.min' => 'The capacity must be at least 0.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -76,12 +88,24 @@ class WarehousesController extends Controller
     public function update(Request $request, Warehouse $warehouse)
     {
         $validationRules = [
-            'name' => 'string|max:255',
-            'address' => 'string|max:255',
-            'capacity' => 'numeric|min:0',
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'capacity' => 'required|numeric|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'address.required' => 'The address field is required.',
+            'address.string' => 'The address must be a string.',
+            'address.max' => 'The address must not exceed 255 characters.',
+            'capacity.required' => 'The capacity field is required.',
+            'capacity.numeric' => 'The capacity must be a number.',
+            'capacity.min' => 'The capacity must be at least 0.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

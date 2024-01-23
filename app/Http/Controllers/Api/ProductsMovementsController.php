@@ -42,7 +42,22 @@ class ProductsMovementsController extends Controller
             'price' => 'required|numeric|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'product_id.required' => 'The product ID field is required.',
+            'product_id.exists' => 'The selected product ID does not exist in the database.',
+            'warehouse_id.required' => 'The warehouse ID field is required.',
+            'warehouse_id.exists' => 'The selected warehouse ID does not exist in the database.',
+            'movement_type.required' => 'The movement type field is required.',
+            'movement_type.in' => 'The movement type must be one of: purchase, sale, transfer.',
+            'quantity.required' => 'The quantity field is required.',
+            'quantity.integer' => 'The quantity must be an integer.',
+            'quantity.min' => 'The quantity must be at least 1.',
+            'price.required' => 'The price field is required.',
+            'price.numeric' => 'The price must be a number.',
+            'price.min' => 'The price must be at least 0.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -95,14 +110,29 @@ class ProductsMovementsController extends Controller
     public function update(Request $request, ProductsMovement $movement)
     {
         $validationRules = [
-            'product_id' => 'exists:products,id',
-            'warehouse_id' => 'exists:warehouses,id',
-            'movement_type' => 'in:purchase,sale,transfer',
-            'quantity' => 'integer|min:1',
-            'price' => 'numeric|min:0',
+            'product_id' => 'required|exists:products,id',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'movement_type' => 'required|in:purchase,sale,transfer',
+            'quantity' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'product_id.required' => 'The product ID field is required.',
+            'product_id.exists' => 'The selected product ID does not exist in the database.',
+            'warehouse_id.required' => 'The warehouse ID field is required.',
+            'warehouse_id.exists' => 'The selected warehouse ID does not exist in the database.',
+            'movement_type.required' => 'The movement type field is required.',
+            'movement_type.in' => 'The movement type must be one of: purchase, sale, transfer.',
+            'quantity.required' => 'The quantity field is required.',
+            'quantity.integer' => 'The quantity must be an integer.',
+            'quantity.min' => 'The quantity must be at least 1.',
+            'price.required' => 'The price field is required.',
+            'price.numeric' => 'The price must be a number.',
+            'price.min' => 'The price must be at least 0.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

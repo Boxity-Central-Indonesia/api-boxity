@@ -40,7 +40,13 @@ class AccountsBalancesController extends Controller
             'balance' => 'required|numeric',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'date.required' => 'The date field is required.',
+            'date.date' => 'Please provide a valid date.',
+            'balance.required' => 'The balance field is required.',
+            'balance.numeric' => 'The balance must be a number.',
+        ];
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -80,11 +86,17 @@ class AccountsBalancesController extends Controller
     public function update(Request $request, Account $account, AccountsBalance $balance)
     {
         $validationRules = [
-            'date' => 'sometimes|date',
-            'balance' => 'sometimes|numeric',
+            'date' => 'required|date',
+            'balance' => 'required|numeric',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'date.required' => 'The date field is required.',
+            'date.date' => 'Please provide a valid date.',
+            'balance.required' => 'The balance field is required.',
+            'balance.numeric' => 'The balance must be a number.',
+        ];
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

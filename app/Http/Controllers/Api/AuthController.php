@@ -17,9 +17,22 @@ class AuthController extends Controller
         // return $request;
         try {
             $validator = Validator::make($request->all(), [
-                'name'      => 'required|string|max:255',
-                'email'     => 'required|string|email|max:255|unique:users',
-                'password'  => 'required|string|min:8|confirmed',
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8|confirmed',
+            ], [
+                'name.required' => 'The name field is required.',
+                'name.string' => 'The name must be a string.',
+                'name.max' => 'The name must not exceed 255 characters.',
+                'email.required' => 'The email field is required.',
+                'email.string' => 'The email must be a string.',
+                'email.email' => 'Please provide a valid email address.',
+                'email.max' => 'The email must not exceed 255 characters.',
+                'email.unique' => 'The provided email is already in use.',
+                'password.required' => 'The password field is required.',
+                'password.string' => 'The password must be a string.',
+                'password.min' => 'The password must be at least 8 characters.',
+                'password.confirmed' => 'The password confirmation does not match.',
             ]);
 
 
@@ -90,8 +103,17 @@ class AuthController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'email'     => 'required|string|email|max:255|exists:users,email',
-                'password'  => 'required|string|min:8',
+                'email' => 'required|string|email|max:255|exists:users,email',
+                'password' => 'required|string|min:8',
+            ], [
+                'email.required' => 'The email field is required.',
+                'email.string' => 'The email must be a string.',
+                'email.email' => 'Please provide a valid email address.',
+                'email.max' => 'The email must not exceed 255 characters.',
+                'email.exists' => 'The provided email does not exist.',
+                'password.required' => 'The password field is required.',
+                'password.string' => 'The password must be a string.',
+                'password.min' => 'The password must be at least 8 characters.',
             ]);
 
             if ($validator->fails()) {
@@ -153,8 +175,17 @@ class AuthController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name'      => 'required|string|max:255',
-                'email'     => 'required|string|email|max:255|unique:users,email,' . $request->user()->id,
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email,' . $request->user()->id,
+            ], [
+                'name.required' => 'The name field is required.',
+                'name.string' => 'The name must be a string.',
+                'name.max' => 'The name must not exceed 255 characters.',
+                'email.required' => 'The email field is required.',
+                'email.string' => 'The email must be a string.',
+                'email.email' => 'Please provide a valid email address.',
+                'email.max' => 'The email must not exceed 255 characters.',
+                'email.unique' => 'The provided email is already in use.',
             ]);
 
             if ($validator->fails()) {

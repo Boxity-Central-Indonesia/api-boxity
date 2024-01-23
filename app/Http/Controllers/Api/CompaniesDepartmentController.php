@@ -18,9 +18,10 @@ class CompaniesDepartmentController extends Controller
      */
     public function index()
     {
-        $departments = CompaniesDepartment::get();
+        $departments = CompaniesDepartment::with('company')->get();
 
         return response()->json([
+            'status' => 200,
             'data' => $departments,
             'message' => 'Departments retrieved successfully.',
         ]);
@@ -36,10 +37,23 @@ class CompaniesDepartmentController extends Controller
     {
         $validationRules = [
             'name' => 'required|string|max:255',
+            'responsibilities' => 'required|string|max:255',
             'company_id' => 'required|exists:companies,id',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'responsibilities.required' => 'The responsibilities field is required.',
+            'responsibilities.string' => 'The responsibilities must be a string.',
+            'responsibilities.max' => 'The responsibilities must not exceed 255 characters.',
+            'company_id.required' => 'The company ID field is required.',
+            'company_id.exists' => 'The selected company ID does not exist in the database.',
+        ];
+
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -50,6 +64,7 @@ class CompaniesDepartmentController extends Controller
         $department->save();
 
         return response()->json([
+            'status' => 201,
             'data' => $department,
             'message' => 'Department created successfully.',
         ], 201);
@@ -70,6 +85,7 @@ class CompaniesDepartmentController extends Controller
         }
 
         return response()->json([
+            'status' => 200,
             'data' => $departmentModel,
             'message' => 'Department retrieved successfully.',
         ]);
@@ -85,10 +101,20 @@ class CompaniesDepartmentController extends Controller
     public function update(Request $request, $company, $department)
     {
         $validationRules = [
-            'name' => 'required|string|max:255',
-            'company_id' => 'required|exists:companies,id',
+            'name' => 'sometimes|string|max:255',
+            'responsibilities' => 'sometimes|string|max:255',
+            'company_id' => 'sometimes|exists:companies,id',
         ];
-        $validator = Validator::make($request->all(), $validationRules);
+
+        $customMessages = [
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'responsibilities.string' => 'The responsibilities must be a string.',
+            'responsibilities.max' => 'The responsibilities must not exceed 255 characters.',
+            'company_id.exists' => 'The selected company ID does not exist in the database.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             Log::info('Validation errors:', $validator->errors()->toArray());
@@ -104,6 +130,7 @@ class CompaniesDepartmentController extends Controller
         $branchModel->update($request->all());
 
         return response()->json([
+            'status' => 201,
             'data' => $branchModel,
             'message' => 'Department updated successfully.',
         ]);

@@ -17,9 +17,10 @@ class CompaniesBranchController extends Controller
      */
     public function index()
     {
-        $branches = CompaniesBranch::all();
+        $branches = CompaniesBranch::with('company')->get();
 
         return response()->json([
+            'status' => 200,
             'data' => $branches,
             'message' => 'Branches retrieved successfully.',
         ]);
@@ -37,11 +38,30 @@ class CompaniesBranchController extends Controller
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'phone_number' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
             'company_id' => 'required|integer|exists:companies,id',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'address.required' => 'The address field is required.',
+            'address.string' => 'The address must be a string.',
+            'address.max' => 'The address must not exceed 255 characters.',
+            'phone_number.required' => 'The phone number field is required.',
+            'phone_number.string' => 'The phone number must be a string.',
+            'phone_number.max' => 'The phone number must not exceed 255 characters.',
+            'email.required' => 'The email field is required.',
+            'email.string' => 'The email must be a string.',
+            'email.email' => 'Please provide a valid email address.',
+            'email.max' => 'The email must not exceed 255 characters.',
+            'company_id.required' => 'The company ID field is required.',
+            'company_id.integer' => 'The company ID must be an integer.',
+            'company_id.exists' => 'The selected company ID does not exist in the database.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -50,6 +70,7 @@ class CompaniesBranchController extends Controller
         $branch = CompaniesBranch::create($request->all());
 
         return response()->json([
+            'status' => 201,
             'data' => $branch,
             'message' => 'Branch created successfully.',
         ], 201);
@@ -70,6 +91,7 @@ class CompaniesBranchController extends Controller
         }
 
         return response()->json([
+            'status' => 200,
             'data' => $branchModel,
             'message' => 'Branch retrieved successfully.',
         ]);
@@ -85,13 +107,28 @@ class CompaniesBranchController extends Controller
     public function update(Request $request, $company, $branch)
     {
         $validationRules = [
-            'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
-            'company_id' => 'required|integer|exists:companies,id',
+            'name' => 'sometimes|string|max:255',
+            'address' => 'sometimes|string|max:255',
+            'phone_number' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255',
+            'company_id' => 'sometimes|integer|exists:companies,id',
         ];
-        $validator = Validator::make($request->all(), $validationRules);
+
+        $customMessages = [
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'address.string' => 'The address must be a string.',
+            'address.max' => 'The address must not exceed 255 characters.',
+            'phone_number.string' => 'The phone number must be a string.',
+            'phone_number.max' => 'The phone number must not exceed 255 characters.',
+            'email.string' => 'The email must be a string.',
+            'email.email' => 'Please provide a valid email address.',
+            'email.max' => 'The email must not exceed 255 characters.',
+            'company_id.integer' => 'The company ID must be an integer.',
+            'company_id.exists' => 'The selected company ID does not exist in the database.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules,$customMessages);
 
         if ($validator->fails()) {
             Log::info('Validation errors:', $validator->errors()->toArray());
@@ -107,6 +144,7 @@ class CompaniesBranchController extends Controller
         $branchModel->update($request->all());
 
         return response()->json([
+            'status' => 201,
             'data' => $branchModel,
             'message' => 'Branch updated successfully.',
         ]);

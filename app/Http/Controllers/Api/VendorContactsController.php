@@ -39,7 +39,21 @@ class VendorContactsController extends Controller
             'phone_number' => 'required|string|max:255',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'vendors_id.required' => 'The vendors ID field is required.',
+            'vendors_id.integer' => 'The vendors ID must be an integer.',
+            'vendors_id.exists' => 'The selected vendors ID does not exist in the database.',
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'position.required' => 'The position field is required.',
+            'position.string' => 'The position must be a string.',
+            'position.max' => 'The position must not exceed 255 characters.',
+            'phone_number.required' => 'The phone number field is required.',
+            'phone_number.string' => 'The phone number must be a string.',
+            'phone_number.max' => 'The phone number must not exceed 255 characters.',
+        ];
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -77,12 +91,27 @@ class VendorContactsController extends Controller
     public function update(Request $request, VendorContact $contact)
     {
         $validationRules = [
-            'name' => 'sometimes|string|max:255',
-            'position' => 'sometimes|string|max:255',
-            'phone_number' => 'sometimes|string|max:255',
+            'vendors_id' => 'required|integer|exists:vendors,id',
+            'name' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:255',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'vendors_id.required' => 'The vendors ID field is required.',
+            'vendors_id.integer' => 'The vendors ID must be an integer.',
+            'vendors_id.exists' => 'The selected vendors ID does not exist in the database.',
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'position.required' => 'The position field is required.',
+            'position.string' => 'The position must be a string.',
+            'position.max' => 'The position must not exceed 255 characters.',
+            'phone_number.required' => 'The phone number field is required.',
+            'phone_number.string' => 'The phone number must be a string.',
+            'phone_number.max' => 'The phone number must not exceed 255 characters.',
+        ];
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

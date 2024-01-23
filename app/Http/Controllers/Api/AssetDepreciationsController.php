@@ -43,7 +43,23 @@ class AssetDepreciationsController extends Controller
             'current_value' => 'required|numeric|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'method.required' => 'The method field is required.',
+            'method.in' => 'The selected method is not valid. Please choose one of: linear, declining_balance, sum_of_the_years_digits, units_of_production, double_declining_balance.',
+            'useful_life.required' => 'The useful life field is required.',
+            'useful_life.integer' => 'The useful life must be an integer.',
+            'useful_life.min' => 'The useful life must be at least 1.',
+            'residual_value.required' => 'The residual value field is required.',
+            'residual_value.numeric' => 'The residual value must be a number.',
+            'residual_value.min' => 'The residual value must be at least 0.',
+            'start_date.required' => 'The start date field is required.',
+            'start_date.date' => 'Please provide a valid start date.',
+            'current_value.required' => 'The current value field is required.',
+            'current_value.numeric' => 'The current value must be a number.',
+            'current_value.min' => 'The current value must be at least 0.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -67,14 +83,30 @@ class AssetDepreciationsController extends Controller
     public function update(Request $request, Asset $asset)
     {
         $validationRules = [
-            'method' => 'sometimes|in:linear,declining_balance,sum_of_the_years_digits,units_of_production,double_declining_balance',
-            'useful_life' => 'sometimes|integer|min:1',
-            'residual_value' => 'sometimes|numeric|min:0',
-            'start_date' => 'sometimes|date',
-            'current_value' => 'sometimes|numeric|min:0',
+            'method' => 'required|in:linear,declining_balance,sum_of_the_years_digits,units_of_production,double_declining_balance',
+            'useful_life' => 'required|integer|min:1',
+            'residual_value' => 'required|numeric|min:0',
+            'start_date' => 'required|date',
+            'current_value' => 'required|numeric|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'method.required' => 'The method field is required.',
+            'method.in' => 'The selected method is not valid. Please choose one of: linear, declining_balance, sum_of_the_years_digits, units_of_production, double_declining_balance.',
+            'useful_life.required' => 'The useful life field is required.',
+            'useful_life.integer' => 'The useful life must be an integer.',
+            'useful_life.min' => 'The useful life must be at least 1.',
+            'residual_value.required' => 'The residual value field is required.',
+            'residual_value.numeric' => 'The residual value must be a number.',
+            'residual_value.min' => 'The residual value must be at least 0.',
+            'start_date.required' => 'The start date field is required.',
+            'start_date.date' => 'Please provide a valid start date.',
+            'current_value.required' => 'The current value field is required.',
+            'current_value.numeric' => 'The current value must be a number.',
+            'current_value.min' => 'The current value must be at least 0.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

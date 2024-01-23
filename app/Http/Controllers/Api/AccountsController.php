@@ -38,7 +38,17 @@ class AccountsController extends Controller
             'balance' => 'required|numeric|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'type.required' => 'The type field is required.',
+            'type.in' => 'The type must be one of: asset, liability, equity, income, expense.',
+            'balance.required' => 'The balance field is required.',
+            'balance.numeric' => 'The balance must be a number.',
+            'balance.min' => 'The balance must be at least 0.',
+        ];
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -76,12 +86,23 @@ class AccountsController extends Controller
     public function update(Request $request, Account $account)
     {
         $validationRules = [
-            'name' => 'sometimes|string|max:255',
-            'type' => 'sometimes|in:asset,liability,equity,income,expense',
-            'balance' => 'sometimes|numeric|min:0',
+            'name' => 'required|string|max:255',
+            'type' => 'required|in:asset,liability,equity,income,expense',
+            'balance' => 'required|numeric|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'type.required' => 'The type field is required.',
+            'type.in' => 'The type must be one of: asset, liability, equity, income, expense.',
+            'balance.required' => 'The balance field is required.',
+            'balance.numeric' => 'The balance must be a number.',
+            'balance.min' => 'The balance must be at least 0.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

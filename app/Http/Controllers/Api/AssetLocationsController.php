@@ -37,7 +37,15 @@ class AssetLocationsController extends Controller
             'address' => 'required|string',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'address.required' => 'The address field is required.',
+            'address.string' => 'The address must be a string.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -75,11 +83,20 @@ class AssetLocationsController extends Controller
     public function update(Request $request, AssetLocation $location)
     {
         $validationRules = [
-            'name' => 'sometimes|string|max:255',
-            'address' => 'sometimes|string',
+            'name' => 'required|string|max:255',
+            'address' => 'required|string',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'address.required' => 'The address field is required.',
+            'address.string' => 'The address must be a string.',
+        ];
+
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

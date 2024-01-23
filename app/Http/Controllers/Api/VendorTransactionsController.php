@@ -42,7 +42,26 @@ class VendorTransactionsController extends Controller
             'shipping_cost' => 'nullable|numeric|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'vendors_id.required' => 'The vendors ID field is required.',
+            'vendors_id.integer' => 'The vendors ID must be an integer.',
+            'vendors_id.exists' => 'The selected vendors ID does not exist in the database.',
+            'amount.required' => 'The amount field is required.',
+            'amount.numeric' => 'The amount must be a number.',
+            'amount.min' => 'The amount must be at least 0.',
+            'product_id.integer' => 'The product ID must be an integer.',
+            'product_id.exists' => 'The selected product ID does not exist in the database.',
+            'unit_price.numeric' => 'The unit price must be a number.',
+            'unit_price.min' => 'The unit price must be at least 0.',
+            'total_price.numeric' => 'The total price must be a number.',
+            'total_price.min' => 'The total price must be at least 0.',
+            'taxes.numeric' => 'The taxes must be a number.',
+            'taxes.min' => 'The taxes must be at least 0.',
+            'shipping_cost.numeric' => 'The shipping cost must be a number.',
+            'shipping_cost.min' => 'The shipping cost must be at least 0.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -80,15 +99,35 @@ class VendorTransactionsController extends Controller
     public function update(Request $request, VendorTransaction $transaction)
     {
         $validationRules = [
-            'amount' => 'sometimes|numeric|min:0',
-            'product_id' => 'sometimes|integer|exists:products,id',
-            'unit_price' => 'sometimes|numeric|min:0',
-            'total_price' => 'sometimes|numeric|min:0',
-            'taxes' => 'sometimes|numeric|min:0',
-            'shipping_cost' => 'sometimes|numeric|min:0',
+            'vendors_id' => 'required|integer|exists:vendors,id',
+            'amount' => 'required|numeric|min:0',
+            'product_id' => 'nullable|integer|exists:products,id',
+            'unit_price' => 'nullable|numeric|min:0',
+            'total_price' => 'nullable|numeric|min:0',
+            'taxes' => 'nullable|numeric|min:0',
+            'shipping_cost' => 'nullable|numeric|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'vendors_id.required' => 'The vendors ID field is required.',
+            'vendors_id.integer' => 'The vendors ID must be an integer.',
+            'vendors_id.exists' => 'The selected vendors ID does not exist in the database.',
+            'amount.required' => 'The amount field is required.',
+            'amount.numeric' => 'The amount must be a number.',
+            'amount.min' => 'The amount must be at least 0.',
+            'product_id.integer' => 'The product ID must be an integer.',
+            'product_id.exists' => 'The selected product ID does not exist in the database.',
+            'unit_price.numeric' => 'The unit price must be a number.',
+            'unit_price.min' => 'The unit price must be at least 0.',
+            'total_price.numeric' => 'The total price must be a number.',
+            'total_price.min' => 'The total price must be at least 0.',
+            'taxes.numeric' => 'The taxes must be a number.',
+            'taxes.min' => 'The taxes must be at least 0.',
+            'shipping_cost.numeric' => 'The shipping cost must be a number.',
+            'shipping_cost.min' => 'The shipping cost must be at least 0.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

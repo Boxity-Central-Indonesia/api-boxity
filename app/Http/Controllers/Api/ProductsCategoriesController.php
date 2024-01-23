@@ -37,7 +37,14 @@ class ProductsCategoriesController extends Controller
             'description' => 'required|string',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'description.required' => 'The description field is required.',
+            'description.string' => 'The description must be a string.',
+        ];
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -75,11 +82,19 @@ class ProductsCategoriesController extends Controller
     public function update(Request $request, ProductsCategory $category)
     {
         $validationRules = [
-            'name' => 'sometimes|string|max:255',
-            'description' => 'sometimes|string',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'description.required' => 'The description field is required.',
+            'description.string' => 'The description must be a string.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

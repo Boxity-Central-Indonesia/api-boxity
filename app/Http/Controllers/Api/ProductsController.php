@@ -41,6 +41,26 @@ class ProductsController extends Controller
             'stock' => 'required|integer|min:0',
         ];
 
+        $customMessages = [
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'code.required' => 'The code field is required.',
+            'code.string' => 'The code must be a string.',
+            'code.max' => 'The code must not exceed 255 characters.',
+            'code.unique' => 'The entered code is already in use.',
+            'description.string' => 'The description must be a string.',
+            'price.required' => 'The price field is required.',
+            'price.numeric' => 'The price must be a number.',
+            'price.min' => 'The price must be at least 0.',
+            'type.required' => 'The type field is required.',
+            'type.string' => 'The type must be a string.',
+            'type.max' => 'The type must not exceed 255 characters.',
+            'stock.required' => 'The stock field is required.',
+            'stock.integer' => 'The stock must be an integer.',
+            'stock.min' => 'The stock must be at least 0.',
+        ];
+
         $validator = Validator::make($request->all(), $validationRules);
 
         if ($validator->fails()) {
@@ -87,7 +107,23 @@ class ProductsController extends Controller
             'stock' => 'integer|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name must not exceed 255 characters.',
+            'code.string' => 'The code must be a string.',
+            'code.max' => 'The code must not exceed 255 characters.',
+            'code.unique' => 'The entered code is already in use.',
+            'description.string' => 'The description must be a string.',
+            'price.numeric' => 'The price must be a number.',
+            'price.min' => 'The price must be at least 0.',
+            'type.string' => 'The type must be a string.',
+            'type.max' => 'The type must not exceed 255 characters.',
+            'stock.integer' => 'The stock must be an integer.',
+            'stock.min' => 'The stock must be at least 0.',
+        ];
+
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

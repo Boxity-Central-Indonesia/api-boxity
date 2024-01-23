@@ -36,7 +36,13 @@ class AssetConditionsController extends Controller
             'condition' => 'required|string|max:255',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'condition.required' => 'The condition field is required.',
+            'condition.string' => 'The condition must be a string.',
+            'condition.max' => 'The condition must not exceed 255 characters.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -74,10 +80,16 @@ class AssetConditionsController extends Controller
     public function update(Request $request, AssetCondition $condition)
     {
         $validationRules = [
-            'condition' => 'sometimes|string|max:255',
+            'condition' => 'required|string|max:255',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'condition.required' => 'The condition field is required.',
+            'condition.string' => 'The condition must be a string.',
+            'condition.max' => 'The condition must not exceed 255 characters.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

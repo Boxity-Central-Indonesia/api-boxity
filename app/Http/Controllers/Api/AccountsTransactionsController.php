@@ -41,7 +41,16 @@ class AccountsTransactionsController extends Controller
             'amount' => 'required|numeric',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'type.required' => 'The type field is required.',
+            'type.string' => 'The type must be a string.',
+            'date.required' => 'The date field is required.',
+            'date.date' => 'Please provide a valid date.',
+            'amount.required' => 'The amount field is required.',
+            'amount.numeric' => 'The amount must be a number.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -81,12 +90,21 @@ class AccountsTransactionsController extends Controller
     public function update(Request $request, Account $account, AccountsTransaction $transaction)
     {
         $validationRules = [
-            'type' => 'sometimes|string',
-            'date' => 'sometimes|date',
-            'amount' => 'sometimes|numeric',
+            'type' => 'required|string',
+            'date' => 'required|date',
+            'amount' => 'required|numeric',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'type.required' => 'The type field is required.',
+            'type.string' => 'The type must be a string.',
+            'date.required' => 'The date field is required.',
+            'date.date' => 'Please provide a valid date.',
+            'amount.required' => 'The amount field is required.',
+            'amount.numeric' => 'The amount must be a number.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);

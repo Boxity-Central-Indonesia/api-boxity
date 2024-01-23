@@ -40,7 +40,19 @@ class ProductsPricesController extends Controller
             'discount_price' => 'nullable|numeric|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'product_id.required' => 'The product ID field is required.',
+            'product_id.exists' => 'The selected product ID does not exist in the database.',
+            'selling_price.required' => 'The selling price field is required.',
+            'selling_price.numeric' => 'The selling price must be a number.',
+            'selling_price.min' => 'The selling price must be at least 0.',
+            'buying_price.required' => 'The buying price field is required.',
+            'buying_price.numeric' => 'The buying price must be a number.',
+            'buying_price.min' => 'The buying price must be at least 0.',
+            'discount_price.numeric' => 'The discount price must be a number.',
+            'discount_price.min' => 'The discount price must be at least 0.',
+        ];
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -78,13 +90,26 @@ class ProductsPricesController extends Controller
     public function update(Request $request, ProductsPrice $price)
     {
         $validationRules = [
-            'product_id' => 'exists:products,id',
-            'selling_price' => 'numeric|min:0',
-            'buying_price' => 'numeric|min:0',
+            'product_id' => 'required|exists:products,id',
+            'selling_price' => 'required|numeric|min:0',
+            'buying_price' => 'required|numeric|min:0',
             'discount_price' => 'nullable|numeric|min:0',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        $customMessages = [
+            'product_id.required' => 'The product ID field is required.',
+            'product_id.exists' => 'The selected product ID does not exist in the database.',
+            'selling_price.required' => 'The selling price field is required.',
+            'selling_price.numeric' => 'The selling price must be a number.',
+            'selling_price.min' => 'The selling price must be at least 0.',
+            'buying_price.required' => 'The buying price field is required.',
+            'buying_price.numeric' => 'The buying price must be a number.',
+            'buying_price.min' => 'The buying price must be at least 0.',
+            'discount_price.numeric' => 'The discount price must be a number.',
+            'discount_price.min' => 'The discount price must be at least 0.',
+        ];
+
+        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
