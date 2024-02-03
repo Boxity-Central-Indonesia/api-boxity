@@ -2883,9 +2883,133 @@
 								"url": "{{url}}/api/accounts-transactions"
 							},
 							"response": []
+						},
+						{
+							"name": "Update transaction by ID",
+							"id": "2cbba4fe-c248-4993-897e-4d93caa6aeb0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"inbound\",\n    \"date\": \"2024-01-01\",\n    \"amount\": 2,\n    \"account_id\": {{accountID}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/accounts-transactions/{{accountTransactionID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get transaction by ID",
+							"id": "a4a7ec8e-b094-4594-aaea-0e3d8b843814",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/accounts-transactions/{{accountTransactionID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete transaction by ID",
+							"id": "582f285c-70f5-4acd-bf46-6ddae664f711",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/accounts-transactions/{{accountTransactionID}}"
+							},
+							"response": []
 						}
 					],
 					"id": "ae3afc6c-b501-4526-ba4a-25bc8ae84946"
+				},
+				{
+					"name": "Balances",
+					"item": [
+						{
+							"name": "Create balances",
+							"id": "a385ceb4-262c-4158-8df7-6b117faceb6f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "date",
+											"value": "2024-01-01",
+											"type": "text"
+										},
+										{
+											"key": "balance",
+											"value": "10350000",
+											"type": "text"
+										},
+										{
+											"key": "account_id",
+											"value": "{{accountID}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/accounts-balances"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all balances",
+							"id": "e419c89b-a259-4fcd-a470-c3d79e460a37",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/accounts-balances"
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "07b0660a-0302-40f1-a513-d56dbcbac027",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
+					"id": "17f7df2c-8317-48f5-a848-260e7a3ca5b9"
 				}
 			],
 			"id": "6e9db782-3f58-49bb-aefe-8b77d8674183"
