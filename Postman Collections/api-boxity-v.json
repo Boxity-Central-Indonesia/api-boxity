@@ -2665,7 +2665,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"asset_id\": 1,  // Assuming \"assetID\" is to be replaced with 12345\n  \"method\": \"linear\",\n  \"useful_life\": 5,\n  \"residual_value\": 150000,\n  \"start_date\": \"2023-01-01\",\n  \"current_value\": 1900000\n}\n",
+									"raw": "{\n  \"asset_id\": {{assetID}},  // Assuming \"assetID\" is to be replaced with 12345\n  \"method\": \"linear\",\n  \"useful_life\": 5,\n  \"residual_value\": 150000,\n  \"start_date\": \"2023-01-01\",\n  \"current_value\": 1900000\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2711,7 +2711,78 @@
 		},
 		{
 			"name": "Account",
-			"item": [],
+			"item": [
+				{
+					"name": "Accounts",
+					"item": [
+						{
+							"name": "Create accounts",
+							"id": "360e72e7-2b00-40eb-b026-a40a693d0750",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Komputer",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "Aset",
+											"type": "text"
+										},
+										{
+											"key": "balance",
+											"value": "10200000",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/accounts"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all accounts",
+							"id": "58eb30b4-4b52-478b-8564-5ce9a7204e4c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/accounts"
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "0b3c5520-69a8-470f-b229-e7e6e623f191",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
+					"id": "d92a510c-83ff-406c-b6c1-6ae4c1821be4"
+				}
+			],
 			"id": "6e9db782-3f58-49bb-aefe-8b77d8674183"
 		}
 	],
