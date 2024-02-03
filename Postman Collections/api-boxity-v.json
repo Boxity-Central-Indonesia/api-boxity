@@ -241,7 +241,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"nama_lengkap\": \"Bintang Cato Jeremia Lumban Tobing\",\n  \"full_address\": \"Jl Pelita IV Gg Aman No 7, Medan\",\n  \"phone_number\": \"6281262845980\",\n  \"user_id\": 1\n}\n"
+									"raw": "{\n  \"nama_lengkap\": \"Bintang Cato Jeremia Lumban Tobing\",\n  \"full_address\": \"Jl Pelita IV Gg Aman No 7, Medan\",\n  \"phone_number\": \"6281262845980\",\n  \"user_id\": {{userID}}\n}\n"
 								},
 								"url": "{{url}}/api/profiles/{{profilesID}}"
 							},
@@ -371,7 +371,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"nama_bisnis\": \"PT. ABC DandEF\",\n  \"full_address\": \"Jl Wahidin no 189a\",\n  \"email\": \"abcde@gmail.com\",\n  \"website\": \"abcde.com\",\n  \"phone_number\": \"0611234567\",\n  \"pic_business\": \"Bintang Tobing\",\n  \"bank_account_name\": \"BCA\",\n  \"bank_branch\": \"Bukit Barisan\",\n  \"bank_account_number\": \"1234567890\",\n  \"profile_id\": 2\n}\n",
+									"raw": "{\n  \"nama_bisnis\": \"PT. ABC DandEF\",\n  \"full_address\": \"Jl Wahidin no 189a\",\n  \"email\": \"abcde@gmail.com\",\n  \"website\": \"abcde.com\",\n  \"phone_number\": \"0611234567\",\n  \"pic_business\": \"Bintang Tobing\",\n  \"bank_account_name\": \"BCA\",\n  \"bank_branch\": \"Bukit Barisan\",\n  \"bank_account_number\": \"1234567890\",\n  \"profile_id\": {{businessID}}\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1245,7 +1245,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"warehouse_id\": 1,\n  \"number\": \"A1001-A\",\n  \"capacity\": 500\n}\n",
+											"raw": "{\n  \"warehouse_id\": {{warehouseID}},\n  \"number\": \"A1001-A\",\n  \"capacity\": 500\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -2725,7 +2725,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "fd0eacc4-001d-41b8-95e7-c8cf72f0c251",
+				"id": "c7b12301-4ede-434e-9122-ea7ef5c23b3b",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2735,7 +2735,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "5fe1e3b4-3f09-4bd7-b9ec-ea755d22c56a",
+				"id": "653f2f73-0cdd-4730-823e-dbabad404b45",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2779,11 +2779,11 @@
 		},
 		{
 			"key": "profilesID",
-			"value": "2"
+			"value": "1"
 		},
 		{
 			"key": "businessID",
-			"value": "3"
+			"value": "1"
 		},
 		{
 			"key": "warehouseLocationID",
