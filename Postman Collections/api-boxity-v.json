@@ -1,0 +1,2788 @@
+{
+	"info": {
+		"_postman_id": "5ed33479-b6b1-4fcc-9d34-debd4083fb0f",
+		"name": "API Boxity V.0.0.1",
+		"description": "Versi: 0.0.1  \nTanggal: 15 Januari 2024  \nOleh: PT Boxity Central Indonesia\n\n- Data Organisation\n- Data Warehousing\n- Data produk\n- Data pelanggan/customer\n- Data vendor/pemasok/supplier\n- Data aset\n- Data keuangan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register User",
+					"id": "d68e7c70-7951-4e16-b587-f556c753de9d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Bintang Tobing",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "bintangtobing",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "hello@bintangtobing.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "libra2110",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "libra2110",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{url}}/api/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"id": "7c094196-312e-43ad-bc67-df8f5bc412b4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "hello@bintangtobing.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "libra2110",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{url}}/api/login"
+					},
+					"response": []
+				}
+			],
+			"id": "8bae32d5-981f-4f9c-9deb-2e496c57b354"
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get Current Profile",
+					"id": "a619bbb4-b926-45d7-a8bc-6a179a153289",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{bearer_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"id": "ddfa5f58-2d63-4f63-a233-cf3f633c2e4f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{bearer_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"id": "bb9001a9-3962-4b40-94ac-c83ea957e069",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{bearer_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": "{{url}}/api/users/{{userID}}"
+					},
+					"response": []
+				}
+			],
+			"id": "1fdcb7b6-2a65-4cb0-99ab-8fe33b5dd68a",
+			"description": "The `/users` endpoints let you manage information about the authenticated user."
+		},
+		{
+			"name": "Profile and Businesses",
+			"item": [
+				{
+					"name": "Profiles",
+					"item": [
+						{
+							"name": "Get Profiles LoggedIn",
+							"id": "b3027478-6f0b-41d8-95ff-1dbf209063ef",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/profiles"
+							},
+							"response": []
+						},
+						{
+							"name": "Create profile by user loggedIn",
+							"id": "76621126-352a-4c4c-ba38-897e8eab303f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nama_lengkap",
+											"value": "Bintang Cato Jeremia L Tobing",
+											"type": "text"
+										},
+										{
+											"key": "full_address",
+											"value": "Jl Pelita IV Gg Aman No 7",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "081262845980",
+											"type": "text"
+										},
+										{
+											"key": "user_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/profiles"
+							},
+							"response": []
+						},
+						{
+							"name": "Update profiles by ID",
+							"id": "f32f271f-4191-408a-b0aa-61459ccc8cb3",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true,
+								"disabledSystemHeaders": {
+									"content-type": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nama_lengkap\": \"Bintang Cato Jeremia Lumban Tobing\",\n  \"full_address\": \"Jl Pelita IV Gg Aman No 7, Medan\",\n  \"phone_number\": \"6281262845980\",\n  \"user_id\": 1\n}\n"
+								},
+								"url": "{{url}}/api/profiles/{{profilesID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete profile by ID User LoggedIn",
+							"id": "03d119d0-bb72-4616-bef0-408f5cd4f58a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/profiles"
+							},
+							"response": []
+						}
+					],
+					"id": "acaddaf4-4400-476d-8e13-8baf28c6f015"
+				},
+				{
+					"name": "Businesses",
+					"item": [
+						{
+							"name": "Get Business",
+							"id": "51e904f6-b588-4bf8-866e-a4594c6e28c5",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/businesses"
+							},
+							"response": []
+						},
+						{
+							"name": "Create businesses",
+							"id": "3ac1fb5a-2672-40e0-92f5-3bbe5d811ae0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nama_bisnis",
+											"value": "PT. ABC DandE",
+											"type": "text"
+										},
+										{
+											"key": "full_address",
+											"value": "Jl Wahidin no 189",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "abcde@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "website",
+											"value": "abcde.com",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "0611234567",
+											"type": "text"
+										},
+										{
+											"key": "pic_business",
+											"value": "Bintang Tobing",
+											"type": "text"
+										},
+										{
+											"key": "bank_account_name",
+											"value": "BCA",
+											"type": "text"
+										},
+										{
+											"key": "bank_branch",
+											"value": "Bukit Barisan",
+											"type": "text"
+										},
+										{
+											"key": "bank_account_number",
+											"value": "1234567890",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/businesses"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Business by ID",
+							"id": "cb4c7fe0-e6ca-4d54-9cc3-a955b389f56e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nama_bisnis\": \"PT. ABC DandEF\",\n  \"full_address\": \"Jl Wahidin no 189a\",\n  \"email\": \"abcde@gmail.com\",\n  \"website\": \"abcde.com\",\n  \"phone_number\": \"0611234567\",\n  \"pic_business\": \"Bintang Tobing\",\n  \"bank_account_name\": \"BCA\",\n  \"bank_branch\": \"Bukit Barisan\",\n  \"bank_account_number\": \"1234567890\",\n  \"profile_id\": 2\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/businesses/{{businessID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Business by ID",
+							"id": "b4f94137-0774-4812-a67a-34f4f178d48a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/businesses/{{businessID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "22540bcc-6228-4b86-9ad3-d3a2289b2b99"
+				}
+			],
+			"id": "5a0d9168-3281-4791-a80f-90b4d24a0dda"
+		},
+		{
+			"name": "Organizations",
+			"item": [
+				{
+					"name": "Companies",
+					"item": [
+						{
+							"name": "Get all company",
+							"id": "246eda87-42b3-45f7-9c1a-921e5eb86517",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/companies"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Company",
+							"id": "6e330b93-3c7b-48f1-831e-b06e1473b37e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "PT Testing Company II",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "testing-ii@company.com",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "08111111112",
+											"type": "text"
+										},
+										{
+											"key": "website",
+											"value": "www.company.com",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "Jalan Kota Medan",
+											"type": "text"
+										},
+										{
+											"key": "city",
+											"value": "Medan",
+											"type": "text"
+										},
+										{
+											"key": "province",
+											"value": "Sumatera Utara",
+											"type": "text"
+										},
+										{
+											"key": "postal_code",
+											"value": "20236",
+											"type": "text"
+										},
+										{
+											"key": "country",
+											"value": "ID",
+											"type": "text"
+										},
+										{
+											"key": "industry",
+											"value": "Testing company",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Testing medan",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/companies"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Company By ID",
+							"id": "8f78339e-2afa-4368-90d5-2e3447fdff9d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/companies/{{companyID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Company by ID",
+							"id": "6eac4ea4-560c-4935-9a4c-5782e573daab",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"name\":\"PT Testing Company MDN\",\n\"email\":\"testing-mdn@company.com\",\n\"phone_number\":\"08111111112\",\n\"website\":\"www.company.com\",\n\"address\":\"Jalan Kota Medan ID\",\n\"city\":\"Medan\",\n\"province\":\"Sumatera Utara\",\n\"postal_code\":\"20236\",\n\"country\":\"ID\",\n\"industry\":\"Testing company Mdn\",\n\"description\":\"Testing medan\"\n}"
+								},
+								"url": "{{url}}/api/companies/{{companyID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Company by ID",
+							"id": "ad5c087f-28d6-4884-9a34-dd5b284af4a7",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/companies/{{companyID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "5aeaf175-b2b7-47bc-ba53-ad57aac37dc7",
+					"description": "The `/companies` endpoints let you manage information about the authenticated companies."
+				},
+				{
+					"name": "Department",
+					"item": [
+						{
+							"name": "Get Department by Company ID",
+							"id": "420d69c3-0e1f-4a4d-b567-2b3d05db9915",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": "{{url}}/api/companies/{{companyID}}/departments"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Department for Company ID",
+							"id": "b4580028-603d-4aa7-852d-aac8857a4f49",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Information and Technologi",
+											"type": "text"
+										},
+										{
+											"key": "responsibilities",
+											"value": "IT",
+											"type": "text"
+										},
+										{
+											"key": "company_id",
+											"value": "{{companyID}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/companies/{{companyID}}/departments"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Department by ID on Company Related",
+							"id": "b1198e0b-07b1-4667-a137-adcae5396b2d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/companies/{{companyID}}/departments/{{departmentID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Department by ID Department on Company Related",
+							"id": "c83fccb7-6d21-4c5b-a635-efc526ec935f",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								},
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Information and Technology\",\n    \"responsibilities\":\"Manage all about IT\",\n    \"company_id\":{{companyID}}\n}"
+								},
+								"url": "{{url}}/api/companies/{{companyID}}/departments/{{departmentID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Department by Department ID on Company Related",
+							"id": "e802dffb-dedd-4ecc-8827-9f794d8ec1ad",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/companies/{{companyID}}/departments/{{departmentID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "d29b499c-6f21-4b3a-9555-4d92ffd860b0",
+					"description": "The `/companies/departments` endpoints let you manage information about the authenticated department in companies."
+				},
+				{
+					"name": "Branches",
+					"item": [
+						{
+							"name": "Get Branches from Company",
+							"id": "3a40ce1b-0200-43c9-b8e8-c76d60a3da9d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/companies/{{companyID}}/branches"
+							},
+							"response": []
+						},
+						{
+							"name": "Create branch by Company ID",
+							"id": "7b8daf6f-132f-422c-9272-391d7c0e7823",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Cabang Medan Timur",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "Jl Bukit Barisan",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "081111111",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "cabmedan_utara@company.id",
+											"type": "text"
+										},
+										{
+											"key": "company_id",
+											"value": "{{companyID}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/companies/{{companyID}}/branches/"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Branch by Branch ID on Company Related",
+							"id": "024b4bbd-8d19-419d-b1b2-adc93c9cd607",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/companies/{{companyID}}/branches/{{branchID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Branch by Branch ID on Company Related",
+							"id": "91f7cf0b-2bfc-4a22-858a-cf7a9f79f3d5",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-type": true
+								},
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"warning": "This is a duplicate header and will be overridden by the Content-Type header generated by Postman.",
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Cabang Medan UMSU\",\n    \"address\": \"Jalan jalan\",\n    \"phone_number\": \"0092828282\",\n    \"email\": \"company-bra@company.id\",\n    \"company_id\": {{companyID}}\n}"
+								},
+								"url": "{{url}}/api/companies/{{companyID}}/branches/{{branchID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Branch by Branch ID on Company Related",
+							"id": "fa34dbb7-8b3e-4d35-b1ef-dff63170ed1e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/companies/{{companyID}}/branches/{{branchID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "1f0ec37f-7fe4-48e6-a712-9ae08e5daf40",
+					"description": "The `/companies/branches` endpoints let you manage information about the authenticated branches in companies."
+				},
+				{
+					"name": "Employee",
+					"item": [
+						{
+							"name": "List",
+							"item": [
+								{
+									"name": "Get All Employee",
+									"id": "ae3b57c8-f4a6-491a-8e51-7b5a39234c47",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/employees"
+									},
+									"response": []
+								},
+								{
+									"name": "Create Employee",
+									"id": "2d1c3c8c-cfee-4d59-b30d-a70140a97b2c",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "name",
+													"value": "Bintang Tobing",
+													"type": "text"
+												},
+												{
+													"key": "email",
+													"value": "bintangjtobing@gmail.com",
+													"type": "text"
+												},
+												{
+													"key": "phone_number",
+													"value": "081262845980",
+													"type": "text"
+												},
+												{
+													"key": "company_id",
+													"value": "{{companyID}}",
+													"type": "text"
+												},
+												{
+													"key": "job_title",
+													"value": "Web Developer",
+													"type": "text"
+												},
+												{
+													"key": "date_of_birth",
+													"value": "1998-10-21",
+													"type": "text"
+												},
+												{
+													"key": "employment_status",
+													"value": "active",
+													"type": "text"
+												},
+												{
+													"key": "hire_date",
+													"value": "2021-07-01",
+													"type": "text"
+												},
+												{
+													"key": "termination_date",
+													"value": "",
+													"type": "text"
+												},
+												{
+													"key": "address",
+													"value": "Jl Pelita IV Gg Aman No 7",
+													"type": "text"
+												},
+												{
+													"key": "city",
+													"value": "Medan",
+													"type": "text"
+												},
+												{
+													"key": "province",
+													"value": "Sumatera Utara",
+													"type": "text"
+												},
+												{
+													"key": "postal_code",
+													"value": "20236",
+													"type": "text"
+												},
+												{
+													"key": "country",
+													"value": "ID",
+													"type": "text"
+												},
+												{
+													"key": "emergency_contact_name",
+													"value": "Ayu Sinaga",
+													"type": "text"
+												},
+												{
+													"key": "emergency_contact_phone_number",
+													"value": "085933780943",
+													"type": "text"
+												},
+												{
+													"key": "notes",
+													"value": "",
+													"type": "text"
+												},
+												{
+													"key": "department_id",
+													"value": "{{departmentID}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": "{{url}}/api/employees"
+									},
+									"response": []
+								},
+								{
+									"name": "Get Employee By ID",
+									"id": "85f5ebea-e5f0-49b6-997a-87e02f484d98",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/employees/{{employeeID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Update Employee by ID",
+									"id": "aa11680e-af2e-4795-8fdc-1898a16d3f04",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true,
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Bintang J Tobing\",\n  \"email\": \"bintangjtobing@gmail.com\",\n  \"phone_number\": \"081262845980\",\n  \"company_id\": \"{{companyID}}\",\n  \"job_title\": \"Web Developer\",\n  \"date_of_birth\": \"1998-10-21\",\n  \"employment_status\": \"active\",\n  \"hire_date\": \"2021-07-01\",\n  \"termination_date\": null, // assuming no termination date\n  \"address\": \"Jl Pelita IV Gg Aman No 7\",\n  \"city\": \"Medan\",\n  \"province\": \"Sumatera Utara\",\n  \"postal_code\": \"20236\",\n  \"country\": \"ID\",\n  \"emergency_contact_name\": \"Ayu Sinaga\",\n  \"emergency_contact_phone_number\": \"085933780943\",\n  \"notes\": \"\", // assuming no notes\n  \"department_id\": \"{{departmentID}}\"\n}"
+										},
+										"url": "{{url}}/api/employees/{{employeeID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Employee by ID",
+									"id": "d05c0cc2-3c9e-489c-9520-8956eb0fa1f0",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/employees/{{employeeID}}"
+									},
+									"response": []
+								}
+							],
+							"id": "605062b7-2e4b-4d20-9340-b70c7ee64e22"
+						}
+					],
+					"id": "68fa4505-8219-477a-b545-1d53b0ab7bfe",
+					"description": "The `/employees` endpoints let you manage information about the authenticated employees."
+				}
+			],
+			"id": "7cba2ec8-7c95-4549-8d99-ffbe63ad7173",
+			"description": "**Data organisasi mencakup informasi tentang perusahaan, cabang, departemen, dan karyawan. Informasi ini biasanya meliputi:**\n\n- **Data perusahaan, seperti nama perusahaan, alamat, nomor telepon, dan alamat email.**\n    \n- **Data cabang, seperti nama cabang, alamat, nomor telepon, dan alamat email.**\n    \n- **Data departemen, seperti nama departemen, tanggung jawab departemen, dan karyawan yang bekerja di departemen tersebut.**\n    \n- **Data karyawan, seperti nama karyawan, alamat, nomor telepon, alamat email, tanggal lahir, dan jabatan.**\n    \n\n**Data organisasi penting untuk berbagai fungsi ERP, seperti:**\n\n- **Manajemen akuntansi, untuk mencatat transaksi keuangan perusahaan.**\n    \n- **Manajemen sumber daya manusia, untuk mengelola karyawan perusahaan.**\n    \n- **Manajemen rantai pasokan, untuk melacak pergerakan barang dan jasa.**"
+		},
+		{
+			"name": "Warehouses and Products",
+			"item": [
+				{
+					"name": "Warehouses",
+					"item": [
+						{
+							"name": "Warehouses",
+							"item": [
+								{
+									"name": "Create Warehouses",
+									"id": "a74049c1-f294-44b3-8718-3364bb7f6a30",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "name",
+													"value": "Warehouses Medan Barat 2",
+													"type": "text"
+												},
+												{
+													"key": "address",
+													"value": "Pulo Brayan",
+													"type": "text"
+												},
+												{
+													"key": "capacity",
+													"value": "40",
+													"type": "text"
+												}
+											]
+										},
+										"url": "{{url}}/api/warehouses"
+									},
+									"response": []
+								},
+								{
+									"name": "Get all warehouses",
+									"id": "d2cd16d8-b9f8-499c-9f7f-1fd2a0be5acc",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/warehouses"
+									},
+									"response": []
+								},
+								{
+									"name": "Update Warehouses By ID",
+									"id": "673db3a7-a06f-45a1-9f56-73f2ee57be4e",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Warehouses Medan Barat\",\n  \"address\": \"Pulo Brayan\",\n  \"capacity\": 100\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/warehouses/{{warehouseID}}"
+									},
+									"response": []
+								}
+							],
+							"id": "07ae505d-2373-410f-8698-d9b8bd351315"
+						},
+						{
+							"name": "Warehouses Location",
+							"item": [
+								{
+									"name": "Create Warehouses",
+									"id": "6abe1616-9049-4be1-91fa-dc5cede64041",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "warehouse_id",
+													"value": "1",
+													"type": "text"
+												},
+												{
+													"key": "number",
+													"value": "A100",
+													"type": "text"
+												},
+												{
+													"key": "capacity",
+													"value": "500",
+													"type": "text"
+												}
+											]
+										},
+										"url": "{{url}}/api/warehouse-locations"
+									},
+									"response": []
+								},
+								{
+									"name": "Get all warehouses Location",
+									"id": "b460f5cc-b82d-4fd3-a6ef-dc159ea0debf",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/warehouse-locations"
+									},
+									"response": []
+								},
+								{
+									"name": "Update Warehouses By ID",
+									"id": "22de21d6-6b79-4148-913e-e40f0d5d9871",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"warehouse_id\": 1,\n  \"number\": \"A1001-A\",\n  \"capacity\": 500\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/warehouse-locations/{{warehouseLocationID}}"
+									},
+									"response": []
+								}
+							],
+							"id": "3cfda278-baa3-4c34-adef-bb78836ed7f9"
+						}
+					],
+					"id": "49432e95-9a94-4d74-a98f-c058897a5fb4"
+				},
+				{
+					"name": "Products",
+					"item": [
+						{
+							"name": "Products Category",
+							"item": [
+								{
+									"name": "Create Category Products",
+									"id": "6be8a18f-a2ec-41b7-8f36-4394311ba7ad",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "name",
+													"value": "Mentahan",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Daging Mentahan",
+													"type": "text"
+												}
+											]
+										},
+										"url": "{{url}}/api/product-categories"
+									},
+									"response": []
+								},
+								{
+									"name": "Get all product categories",
+									"id": "e4f4a86d-a378-45b3-993b-acc2e62cc047",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/product-categories"
+									},
+									"response": []
+								},
+								{
+									"name": "Update Product Categori by ID",
+									"id": "b90b99b6-9823-4b9c-b8f5-0b351b2213c5",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Daging Mentahan\",\n  \"description\": \"Semua tentang daging mentahan\"\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/product-categories/{{productCategoryID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Get product category by ID",
+									"id": "d1bd3db3-cefc-4484-9680-c7c3c085aec8",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/product-categories/{{productCategoryID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete product category by ID",
+									"id": "3e4f01df-96c5-4e57-afa9-8f1aa27422b4",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/product-categories/{{productCategoryID}}"
+									},
+									"response": []
+								}
+							],
+							"id": "a4f8edf2-e4d6-4b69-872e-31f0a1df84c3"
+						},
+						{
+							"name": "Products",
+							"item": [
+								{
+									"name": "Create product",
+									"id": "a4333f0a-8139-47b9-8cb7-0fa8fa0d173b",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true,
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Nama Produk\",\n    \"code\": \"PRD-001\",\n    \"description\": \"Deskripsi produk\",\n    \"price\": 100000,\n    \"type\": \"Makanan\",\n    \"stock\": 50\n}\n"
+										},
+										"url": "{{url}}/api/products"
+									},
+									"response": []
+								},
+								{
+									"name": "Get all products",
+									"id": "5446f44a-7ff3-4da2-af9b-93f12c0bc90b",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/products"
+									},
+									"response": []
+								},
+								{
+									"name": "Get Product by ID",
+									"id": "10904a54-d8c8-4dee-a87f-e31bff85df31",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/products/{{productID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Update product by ID",
+									"id": "64db0233-36b2-45e8-af10-66fd3036704e",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Produk 2 update\",\n    \"code\": \"PRD-001\",\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/products/{{productID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete product by ID",
+									"id": "dda87a66-a606-414f-9531-b0d52aa8827a",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Produk A\",\n    \"code\": \"PRD-001\",\n    \"description\": \"Deskripsi produk\",\n    \"price\": 100000,\n    \"type\": \"Makanan\",\n    \"stock\": 100\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/products/{{productID}}"
+									},
+									"response": []
+								}
+							],
+							"id": "0bf95c75-a611-4dc7-8d3e-cbb9f083a0d7",
+							"description": "The `/products` endpoints let you manage information about the authenticated products."
+						},
+						{
+							"name": "Product Price",
+							"item": [
+								{
+									"name": "Get all product prices",
+									"id": "8a90724c-7d1e-4913-bd5e-b9d1038527e5",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/product-prices"
+									},
+									"response": []
+								},
+								{
+									"name": "Create product prices",
+									"id": "6087a9a7-49a0-4e4e-9c66-418b57e5273e",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "product_id",
+													"value": "{{productID}}",
+													"type": "text"
+												},
+												{
+													"key": "selling_price",
+													"value": "100000",
+													"type": "text"
+												},
+												{
+													"key": "buying_price",
+													"value": "65000",
+													"type": "text"
+												},
+												{
+													"key": "discount_price",
+													"value": "0",
+													"type": "text"
+												}
+											]
+										},
+										"url": "{{url}}/api/product-prices"
+									},
+									"response": []
+								},
+								{
+									"name": "Update product price by ID",
+									"id": "f6ca30e3-b886-4f5d-b502-7416ca93aa5a",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"product_id\": 1,\n  \"selling_price\": 150000,\n  \"buying_price\": 65000,\n  \"discount_price\": 0\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/product-prices/{{productPriceID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Get Product price by ID",
+									"id": "2728da80-b67e-4246-8096-aac93fd92933",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/product-prices/{{productPriceID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"id": "24c654e9-6320-499b-a75a-abfbf081b994",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/product-prices/{{productPriceID}}"
+									},
+									"response": []
+								}
+							],
+							"id": "d6e74b29-a5c6-4cbf-9eac-6ad71fb3df46"
+						},
+						{
+							"name": "Product Movement",
+							"item": [
+								{
+									"name": "Create product movements",
+									"id": "c0f7cc1d-c823-4707-a77c-102ab7536e03",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "product_id",
+													"value": "{{productID}}",
+													"type": "text"
+												},
+												{
+													"key": "warehouse_id",
+													"value": "{{warehouseID}}",
+													"type": "text"
+												},
+												{
+													"key": "movement_type",
+													"value": "purchase",
+													"type": "text"
+												},
+												{
+													"key": "quantity",
+													"value": "100",
+													"type": "text"
+												},
+												{
+													"key": "price",
+													"value": "155000",
+													"type": "text"
+												}
+											]
+										},
+										"url": "{{url}}/api/product-movements"
+									},
+									"response": []
+								},
+								{
+									"name": "Get Product Movement",
+									"id": "388176a9-613e-4a24-82f7-ac3fc534c053",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/product-movements"
+									},
+									"response": []
+								},
+								{
+									"name": "Update product movement by ID",
+									"id": "cc76a113-6b34-4b8b-a7b7-ebe44ce5d1db",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"product_id\": 1,\n  \"warehouse_id\": 1,\n  \"movement_type\": \"purchase\",\n  \"quantity\": 120,\n  \"price\": 155000\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/product-movements/{{productMovementID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "get product movement by ID",
+									"id": "94a06e92-8bfd-419c-a5d0-964b65f066ab",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/product-movements/{{productMovementID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete product movement by ID",
+									"id": "963deabe-8a75-49d8-95aa-9f65d66de59a",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/product-movements/{{productMovementID}}"
+									},
+									"response": []
+								}
+							],
+							"id": "30e7a2de-6fb2-4937-8e60-b06a3c70b04a",
+							"auth": {
+								"type": "bearer",
+								"bearer": {
+									"token": "{{bearer_token}}"
+								}
+							},
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "37fcba96-55cf-4351-aeb6-a487b0684eb8",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "db97b3ee-bf2e-4588-b70f-47a11cc1835e",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						}
+					],
+					"id": "98d56ac0-2ab9-4a28-9520-a6b34c34e472"
+				}
+			],
+			"id": "c46e7a63-d9ac-4c39-b266-021afa83c16b"
+		},
+		{
+			"name": "Vendor",
+			"item": [
+				{
+					"name": "Vendors",
+					"item": [
+						{
+							"name": "Get all vendors",
+							"id": "38bc857c-4d5e-48e7-ac6f-497c948e96f0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/vendors"
+							},
+							"response": []
+						},
+						{
+							"name": "Create vendor",
+							"id": "32f7c089-8804-4996-bd85-68f57a2f9ec6",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "PT SUPPLIER",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "Jalan Jalan No 1",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "081234567890",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "supplier@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "transaction_type",
+											"value": "outbound",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/vendors"
+							},
+							"response": []
+						},
+						{
+							"name": "Get vendor by ID - customer",
+							"id": "87173342-18c3-4520-9b8a-bd8f77ec7be4",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/vendors/{{customerID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get vendor by ID - supplier",
+							"id": "b5f43ff9-a70a-422f-b3dc-a47d4776aa64",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/vendors/{{supplierID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Update vendor by ID",
+							"id": "7b3c4e03-77c3-4a84-9bd7-9adac1f146f2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"PT CUSTOMER A\",\n  \"address\": \"Jalan Jalan No 1\",\n  \"phone_number\": \"081234567890\",\n  \"email\": \"customera@gmail.com\",\n  \"transaction_type\": \"inbound\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/vendors/{{customerID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "4d315415-a62c-4a29-a19c-6bd74516701a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/vendors/{{supplierID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "dd6b5a2d-3aa0-4d7a-a5a6-ecac60b800c8"
+				},
+				{
+					"name": "Contact",
+					"item": [
+						{
+							"name": "Get all vendor contacts",
+							"id": "5ad811f4-fa04-4f11-9199-9bfdf226acab",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/vendor-contacts"
+							},
+							"response": []
+						},
+						{
+							"name": "Create vendor contacts",
+							"id": "b5fd25d9-b917-4a09-a2d9-1cb54a7dde94",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "vendors_id",
+											"value": "{{customerID}}",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Bintang Tobing",
+											"type": "text"
+										},
+										{
+											"key": "position",
+											"value": "Admin",
+											"type": "text"
+										},
+										{
+											"key": "phone_number",
+											"value": "081262845980",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/vendor-contacts"
+							},
+							"response": []
+						},
+						{
+							"name": "Update vendor contact by ID",
+							"id": "b67099ce-1e91-4bbb-bf73-6358723cef55",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"vendors_id\": 1,  // Assuming \"customerID\" is to be replaced with 1234\n  \"name\": \"Bintang J Tobing\",\n  \"position\": \"PIC Admin\",\n  \"phone_number\": \"081262845980\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/vendor-contacts/{{vendorContactID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get vendor contact by ID",
+							"id": "1dfaec2c-618f-4f5c-b19e-430ee316cd8e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/vendor-contacts/{{vendorContactID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete vendor contact by ID",
+							"id": "07fc4f81-3636-4582-8273-4b13cb931e48",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/vendor-contacts/{{vendorContactID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "87434b7c-fa43-4d72-a8cb-6d8bd8180c44"
+				},
+				{
+					"name": "Transactions",
+					"item": [
+						{
+							"name": "Get all transactions",
+							"id": "89644968-f07c-439e-ac23-ad22c615518a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/vendor-transactions"
+							},
+							"response": []
+						},
+						{
+							"name": "Create transactions",
+							"id": "8d64764f-9c2d-48fa-b148-43965bc52d5b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "vendors_id",
+											"value": "{{customerID}}",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "product_id",
+											"value": "{{productID}}",
+											"type": "text"
+										},
+										{
+											"key": "unit_price",
+											"value": "10000",
+											"type": "text"
+										},
+										{
+											"key": "total_price",
+											"value": "62000",
+											"type": "text"
+										},
+										{
+											"key": "taxes",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "shipping_cost",
+											"value": "12000",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/vendor-transactions"
+							},
+							"response": []
+						},
+						{
+							"name": "Update transaction by ID",
+							"id": "b9ac4239-fc10-4917-bf33-e88abb8b5662",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"vendors_id\": 1,  // Assuming \"customerID\" is to be replaced with 1234\n  \"amount\": 5,\n  \"product_id\": 1,  // Assuming \"productID\" is to be replaced with 9876\n  \"unit_price\": 10000,\n  \"total_price\": 60000,\n  \"taxes\": 0,\n  \"shipping_cost\": 10000\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/vendor-transactions/{{vendorTransactionsID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get transactions by ID",
+							"id": "9d3f447a-f3a8-4452-b1b4-434deecef771",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/vendor-transactions/{{vendorTransactionsID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete transactions by ID",
+							"id": "ee897a31-377c-4d14-a135-b43067cbaa73",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/vendor-transactions/{{vendorTransactionsID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "476bc8c5-5eb6-4b54-91cf-78fc61757be7"
+				}
+			],
+			"id": "2a69a364-1b99-495c-a76b-add4636aeb19",
+			"description": "Vendor ini berisi kumpulan data pemasok, pelanggan, customer, supplier dan yang lainnya. Saat ini ada dua tipe, outbound dan inbound. Outbound untuk yang berjenis keluar, dan inbound yang berjenis masuk."
+		},
+		{
+			"name": "Asset",
+			"item": [
+				{
+					"name": "Location",
+					"item": [
+						{
+							"name": "Get all asset location",
+							"id": "1f240424-a93e-43be-83bb-354b21e973ca",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/asset-locations"
+							},
+							"response": []
+						},
+						{
+							"name": "Create location",
+							"id": "c21edbb6-8fb9-4908-a2fe-e980da360208",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Medan Utara",
+											"type": "text"
+										},
+										{
+											"key": "address",
+											"value": "Jl Alfalah No 5",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/asset-locations"
+							},
+							"response": []
+						},
+						{
+							"name": "Update location by ID",
+							"id": "56a4a30d-bd18-450f-bca3-4e2ae36cf385",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Medan Utara\",\n  \"address\": \"Jl Alfalah Gg Abc No 5\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/asset-locations/{{assetLocationID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get location by ID",
+							"id": "1605999d-0371-4266-b581-ffa2d380c029",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/asset-locations/{{assetLocationID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete location by ID",
+							"id": "a28df4d2-c9de-4485-88ee-d211aaf2071a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/asset-locations/{{assetLocationID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "b4bcf033-885a-4393-93d9-3d2616bb657a"
+				},
+				{
+					"name": "Condition",
+					"item": [
+						{
+							"name": "Get all asset condition",
+							"id": "6ea60f6d-9bc2-4554-bf97-b25be79118b9",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/asset-conditions"
+							},
+							"response": []
+						},
+						{
+							"name": "Create conditions",
+							"id": "56146b28-be35-4302-9284-590c0a3ae171",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "condition",
+											"value": "New",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/asset-conditions"
+							},
+							"response": []
+						},
+						{
+							"name": "Update condition by ID",
+							"id": "bb7a90cf-c4d0-45b6-a0cc-259390f7206b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"condition\": \"Newest\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/asset-conditions/{{assetConditionID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get condition by ID",
+							"id": "86c58fda-8a3b-4458-8eac-e5079c5ba210",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/asset-conditions/{{assetConditionID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete condition by ID",
+							"id": "5869b4d3-3035-4f1e-b04b-3f472754339f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/asset-conditions/{{assetConditionID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "c2f137e7-b41e-45f1-952f-6db5088ad926"
+				},
+				{
+					"name": "Asset",
+					"item": [
+						{
+							"name": "Get all asset",
+							"id": "72feb2d6-aaf5-4d12-bdc0-7a6de78d2f3b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/assets"
+							},
+							"response": []
+						},
+						{
+							"name": "Create asset",
+							"id": "82e4ca55-697b-4e14-9204-f722cbdf5e11",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Laptop Computer",
+											"type": "text"
+										},
+										{
+											"key": "code",
+											"value": "LAP-1234",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "tangible",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Dell XPS 15 with 16GB RAM and 512GB SSD",
+											"type": "text"
+										},
+										{
+											"key": "acquisition_date",
+											"value": "2023-11-20",
+											"type": "text"
+										},
+										{
+											"key": "acquisition_cost",
+											"value": "2500000",
+											"type": "text"
+										},
+										{
+											"key": "book_value",
+											"value": "1800000",
+											"type": "text"
+										},
+										{
+											"key": "location_id",
+											"value": "{{assetLocationID}}",
+											"type": "text"
+										},
+										{
+											"key": "condition_id",
+											"value": "{{assetConditionID}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/assets"
+							},
+							"response": []
+						},
+						{
+							"name": "Update asset by ID",
+							"id": "772481f5-6569-4fb6-a185-8bb05cf2b42e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Laptop Computer\",\n  \"code\": \"LAP-1234\",\n  \"type\": \"tangible\",\n  \"description\": \"Dell XPS 15 with 16GB RAM and 512GB SSD\",\n  \"acquisition_date\": \"2023-11-20\",\n  \"acquisition_cost\": 2800000,\n  \"book_value\": 1900000,\n  \"location_id\": 1,\n  \"condition_id\": 1\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/assets/{{assetID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get asset by ID",
+							"id": "81c6560f-5959-47fa-bb04-f7138b6ef965",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/assets/{{assetID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete asset by ID",
+							"id": "92dfa488-a359-4bc3-8030-28689696efea",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/assets/{{assetID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "aedd2990-4e14-4609-aeda-b3aef7e1a5cb",
+					"description": "Asset pada dasarnya memiliki 2 tipe yaitu:\n\n- Tangible  \n    Tangible itu merupakan asset yang memiliki bentuk fisik yang dapat dilihat, diukur, dan dirasakan oleh semua orang.\n- Intangible  \n    sementara Intangible merupakan asset yang tidak memiliki bentuk fisik yang dapat diamati."
+				},
+				{
+					"name": "Depreciation",
+					"item": [
+						{
+							"name": "Get all asset depreciations",
+							"id": "0f12d873-7bc0-44bb-b46f-1e91a12b9f3c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/asset-depreciations"
+							},
+							"response": []
+						},
+						{
+							"name": "Create depreciations",
+							"id": "36ac9aab-64d0-482d-af90-9cb41cdd350e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "asset_id",
+											"value": "{{assetID}}",
+											"type": "text"
+										},
+										{
+											"key": "method",
+											"value": "linear",
+											"type": "text"
+										},
+										{
+											"key": "useful_life",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "residual_value",
+											"value": "100000",
+											"type": "text"
+										},
+										{
+											"key": "start_date",
+											"value": "2023-01-01",
+											"type": "text"
+										},
+										{
+											"key": "current_value",
+											"value": "1900000",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/asset-depreciations"
+							},
+							"response": []
+						},
+						{
+							"name": "Update depreciations by ID",
+							"id": "b49abab4-51a4-4f1a-9f16-3df868577b72",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"asset_id\": 1,  // Assuming \"assetID\" is to be replaced with 12345\n  \"method\": \"linear\",\n  \"useful_life\": 5,\n  \"residual_value\": 150000,\n  \"start_date\": \"2023-01-01\",\n  \"current_value\": 1900000\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/asset-depreciations/{{assetDepreciationsID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get depreciations by ID",
+							"id": "4eea3261-a877-4506-a855-37e73e5fffde",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/asset-depreciations/{{assetDepreciationsID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete depreciations by ID",
+							"id": "96af877f-adc4-494b-a5e0-eb3857c51e8b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/asset-depreciations/{{assetDepreciationsID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "96c9accf-3521-4137-addc-89d60979615b"
+				}
+			],
+			"id": "43d3fe7f-cf3a-4180-b368-aaf5dff75e25",
+			"description": "Asset pada dasarnya memiliki 2 tipe yaitu:\n\n- Tangible  \n    Tangible itu merupakan asset yang memiliki bentuk fisik yang dapat dilihat, diukur, dan dirasakan oleh semua orang.\n    \n- Intangible  \n    sementara Intangible merupakan asset yang tidak memiliki bentuk fisik yang dapat diamati.\n    \n\nAsset location berfungsi untuk, peletakan asset, hanya memiliki nama dan alamat.\n\nAsset condition berfungsi untuk mengetahui kondisi asset."
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{bearer_token}}"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "fd0eacc4-001d-41b8-95e7-c8cf72f0c251",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "5fe1e3b4-3f09-4bd7-b9ec-ea755d22c56a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "localhost:8000"
+		},
+		{
+			"key": "userID",
+			"value": "1"
+		},
+		{
+			"key": "companyID",
+			"value": "1"
+		},
+		{
+			"key": "departmentID",
+			"value": "1"
+		},
+		{
+			"key": "employeeCategoriesID",
+			"value": "1"
+		},
+		{
+			"key": "employeeID",
+			"value": "1"
+		},
+		{
+			"key": "productID",
+			"value": "1"
+		},
+		{
+			"key": "branchID",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "profilesID",
+			"value": "2"
+		},
+		{
+			"key": "businessID",
+			"value": "3"
+		},
+		{
+			"key": "warehouseLocationID",
+			"value": "1"
+		}
+	]
+}
