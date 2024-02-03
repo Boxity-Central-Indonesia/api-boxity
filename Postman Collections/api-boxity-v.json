@@ -1255,6 +1255,32 @@
 										"url": "{{url}}/api/warehouse-locations/{{warehouseLocationID}}"
 									},
 									"response": []
+								},
+								{
+									"name": "Get warehouse location by ID",
+									"id": "c4c7f2f7-b8f0-4dc0-b4a0-42d758b07804",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/warehouse-locations/{{warehouseLocationID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete warehouse location by ID",
+									"id": "f5b01416-d3b3-4934-b762-13a7e45e489f",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/warehouse-locations/{{warehouseLocationID}}"
+									},
+									"response": []
 								}
 							],
 							"id": "3cfda278-baa3-4c34-adef-bb78836ed7f9"
