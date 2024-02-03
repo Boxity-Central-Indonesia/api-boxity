@@ -16,12 +16,12 @@ class VendorContactsController extends Controller
      */
     public function index()
     {
-        $contacts = VendorContact::with('vendor')->get();
-
+        $vendorContacts = VendorContact::with('vendor')->get();
         return response()->json([
-            'data' => $contacts,
+            'status' => 200,
+            'data' => $vendorContacts,
             'message' => 'Vendor contacts retrieved successfully.',
-        ], 200);
+        ]);
     }
 
     /**
@@ -53,50 +53,32 @@ class VendorContactsController extends Controller
             'phone_number.string' => 'The phone number must be a string.',
             'phone_number.max' => 'The phone number must not exceed 255 characters.',
         ];
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
+        // Validate the request
+        $validatedData = $request->validate($validationRules, $customMessages);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
+        // Create the vendor contact with validated data
+        $vendorContact = VendorContact::create($validatedData);
 
-        $contact = VendorContact::create($request->all());
-
+        // Return response
         return response()->json([
-            'data' => $contact,
+            'status' => 201,
+            'data' => $vendorContact,
             'message' => 'Vendor contact created successfully.',
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param VendorContact $contact
-     * @return JsonResponse
-     */
-    public function show(VendorContact $contact)
+    public function show($id)
     {
+        $vendorContact = VendorContact::with('vendor')->findOrFail($id);
         return response()->json([
-            'data' => $contact,
+            'status' => 200,
+            'data' => $vendorContact,
             'message' => 'Vendor contact retrieved successfully.',
-        ], 200);
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param VendorContact $contact
-     * @return JsonResponse
-     */
-    public function update(Request $request, VendorContact $contact)
+    public function update(Request $request, $id)
     {
-        $validationRules = [
-            'vendors_id' => 'required|integer|exists:vendors,id',
-            'name' => 'required|string|max:255',
-            'position' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:255',
-        ];
-
         $customMessages = [
             'vendors_id.required' => 'The vendors ID field is required.',
             'vendors_id.integer' => 'The vendors ID must be an integer.',
@@ -111,30 +93,29 @@ class VendorContactsController extends Controller
             'phone_number.string' => 'The phone number must be a string.',
             'phone_number.max' => 'The phone number must not exceed 255 characters.',
         ];
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
+        $validated = $request->validate([
+            'vendors_id' => 'required|exists:vendors,id',
+            'name' => 'required|string',
+            'position' => 'required|string',
+            'phone_number' => 'required|string',
+        ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $contact->update($request->all());
-
+        $vendorContact = VendorContact::findOrFail($id);
+        $vendorContact->update($validated, $customMessages);
         return response()->json([
-            'data' => $contact,
+            'status' => 200,
+            'data' => $vendorContact,
             'message' => 'Vendor contact updated successfully.',
-        ], 200);
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param VendorContact $contact
-     * @return JsonResponse
-     */
-    public function destroy(VendorContact $contact)
+    public function destroy($id)
     {
-        $contact->delete();
-
-        return response()->json(null, 204);
+        $vendorContact = VendorContact::findOrFail($id);
+        $vendorContact->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Vendor contact deleted successfully.',
+        ]);
     }
 }

@@ -12,13 +12,7 @@ class VendorTransaction extends Model
     use HasFactory, HasApiTokens;
 
     protected $fillable = [
-        'vendors_id',
-        'amount',
-        'product_id',
-        'unit_price',
-        'total_price',
-        'taxes',
-        'shipping_cost',
+        'vendors_id', 'amount', 'product_id', 'unit_price', 'total_price', 'taxes', 'shipping_cost'
     ];
     public static function boot()
     {
@@ -32,7 +26,7 @@ class VendorTransaction extends Model
     }
     public function vendor()
     {
-        return $this->belongsTo(Vendor::class);
+        return $this->belongsTo(Vendor::class, 'vendors_id');
     }
 
     public function product()

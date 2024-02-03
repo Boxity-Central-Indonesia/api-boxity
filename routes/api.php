@@ -74,8 +74,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Data vendor, customer and suppliers
     Route::apiResource('vendors', VendorsController::class);
-    Route::apiResource('vendors.transaction', VendorTransactionsController::class);
-    Route::apiResource('vendor.contacts', VendorContactsController::class);
+    Route::apiResource('vendor-contacts', VendorContactsController::class);
+    Route::apiResource('vendor-transactions', VendorTransactionsController::class);
 
     // Data asset
     Route::apiResource('asset.locations', AssetLocationsController::class);

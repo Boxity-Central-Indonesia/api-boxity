@@ -16,12 +16,12 @@ class VendorsController extends Controller
      */
     public function index()
     {
-        $vendors = Vendor::with('contacts')->get();
-
+        $vendors = Vendor::all();
         return response()->json([
+            'status' => 200,
             'data' => $vendors,
             'message' => 'Vendors retrieved successfully.',
-        ], 200);
+        ]);
     }
 
     /**
@@ -32,14 +32,14 @@ class VendorsController extends Controller
      */
     public function store(Request $request)
     {
-        $validationRules = [
-            'name' => 'required|string|max:255',
+        $validated = $request->validate([
+            'name' => 'required|string',
             'address' => 'required|string',
             'phone_number' => 'required|string',
-            'email' => 'required|string|email',
+            'email' => 'required|email',
             'date_of_birth' => 'nullable|date',
             'transaction_type' => 'required|in:outbound,inbound',
-        ];
+        ]);
 
         $customMessages = [
             'name.required' => 'The name field is required.',
@@ -57,15 +57,9 @@ class VendorsController extends Controller
             'transaction_type.in' => 'The transaction type must be either "outbound" or "inbound".',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $vendor = Vendor::create($request->all());
-
+        $vendor = Vendor::create($validated, $customMessages);
         return response()->json([
+            'status' => 201,
             'data' => $vendor,
             'message' => 'Vendor created successfully.',
         ], 201);
@@ -77,32 +71,26 @@ class VendorsController extends Controller
      * @param Vendor $vendor
      * @return JsonResponse
      */
-    public function show(Vendor $vendor)
+    public function show($id)
     {
+        $vendor = Vendor::findOrFail($id);
         return response()->json([
+            'status' => 200,
             'data' => $vendor,
             'message' => 'Vendor retrieved successfully.',
-        ], 200);
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Vendor $vendor
-     * @return JsonResponse
-     */
-    public function update(Request $request, Vendor $vendor)
+    public function update(Request $request, $id)
     {
-        $validationRules = [
-            'name' => 'required|string|max:255',
+        $validated = $request->validate([
+            'name' => 'required|string',
             'address' => 'required|string',
             'phone_number' => 'required|string',
-            'email' => 'required|string|email',
+            'email' => 'required|email',
             'date_of_birth' => 'nullable|date',
             'transaction_type' => 'required|in:outbound,inbound',
-        ];
-
+        ]);
         $customMessages = [
             'name.required' => 'The name field is required.',
             'name.string' => 'The name must be a string.',
@@ -118,30 +106,22 @@ class VendorsController extends Controller
             'transaction_type.required' => 'The transaction type field is required.',
             'transaction_type.in' => 'The transaction type must be either "outbound" or "inbound".',
         ];
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $vendor->update($request->all());
-
+        $vendor = Vendor::findOrFail($id);
+        $vendor->update($validated, $customMessages);
         return response()->json([
+            'status' => 200,
             'data' => $vendor,
             'message' => 'Vendor updated successfully.',
-        ], 200);
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Vendor $vendor
-     * @return JsonResponse
-     */
-    public function destroy(Vendor $vendor)
+    public function destroy($id)
     {
-        $vendor->delete();
-
-        return response()->json(null, 204);
+        Vendor::destroy($id);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Vendor deleted successfully.',
+        ]);
     }
 }

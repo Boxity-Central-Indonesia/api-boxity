@@ -31,7 +31,7 @@ class Vendor extends Model
     }
     public function contacts()
     {
-        return $this->hasMany(VendorContact::class);
+        return $this->hasMany(VendorContact::class, 'vendors_id');
     }
 
     public function transactions()
