@@ -2708,6 +2708,11 @@
 			],
 			"id": "43d3fe7f-cf3a-4180-b368-aaf5dff75e25",
 			"description": "Asset pada dasarnya memiliki 2 tipe yaitu:\n\n- Tangible  \n    Tangible itu merupakan asset yang memiliki bentuk fisik yang dapat dilihat, diukur, dan dirasakan oleh semua orang.\n    \n- Intangible  \n    sementara Intangible merupakan asset yang tidak memiliki bentuk fisik yang dapat diamati.\n    \n\nAsset location berfungsi untuk, peletakan asset, hanya memiliki nama dan alamat.\n\nAsset condition berfungsi untuk mengetahui kondisi asset."
+		},
+		{
+			"name": "Account",
+			"item": [],
+			"id": "6e9db782-3f58-49bb-aefe-8b77d8674183"
 		}
 	],
 	"auth": {
