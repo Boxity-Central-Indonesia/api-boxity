@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('type', ['asset', 'liability', 'equity', 'income', 'expense'])->default('asset');
+            $table->enum('type', ['Aset', 'Liabilitas', 'Ekuitas', 'Pendapatan', 'Pengeluaran', 'Biaya'])->default('Aset');
             $table->decimal('balance', 10, 2);
             $table->timestamps();
         });
