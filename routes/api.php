@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\AssetDepreciationsController;
 use App\Http\Controllers\Api\AssetLocationsController;
 use App\Http\Controllers\Api\AssetsController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BusinessController;
 use App\Http\Controllers\Api\MasterUsersController;
 use App\Http\Controllers\Api\CompaniesController;
 use App\Http\Controllers\Api\CompaniesDepartmentController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Api\ProductsCategoriesController;
 use App\Http\Controllers\Api\ProductsPricesController;
 use App\Http\Controllers\Api\ProductsMovementsController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\VendorContactsController;
 use App\Http\Controllers\Api\VendorsController;
 use App\Http\Controllers\Api\VendorTransactionsController;
@@ -35,6 +37,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [AuthController::class, 'profile']);
         Route::post('/', [AuthController::class, 'update']);
     });
+    Route::get('/profiles', [ProfileController::class, 'index']);
+    Route::post('/profiles', [ProfileController::class, 'store']);
+    Route::get('/profiles', [ProfileController::class, 'show']);
+    Route::put('/profiles/{id}', [ProfileController::class, 'update']);
+    Route::delete('/profiles', [ProfileController::class, 'destroy']);
+    Route::apiResource('businesses', BusinessController::class);
 
     // Users routes
     Route::apiResource('users', MasterUsersController::class);
