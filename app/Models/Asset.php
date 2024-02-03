@@ -13,15 +13,7 @@ class Asset extends Model
     use HasFactory, HasApiTokens;
 
     protected $fillable = [
-        'name',
-        'code',
-        'type',
-        'description',
-        'acquisition_date',
-        'acquisition_cost',
-        'book_value',
-        'location_id',
-        'condition_id',
+        'name', 'code', 'type', 'description', 'acquisition_date', 'acquisition_cost', 'book_value', 'location_id', 'condition_id'
     ];
     public static function boot()
     {
@@ -35,16 +27,16 @@ class Asset extends Model
     }
     public function location()
     {
-        return $this->belongsTo(AssetLocation::class);
+        return $this->belongsTo(AssetLocation::class, 'location_id');
     }
 
     public function condition()
     {
-        return $this->belongsTo(AssetCondition::class);
+        return $this->belongsTo(AssetCondition::class, 'condition_id');
     }
 
-    public function depreciation()
+    public function depreciations()
     {
-        return $this->hasOne(AssetDepreciation::class);
+        return $this->hasMany(AssetDepreciation::class, 'asset_id');
     }
 }

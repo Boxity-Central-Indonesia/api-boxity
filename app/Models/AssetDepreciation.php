@@ -10,14 +10,9 @@ use Illuminate\Support\Facades\Auth;
 class AssetDepreciation extends Model
 {
     use HasFactory, HasApiTokens;
-
+    protected $table = 'asset_depreciation';
     protected $fillable = [
-        'asset_id',
-        'method',
-        'useful_life',
-        'residual_value',
-        'start_date',
-        'current_value',
+        'asset_id', 'method', 'useful_life', 'residual_value', 'start_date', 'current_value'
     ];
     public static function boot()
     {

@@ -16,103 +16,60 @@ class AssetConditionsController extends Controller
      */
     public function index()
     {
-        $conditions = AssetCondition::with('assets')->get();
-
+        $conditions = AssetCondition::all();
         return response()->json([
+            'status' => 200,
             'data' => $conditions,
             'message' => 'Asset conditions retrieved successfully.',
-        ], 200);
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
     public function store(Request $request)
     {
-        $validationRules = [
+        $validated = $request->validate([
             'condition' => 'required|string|max:255',
-        ];
+        ]);
 
-        $customMessages = [
-            'condition.required' => 'The condition field is required.',
-            'condition.string' => 'The condition must be a string.',
-            'condition.max' => 'The condition must not exceed 255 characters.',
-        ];
-
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $condition = AssetCondition::create($request->all());
-
+        $condition = AssetCondition::create($validated);
         return response()->json([
+            'status' => 201,
             'data' => $condition,
             'message' => 'Asset condition created successfully.',
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param AssetCondition $condition
-     * @return JsonResponse
-     */
-    public function show(AssetCondition $condition)
+    public function show($id)
     {
+        $condition = AssetCondition::findOrFail($id);
         return response()->json([
+            'status' => 200,
             'data' => $condition,
             'message' => 'Asset condition retrieved successfully.',
-        ], 200);
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param AssetCondition $condition
-     * @return JsonResponse
-     */
-    public function update(Request $request, AssetCondition $condition)
+    public function update(Request $request, $id)
     {
-        $validationRules = [
+        $validated = $request->validate([
             'condition' => 'required|string|max:255',
-        ];
+        ]);
 
-        $customMessages = [
-            'condition.required' => 'The condition field is required.',
-            'condition.string' => 'The condition must be a string.',
-            'condition.max' => 'The condition must not exceed 255 characters.',
-        ];
-
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $condition->update($request->all());
-
+        $condition = AssetCondition::findOrFail($id);
+        $condition->update($validated);
         return response()->json([
+            'status' => 200,
             'data' => $condition,
             'message' => 'Asset condition updated successfully.',
-        ], 200);
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param AssetCondition $condition
-     * @return JsonResponse
-     */
-    public function destroy(AssetCondition $condition)
+    public function destroy($id)
     {
+        $condition = AssetCondition::findOrFail($id);
         $condition->delete();
-
-        return response()->json(null, 204);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Asset condition deleted successfully.',
+        ]);
     }
 }

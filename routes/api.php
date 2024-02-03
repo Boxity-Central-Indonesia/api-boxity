@@ -78,9 +78,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('vendor-transactions', VendorTransactionsController::class);
 
     // Data asset
-    Route::apiResource('asset.locations', AssetLocationsController::class);
-    Route::apiResource('asset.conditions', AssetConditionsController::class);
-    Route::apiResource('assets.depreciation', AssetDepreciationsController::class)->only(['show', 'store', 'update']);
+    Route::apiResource('asset-locations', AssetLocationsController::class);
+    Route::apiResource('asset-conditions', AssetConditionsController::class);
+    Route::apiResource('asset-depreciations', AssetDepreciationsController::class);
     Route::apiResource('assets', AssetsController::class);
 
     // Data Keuangan

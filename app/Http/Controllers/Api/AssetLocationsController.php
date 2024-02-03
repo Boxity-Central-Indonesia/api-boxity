@@ -16,110 +16,61 @@ class AssetLocationsController extends Controller
      */
     public function index()
     {
-        $locations = AssetLocation::with('assets')->get();
-
+        $locations = AssetLocation::all();
         return response()->json([
+            'status' => 200,
             'data' => $locations,
             'message' => 'Asset locations retrieved successfully.',
-        ], 200);
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
     public function store(Request $request)
     {
-        $validationRules = [
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string',
-        ];
+        ]);
 
-        $customMessages = [
-            'name.required' => 'The name field is required.',
-            'name.string' => 'The name must be a string.',
-            'name.max' => 'The name must not exceed 255 characters.',
-            'address.required' => 'The address field is required.',
-            'address.string' => 'The address must be a string.',
-        ];
-
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $location = AssetLocation::create($request->all());
-
+        $location = AssetLocation::create($validated);
         return response()->json([
+            'status' => 201,
             'data' => $location,
             'message' => 'Asset location created successfully.',
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param AssetLocation $location
-     * @return JsonResponse
-     */
-    public function show(AssetLocation $location)
+    public function show($id)
     {
+        $location = AssetLocation::findOrFail($id);
         return response()->json([
+            'status' => 200,
             'data' => $location,
             'message' => 'Asset location retrieved successfully.',
-        ], 200);
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param AssetLocation $location
-     * @return JsonResponse
-     */
-    public function update(Request $request, AssetLocation $location)
+    public function update(Request $request, $id)
     {
-        $validationRules = [
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string',
-        ];
+        ]);
 
-        $customMessages = [
-            'name.required' => 'The name field is required.',
-            'name.string' => 'The name must be a string.',
-            'name.max' => 'The name must not exceed 255 characters.',
-            'address.required' => 'The address field is required.',
-            'address.string' => 'The address must be a string.',
-        ];
-
-
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $location->update($request->all());
-
+        $location = AssetLocation::findOrFail($id);
+        $location->update($validated);
         return response()->json([
+            'status' => 200,
             'data' => $location,
             'message' => 'Asset location updated successfully.',
-        ], 200);
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param AssetLocation $location
-     * @return JsonResponse
-     */
-    public function destroy(AssetLocation $location)
+    public function destroy($id)
     {
-        $location->delete();
-
-        return response()->json(null, 204);
+        AssetLocation::destroy($id);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Asset location deleted successfully.',
+        ]);
     }
 }
