@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\VendorsController;
 use App\Http\Controllers\Api\VendorTransactionsController;
 use App\Http\Controllers\Api\WarehousesController;
 use App\Http\Controllers\Api\WarehouseLocationsController;
+use App\Models\WarehouseLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -63,15 +64,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Products routes
     Route::apiResource('products', ProductsController::class);
-    Route::apiResource('products/categories', ProductsCategoriesController::class);
-    Route::apiResource('products.{product}/prices', ProductsPricesController::class, ['except' => ['show']]);
-    Route::apiResource('products.movements', ProductsMovementsController::class, ['except' => ['show']]);
-    Route::get('products/movements/{product}', [ProductsMovementsController::class, 'forProduct']);
-    Route::get('products/movements/warehouses/{warehouse}', [ProductsMovementsController::class, 'forWarehouse']);
+    Route::apiResource('product-categories', ProductsCategoriesController::class);
+    Route::apiResource('product-prices', ProductsPricesController::class);
+    Route::apiResource('product-movements', ProductsMovementsController::class);
 
     // Warehouses routes
     Route::apiResource('warehouses', WarehousesController::class);
-    Route::apiResource('warehouses/{warehouse}/locations', WarehouseLocationsController::class, ['except' => ['show']]);
+    Route::apiResource('warehouse-locations', WarehouseLocationsController::class);
 
     // Data vendor, customer and suppliers
     Route::apiResource('vendors', VendorsController::class);

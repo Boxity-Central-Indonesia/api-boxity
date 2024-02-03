@@ -11,15 +11,18 @@ use Illuminate\Support\Facades\Auth;
 class ProductsMovement extends Model
 {
     use HasFactory, HasApiTokens, SoftDeletes;
+    protected $table = 'products_movements';
+    protected $fillable = ['product_id', 'warehouse_id', 'movement_type', 'quantity', 'price'];
 
-    protected $fillable = [
-        'product_id',
-        'warehouse_id',
-        'movement_type',
-        'quantity',
-        'price',
-        'notes',
-    ];
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
     public static function boot()
     {
         parent::boot();
@@ -29,15 +32,6 @@ class ProductsMovement extends Model
         self::updating(function ($model) {
             $model->user_updated = Auth::id();
         });
-    }
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
-
-    public function warehouse()
-    {
-        return $this->belongsTo(Warehouse::class);
     }
 
     public function getMovementTypeLabelAttribute()

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\ProductsCategory;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
+use App\Models\ProductsCategory;
 
 class ProductsCategoriesController extends Controller
 {
@@ -17,41 +17,21 @@ class ProductsCategoriesController extends Controller
     public function index()
     {
         $categories = ProductsCategory::all();
-
         return response()->json([
+            'status' => 200,
             'data' => $categories,
             'message' => 'Categories retrieved successfully.',
-        ], 200);
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
     public function store(Request $request)
     {
-        $validationRules = [
+        $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-        ];
-
-        $customMessages = [
-            'name.required' => 'The name field is required.',
-            'name.string' => 'The name must be a string.',
-            'name.max' => 'The name must not exceed 255 characters.',
-            'description.required' => 'The description field is required.',
-            'description.string' => 'The description must be a string.',
-        ];
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
+        ]);
 
         $category = ProductsCategory::create($request->all());
-
         return response()->json([
             'status' => 201,
             'data' => $category,
@@ -59,66 +39,39 @@ class ProductsCategoriesController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param ProductsCategory $category
-     * @return JsonResponse
-     */
-    // public function show(ProductsCategory $category)
-    // {
-    //     return response()->json([
-    //         'data' => $category,
-    //         'message' => 'Category retrieved successfully.',
-    //     ], 200);
-    // }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param ProductsCategory $category
-     * @return JsonResponse
-     */
-    public function update(Request $request, ProductsCategory $category)
+    public function show($id)
     {
-        $validationRules = [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-        ];
-
-        $customMessages = [
-            'name.required' => 'The name field is required.',
-            'name.string' => 'The name must be a string.',
-            'name.max' => 'The name must not exceed 255 characters.',
-            'description.required' => 'The description field is required.',
-            'description.string' => 'The description must be a string.',
-        ];
-
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $category->update($request->all());
-
+        $category = ProductsCategory::findOrFail($id);
         return response()->json([
+            'status' => 200,
             'data' => $category,
-            'message' => 'Category updated successfully.',
-        ], 200);
+            'message' => 'Category retrieved successfully.',
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param ProductsCategory $category
-     * @return JsonResponse
-     */
-    public function destroy(ProductsCategory $category)
+    public function update(Request $request, $id)
     {
-        $category->delete();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
 
-        return response()->json(null, 204);
+        $category = ProductsCategory::findOrFail($id);
+        $category->update($request->all());
+        return response()->json([
+            'status' => 200,
+            'data' => $category,
+            'message' => 'Category updated successfully.',
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $category = ProductsCategory::findOrFail($id);
+        $category->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Category deleted successfully.',
+        ]);
     }
 }

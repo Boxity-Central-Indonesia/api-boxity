@@ -19,29 +19,15 @@ class ProductsMovementsController extends Controller
     public function index()
     {
         $movements = ProductsMovement::with(['product', 'warehouse'])->get();
-
         return response()->json([
+            'status' => 200,
             'data' => $movements,
-            'message' => 'Products movements retrieved successfully.',
+            'message' => 'Product movements retrieved successfully.',
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $validationRules = [
-            'product_id' => 'required|exists:products,id',
-            'warehouse_id' => 'required|exists:warehouses,id',
-            'movement_type' => 'required|in:purchase,sale,transfer',
-            'quantity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-        ];
-
         $customMessages = [
             'product_id.required' => 'The product ID field is required.',
             'product_id.exists' => 'The selected product ID does not exist in the database.',
@@ -57,66 +43,34 @@ class ProductsMovementsController extends Controller
             'price.min' => 'The price must be at least 0.',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'movement_type' => 'required|in:purchase,sale,transfer',
+            'quantity' => 'required|integer',
+            'price' => 'required|numeric',
+        ]);
 
         $movement = ProductsMovement::create($request->all());
-
-        // Update stock balance based on movement type
-        $product = $movement->product;
-        switch ($movement->movement_type) {
-            case 'purchase':
-                $product->stock += $movement->quantity;
-                break;
-            case 'sale':
-                $product->stock -= $movement->quantity;
-                break;
-            case 'transfer':
-                // Handle transfer logic, if needed
-                break;
-        }
-        $product->save();
-
         return response()->json([
+            'status' => 201,
             'data' => $movement,
             'message' => 'Product movement created successfully.',
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ProductsMovement  $movement
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ProductsMovement $movement)
+    public function show($id)
     {
+        $movement = ProductsMovement::with(['product', 'warehouse'])->findOrFail($id);
         return response()->json([
-            'data' => $movement->load(['product', 'warehouse']),
+            'status' => 200,
+            'data' => $movement,
             'message' => 'Product movement retrieved successfully.',
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ProductsMovement  $movement
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ProductsMovement $movement)
+    public function update(Request $request, $id)
     {
-        $validationRules = [
-            'product_id' => 'required|exists:products,id',
-            'warehouse_id' => 'required|exists:warehouses,id',
-            'movement_type' => 'required|in:purchase,sale,transfer',
-            'quantity' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-        ];
-
         $customMessages = [
             'product_id.required' => 'The product ID field is required.',
             'product_id.exists' => 'The selected product ID does not exist in the database.',
@@ -131,81 +85,30 @@ class ProductsMovementsController extends Controller
             'price.numeric' => 'The price must be a number.',
             'price.min' => 'The price must be at least 0.',
         ];
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'movement_type' => 'required|in:purchase,sale,transfer',
+            'quantity' => 'required|integer',
+            'price' => 'required|numeric',
+        ]);
 
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
+        $movement = ProductsMovement::findOrFail($id);
         $movement->update($request->all());
-
-        // Update stock balance if movement type or quantity changed
-        if ($movement->isDirty('movement_type') || $movement->isDirty('quantity')) {
-            $product = $movement->product;
-            $originalQuantity = $movement->getOriginal('quantity');
-            switch ($movement->movement_type) {
-                case 'purchase':
-                    $product->stock += ($movement->quantity - $originalQuantity);
-                    break;
-                case 'sale':
-                    $product->stock -= ($movement->quantity - $originalQuantity);
-                    break;
-                case 'transfer':
-                    // Handle transfer logic, if needed
-                    break;
-            }
-            $product->save();
-        }
-
         return response()->json([
+            'status' => 200,
             'data' => $movement,
             'message' => 'Product movement updated successfully.',
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ProductsMovement  $movement
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ProductsMovement $movement)
+    public function destroy($id)
     {
+        $movement = ProductsMovement::findOrFail($id);
         $movement->delete();
-
-        return response()->json(null, 204);
-    }
-
-    /**
-     * Get the products movements for a specific product.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function forProduct(Product $product)
-    {
-        $movements = ProductsMovement::where('product_id', $product->id)->get();
-
         return response()->json([
-            'data' => $movements,
-            'message' => 'Products movements for product retrieved successfully.',
-        ]);
-    }
-
-    /**
-     * Get the products movements for a specific warehouse.
-     *
-     * @param  \App\Models\Warehouse  $warehouse
-     * @return \Illuminate\Http\Response
-     */
-    public function forWarehouse(Warehouse $warehouse)
-    {
-        $movements = ProductsMovement::where('warehouse_id', $warehouse->id)->get();
-
-        return response()->json([
-            'data' => $movements,
-            'message' => 'Products movements for warehouse retrieved successfully.',
+            'status' => 200,
+            'message' => 'Product movement deleted successfully.',
         ]);
     }
 }
