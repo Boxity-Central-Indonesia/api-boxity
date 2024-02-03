@@ -2768,19 +2768,124 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Update account by ID",
 							"id": "0b3c5520-69a8-470f-b229-e7e6e623f191",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Komputer\",\n    \"type\": \"Aset\",\n    \"balance\": \"10500000\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/accounts/{{accountID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get account by ID",
+							"id": "2d996379-43b5-4506-a857-68b070897cb4",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/accounts/{{accountID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete account by ID",
+							"id": "30313e00-8da2-4c61-b12d-2a9ad1c8d753",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/accounts/{{accountID}}"
 							},
 							"response": []
 						}
 					],
 					"id": "d92a510c-83ff-406c-b6c1-6ae4c1821be4"
+				},
+				{
+					"name": "Transactions",
+					"item": [
+						{
+							"name": "Create Transactions",
+							"id": "075e4dd6-e770-4441-ba6e-ed2562073232",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "type",
+											"value": "inbound",
+											"type": "text"
+										},
+										{
+											"key": "date",
+											"value": "2024-01-02",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "account_id",
+											"value": "{{accountID}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/accounts-transactions"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all transactions",
+							"id": "6ffd502d-09c1-490b-a596-e1ceb21a7dab",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/accounts-transactions"
+							},
+							"response": []
+						}
+					],
+					"id": "ae3afc6c-b501-4526-ba4a-25bc8ae84946"
 				}
 			],
 			"id": "6e9db782-3f58-49bb-aefe-8b77d8674183"
