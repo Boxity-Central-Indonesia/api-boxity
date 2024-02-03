@@ -16,7 +16,7 @@ class AssetsController extends Controller
      */
     public function index()
     {
-        $assets = Asset::with(['location', 'condition'])->get();
+        $assets = Asset::with(['location', 'condition', 'depreciations'])->get();
         return response()->json([
             'status' => 200,
             'data' => $assets,
@@ -48,7 +48,7 @@ class AssetsController extends Controller
 
     public function show($id)
     {
-        $asset = Asset::with(['location', 'condition'])->findOrFail($id);
+        $asset = Asset::with(['location', 'condition', 'depreciations'])->findOrFail($id);
         return response()->json([
             'status' => 200,
             'data' => $asset,
