@@ -2997,14 +2997,56 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Update balance by ID",
 							"id": "07b0660a-0302-40f1-a513-d56dbcbac027",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"date\": \"2024-01-01\",\n    \"balance\": 10300000,\n    \"account_id\": {{accountID}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/accounts-balances/{{accountBalanceID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get balance by ID",
+							"id": "69c99a8b-beb7-445f-acef-fbf58449f280",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/accounts-balances/{{accountBalanceID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete balance by ID",
+							"id": "1a07926b-da2c-47fb-8846-1661dd4235cb",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/accounts-balances/{{accountBalanceID}}"
 							},
 							"response": []
 						}
