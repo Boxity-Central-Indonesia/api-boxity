@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Company;
 
 class CompaniesDepartmentController extends Controller
 {
@@ -70,26 +71,33 @@ class CompaniesDepartmentController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CompaniesDepartment  $department
-     * @return \Illuminate\Http\Response
-     */
-    public function show($company, $department)
-    {
-        $departmentModel = CompaniesDepartment::with('company')->find($department);
+// CompaniesDepartmentController.php
 
-        if (!$departmentModel) {
-            return response()->json(['message' => 'Department not found.'], 404);
-        }
+/**
+ * Display the specified resource.
+ *
+ * @param  \App\Models\Company  $company
+ * @param  \App\Models\CompaniesDepartment  $department
+ * @return \Illuminate\Http\Response
+ */
+public function show(Company $company, CompaniesDepartment $department)
+{
+    // Assuming 'departments' is the relationship method in the Company model
+    $departmentModel = $company->departments()->find($department->id);
 
-        return response()->json([
-            'status' => 200,
-            'data' => $departmentModel,
-            'message' => 'Department retrieved successfully.',
-        ]);
+    if (!$departmentModel) {
+        return response()->json(['message' => 'Department not found.'], 404);
     }
+
+    return response()->json([
+        'status' => 200,
+        'data' => $departmentModel,
+        'message' => 'Department retrieved successfully.',
+    ]);
+}
+
+
+
 
     /**
      * Update the specified resource in storage.

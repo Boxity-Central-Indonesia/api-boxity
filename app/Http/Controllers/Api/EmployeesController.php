@@ -16,7 +16,7 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all();
+        $employees = Employee::with('company')->get();
 
         return response()->json([
             'data' => $employees,
@@ -110,6 +110,7 @@ class EmployeesController extends Controller
         $employee = Employee::create($request->all());
 
         return response()->json([
+            'status' => 201,
             'data' => $employee,
             'message' => 'Employee created successfully.',
         ], 201);
@@ -123,10 +124,14 @@ class EmployeesController extends Controller
      */
     public function show(Employee $employee)
     {
-        return response()->json([
-            'data' => $employee,
-            'message' => 'Employee retrieved successfully.',
-        ]);
+        // Eager load the 'company' relationship
+    $employeeWithCompany = Employee::with('company')->find($employee->id);
+
+    return response()->json([
+        'status' => 200,
+        'data' => $employeeWithCompany,
+        'message' => 'Employee retrieved successfully.',
+    ]);
     }
 
     /**
@@ -214,6 +219,7 @@ class EmployeesController extends Controller
         $employee->update($request->all());
 
         return response()->json([
+            'status' => 201,
             'data' => $employee,
             'message' => 'Employee updated successfully.',
         ]);

@@ -20,6 +20,7 @@ class CompaniesController extends Controller
         $companies = Company::all();
 
         return response()->json([
+            'status' => 200,
             'data' => $companies,
             'message' => 'Getting data companies successfully.',
         ], 200);
@@ -102,7 +103,7 @@ class CompaniesController extends Controller
     {
         $validationRules = [
             'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|string|email|max:255|unique:companies',
+            'email' => 'sometimes|string|email|max:255',
             'phone_number' => 'sometimes|string|max:255',
             'address' => 'sometimes|string|max:255',
             'city' => 'sometimes|string|max:255',
@@ -119,7 +120,6 @@ class CompaniesController extends Controller
             'email.string' => 'The email must be a string.',
             'email.email' => 'Please provide a valid email address.',
             'email.max' => 'The email must not exceed 255 characters.',
-            'email.unique' => 'The email has already been taken.',
             'phone_number.string' => 'The phone number must be a string.',
             'phone_number.max' => 'The phone number must not exceed 255 characters.',
             'address.string' => 'The address must be a string.',

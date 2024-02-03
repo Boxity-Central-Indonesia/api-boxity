@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('companies', CompaniesController::class);
     Route::apiResource('companies/{company}/departments', CompaniesDepartmentController::class)->parameters([
         'departments' => 'department'
-    ]);;
+    ]);
     Route::apiResource('companies/{company}/branches', CompaniesBranchController::class)->parameters([
         'branches' => 'branch'
     ]);
@@ -55,7 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Products routes
     Route::apiResource('products', ProductsController::class);
-    Route::apiResource('products.categories', ProductsCategoriesController::class);
+    Route::apiResource('products/categories', ProductsCategoriesController::class);
     Route::apiResource('products.{product}/prices', ProductsPricesController::class, ['except' => ['show']]);
     Route::apiResource('products.movements', ProductsMovementsController::class, ['except' => ['show']]);
     Route::get('products/movements/{product}', [ProductsMovementsController::class, 'forProduct']);
@@ -63,7 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Warehouses routes
     Route::apiResource('warehouses', WarehousesController::class);
-    Route::apiResource('warehouses.{warehouse}/locations', WarehouseLocationsController::class, ['except' => ['show']]);
+    Route::apiResource('warehouses/{warehouse}/locations', WarehouseLocationsController::class, ['except' => ['show']]);
 
     // Data vendor, customer and suppliers
     Route::apiResource('vendors', VendorsController::class);

@@ -59,6 +59,7 @@ class WarehousesController extends Controller
         $warehouse = Warehouse::create($request->all());
 
         return response()->json([
+            'status' => 201,
             'data' => $warehouse,
             'message' => 'Warehouse created successfully.',
         ], 201);
@@ -73,6 +74,7 @@ class WarehousesController extends Controller
     public function show(Warehouse $warehouse)
     {
         return response()->json([
+            'status' => 200,
             'data' => $warehouse,
             'message' => 'Warehouse retrieved successfully.',
         ]);
@@ -114,6 +116,7 @@ class WarehousesController extends Controller
         $warehouse->update($request->all());
 
         return response()->json([
+            'status' => 201,
             'data' => $warehouse,
             'message' => 'Warehouse updated successfully.',
         ]);

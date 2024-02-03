@@ -53,6 +53,7 @@ class ProductsCategoriesController extends Controller
         $category = ProductsCategory::create($request->all());
 
         return response()->json([
+            'status' => 201,
             'data' => $category,
             'message' => 'Category created successfully.',
         ], 201);
@@ -64,13 +65,13 @@ class ProductsCategoriesController extends Controller
      * @param ProductsCategory $category
      * @return JsonResponse
      */
-    public function show(ProductsCategory $category)
-    {
-        return response()->json([
-            'data' => $category,
-            'message' => 'Category retrieved successfully.',
-        ], 200);
-    }
+    // public function show(ProductsCategory $category)
+    // {
+    //     return response()->json([
+    //         'data' => $category,
+    //         'message' => 'Category retrieved successfully.',
+    //     ], 200);
+    // }
 
     /**
      * Update the specified resource in storage.

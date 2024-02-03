@@ -30,6 +30,7 @@ class Employee extends Model
         'emergency_contact_phone_number',
         'notes',
         'department_id',
+        'job_title_category_id'
     ];
     public static function boot()
     {
