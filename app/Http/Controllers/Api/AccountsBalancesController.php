@@ -16,111 +16,65 @@ class AccountsBalancesController extends Controller
      * @param Account $account
      * @return JsonResponse
      */
-    public function index(Account $account)
+    public function index()
     {
-        $balances = $account->balances()->get();
-
+        $balances = AccountsBalance::with('account')->get();
         return response()->json([
+            'status' => 200,
             'data' => $balances,
-            'message' => 'Balances retrieved successfully.',
-        ], 200);
+            'message' => 'Accounts balances retrieved successfully.',
+        ]);
     }
 
-    /**
-     * Store a newly created balance for an account.
-     *
-     * @param Request $request
-     * @param Account $account
-     * @return JsonResponse
-     */
-    public function store(Request $request, Account $account)
+    public function store(Request $request)
     {
-        $validationRules = [
+        $validated = $request->validate([
             'date' => 'required|date',
             'balance' => 'required|numeric',
-        ];
+            'account_id' => 'required|exists:accounts,id',
+        ]);
 
-        $customMessages = [
-            'date.required' => 'The date field is required.',
-            'date.date' => 'Please provide a valid date.',
-            'balance.required' => 'The balance field is required.',
-            'balance.numeric' => 'The balance must be a number.',
-        ];
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $balance = $account->balances()->create($request->all());
-
+        $balance = AccountsBalance::create($validated);
         return response()->json([
+            'status' => 201,
             'data' => $balance,
-            'message' => 'Balance created successfully.',
+            'message' => 'Accounts balance created successfully.',
         ], 201);
     }
 
-    /**
-     * Display the specified balance.
-     *
-     * @param Account $account
-     * @param AccountsBalance $balance
-     * @return JsonResponse
-     */
-    public function show(Account $account, AccountsBalance $balance)
+    public function show($id)
     {
+        $balance = AccountsBalance::with('account')->findOrFail($id);
         return response()->json([
+            'status' => 200,
             'data' => $balance,
-            'message' => 'Balance retrieved successfully.',
-        ], 200);
+            'message' => 'Accounts balance retrieved successfully.',
+        ]);
     }
 
-    /**
-     * Update the specified balance.
-     *
-     * @param Request $request
-     * @param Account $account
-     * @param AccountsBalance $balance
-     * @return JsonResponse
-     */
-    public function update(Request $request, Account $account, AccountsBalance $balance)
+    public function update(Request $request, $id)
     {
-        $validationRules = [
+        $validated = $request->validate([
             'date' => 'required|date',
             'balance' => 'required|numeric',
-        ];
+            'account_id' => 'required|exists:accounts,id',
+        ]);
 
-        $customMessages = [
-            'date.required' => 'The date field is required.',
-            'date.date' => 'Please provide a valid date.',
-            'balance.required' => 'The balance field is required.',
-            'balance.numeric' => 'The balance must be a number.',
-        ];
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $balance->update($request->all());
-
+        $balance = AccountsBalance::findOrFail($id);
+        $balance->update($validated);
         return response()->json([
+            'status' => 200,
             'data' => $balance,
-            'message' => 'Balance updated successfully.',
-        ], 200);
+            'message' => 'Accounts balance updated successfully.',
+        ]);
     }
 
-    /**
-     * Remove the specified balance from storage.
-     *
-     * @param Account $account
-     * @param AccountsBalance $balance
-     * @return JsonResponse
-     */
-    public function destroy(Account $account, AccountsBalance $balance)
+    public function destroy($id)
     {
-        $balance->delete();
-
-        return response()->json(null, 204);
+        AccountsBalance::destroy($id);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Accounts balance deleted successfully.',
+        ]);
     }
 }

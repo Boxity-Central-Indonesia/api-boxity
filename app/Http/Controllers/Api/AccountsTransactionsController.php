@@ -16,119 +16,67 @@ class AccountsTransactionsController extends Controller
      * @param Account $account
      * @return JsonResponse
      */
-    public function index(Account $account)
+    public function index()
     {
-        $transactions = $account->transactions()->get();
-
+        $transactions = AccountsTransaction::with('account')->get();
         return response()->json([
+            'status' => 200,
             'data' => $transactions,
-            'message' => 'Transactions retrieved successfully.',
-        ], 200);
+            'message' => 'Accounts transactions retrieved successfully.',
+        ]);
     }
 
-    /**
-     * Store a newly created transaction for an account.
-     *
-     * @param Request $request
-     * @param Account $account
-     * @return JsonResponse
-     */
-    public function store(Request $request, Account $account)
+    public function store(Request $request)
     {
-        $validationRules = [
+        $validated = $request->validate([
             'type' => 'required|string',
             'date' => 'required|date',
             'amount' => 'required|numeric',
-        ];
+            'account_id' => 'required|exists:accounts,id',
+        ]);
 
-        $customMessages = [
-            'type.required' => 'The type field is required.',
-            'type.string' => 'The type must be a string.',
-            'date.required' => 'The date field is required.',
-            'date.date' => 'Please provide a valid date.',
-            'amount.required' => 'The amount field is required.',
-            'amount.numeric' => 'The amount must be a number.',
-        ];
-
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $transaction = $account->transactions()->create($request->all());
-
+        $transaction = AccountsTransaction::create($validated);
         return response()->json([
+            'status' => 201,
             'data' => $transaction,
-            'message' => 'Transaction created successfully.',
+            'message' => 'Accounts transaction created successfully.',
         ], 201);
     }
 
-    /**
-     * Display the specified transaction.
-     *
-     * @param Account $account
-     * @param AccountsTransaction $transaction
-     * @return JsonResponse
-     */
-    public function show(Account $account, AccountsTransaction $transaction)
+    public function show($id)
     {
+        $transaction = AccountsTransaction::with('account')->findOrFail($id);
         return response()->json([
+            'status' => 200,
             'data' => $transaction,
-            'message' => 'Transaction retrieved successfully.',
-        ], 200);
+            'message' => 'Accounts transaction retrieved successfully.',
+        ]);
     }
 
-    /**
-     * Update the specified transaction.
-     *
-     * @param Request $request
-     * @param Account $account
-     * @param AccountsTransaction $transaction
-     * @return JsonResponse
-     */
-    public function update(Request $request, Account $account, AccountsTransaction $transaction)
+    public function update(Request $request, $id)
     {
-        $validationRules = [
+        $validated = $request->validate([
             'type' => 'required|string',
             'date' => 'required|date',
             'amount' => 'required|numeric',
-        ];
+            'account_id' => 'required|exists:accounts,id',
+        ]);
 
-        $customMessages = [
-            'type.required' => 'The type field is required.',
-            'type.string' => 'The type must be a string.',
-            'date.required' => 'The date field is required.',
-            'date.date' => 'Please provide a valid date.',
-            'amount.required' => 'The amount field is required.',
-            'amount.numeric' => 'The amount must be a number.',
-        ];
-
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $transaction->update($request->all());
-
+        $transaction = AccountsTransaction::findOrFail($id);
+        $transaction->update($validated);
         return response()->json([
+            'status' => 200,
             'data' => $transaction,
-            'message' => 'Transaction updated successfully.',
-        ], 200);
+            'message' => 'Accounts transaction updated successfully.',
+        ]);
     }
 
-    /**
-     * Remove the specified transaction from storage.
-     *
-     * @param Account $account
-     * @param AccountsTransaction $transaction
-     * @return JsonResponse
-     */
-    public function destroy(Account $account, AccountsTransaction $transaction)
+    public function destroy($id)
     {
-        $transaction->delete();
-
-        return response()->json(null, 204);
+        AccountsTransaction::destroy($id);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Accounts transaction deleted successfully.',
+        ]);
     }
 }

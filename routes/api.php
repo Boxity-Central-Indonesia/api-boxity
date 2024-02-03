@@ -85,8 +85,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Data Keuangan
     Route::apiResource('accounts', AccountsController::class);
-    Route::apiResource('accounts.transactions', AccountsTransactionsController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
-    Route::apiResource('accounts.balances', AccountsBalancesController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+    Route::apiResource('accounts-transactions', AccountsTransactionsController::class);
+    Route::apiResource('accounts-balances', AccountsBalancesController::class);
 });
 Route::post('login', [AuthController::class, 'login']);
 
