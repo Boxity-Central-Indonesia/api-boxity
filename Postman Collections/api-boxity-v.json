@@ -1847,7 +1847,7 @@
 									"formdata": [
 										{
 											"key": "name",
-											"value": "PT SUPPLIER",
+											"value": "PT CUSTOMER",
 											"type": "text"
 										},
 										{
@@ -1862,12 +1862,12 @@
 										},
 										{
 											"key": "email",
-											"value": "supplier@gmail.com",
+											"value": "customer@gmail.com",
 											"type": "text"
 										},
 										{
 											"key": "transaction_type",
-											"value": "outbound",
+											"value": "inbound",
 											"type": "text"
 										}
 									]
@@ -2035,7 +2035,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"vendors_id\": 1,  // Assuming \"customerID\" is to be replaced with 1234\n  \"name\": \"Bintang J Tobing\",\n  \"position\": \"PIC Admin\",\n  \"phone_number\": \"081262845980\"\n}\n",
+									"raw": "{\n  \"vendors_id\": {{customerID}},  // Assuming \"customerID\" is to be replaced with 1234\n  \"name\": \"Bintang J Tobing\",\n  \"position\": \"PIC Admin\",\n  \"phone_number\": \"081262845980\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2173,7 +2173,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"vendors_id\": 1,  // Assuming \"customerID\" is to be replaced with 1234\n  \"amount\": 5,\n  \"product_id\": 1,  // Assuming \"productID\" is to be replaced with 9876\n  \"unit_price\": 10000,\n  \"total_price\": 60000,\n  \"taxes\": 0,\n  \"shipping_cost\": 10000\n}\n",
+									"raw": "{\n  \"vendors_id\": {{customerID}},  // Assuming \"customerID\" is to be replaced with 1234\n  \"amount\": 5,\n  \"product_id\": {{productID}},  // Assuming \"productID\" is to be replaced with 9876\n  \"unit_price\": 10000,\n  \"total_price\": 60000,\n  \"taxes\": 0,\n  \"shipping_cost\": 10000\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2537,7 +2537,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"name\": \"Laptop Computer\",\n  \"code\": \"LAP-1234\",\n  \"type\": \"tangible\",\n  \"description\": \"Dell XPS 15 with 16GB RAM and 512GB SSD\",\n  \"acquisition_date\": \"2023-11-20\",\n  \"acquisition_cost\": 2800000,\n  \"book_value\": 1900000,\n  \"location_id\": 1,\n  \"condition_id\": 1\n}\n",
+									"raw": "{\n  \"name\": \"Laptop Computer\",\n  \"code\": \"LAP-1234\",\n  \"type\": \"tangible\",\n  \"description\": \"Dell XPS 15 with 16GB RAM and 512GB SSD\",\n  \"acquisition_date\": \"2023-11-20\",\n  \"acquisition_cost\": 2800000,\n  \"book_value\": 1900000,\n  \"location_id\": {{assetLocationID}},\n  \"condition_id\": {{assetConditionID}}\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
