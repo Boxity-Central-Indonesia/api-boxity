@@ -1413,7 +1413,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"name\": \"Nama Produk\",\n    \"code\": \"PRD-001\",\n    \"description\": \"Deskripsi produk\",\n    \"price\": 100000,\n    \"type\": \"Makanan\",\n    \"stock\": 50\n}\n"
+											"raw": "{\n    \"name\": \"Nama Produk\",\n    \"code\": \"PRD-001\",\n    \"description\": \"Deskripsi produk\",\n    \"price\": 100000,\n    \"type\": \"Makanan\",\n    \"stock\": 50,\n    \"warehouse_id\": {{warehouseID}},\n    \"category_id\": {{productCategoryID}}\n}\n"
 										},
 										"url": "{{url}}/api/products"
 									},
@@ -1474,7 +1474,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"name\": \"Produk 2 update\",\n    \"code\": \"PRD-001\",\n}\n",
+											"raw": "{\n    \"name\": \"Ayam AB\",\n    \"code\": \"PRD-001\",\n    \"description\": \"Deskripsi produk\",\n    \"price\": 100000,\n    \"type\": \"Makanan\",\n    \"stock\": 50,\n    \"warehouse_id\": {{warehouseID}},\n    \"category_id\": {{productCategoryID}}\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1600,7 +1600,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"product_id\": 1,\n  \"selling_price\": 150000,\n  \"buying_price\": 65000,\n  \"discount_price\": 0\n}\n",
+											"raw": "{\n  \"product_id\": {{productID}},\n  \"selling_price\": 150000,\n  \"buying_price\": 65000,\n  \"discount_price\": 0\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1625,7 +1625,7 @@
 									"response": []
 								},
 								{
-									"name": "New Request",
+									"name": "Delete product price by ID",
 									"id": "24c654e9-6320-499b-a75a-abfbf081b994",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
@@ -1734,7 +1734,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"product_id\": 1,\n  \"warehouse_id\": 1,\n  \"movement_type\": \"purchase\",\n  \"quantity\": 120,\n  \"price\": 155000\n}\n",
+											"raw": "{\n  \"product_id\": {{productID}},\n  \"warehouse_id\": {{warehouseID}},\n  \"movement_type\": \"purchase\",\n  \"quantity\": 120,\n  \"price\": 155000\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -2725,7 +2725,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "c7b12301-4ede-434e-9122-ea7ef5c23b3b",
+				"id": "2792d943-e505-4c6b-8a51-18c8d7befaa9",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2735,7 +2735,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "653f2f73-0cdd-4730-823e-dbabad404b45",
+				"id": "593a7fa8-d10d-4ae4-8c9a-6f0ff3733556",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2770,7 +2770,7 @@
 		},
 		{
 			"key": "productID",
-			"value": "1"
+			"value": "3"
 		},
 		{
 			"key": "branchID",
