@@ -24,7 +24,7 @@ class AccountsController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|in:asset,liability,equity,income,expense',
+            'type' => 'required|in:Aset,Liabilitas,Ekuitas,Pendapatan,Pengeluaran,Biaya',
             'balance' => 'required|numeric',
         ]);
 
@@ -42,7 +42,7 @@ class AccountsController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'type' => 'required|in:asset,liability,equity,income,expense',
+            'type' => 'required|in:Aset,Liabilitas,Ekuitas,Pendapatan,Pengeluaran,Biaya',
             'balance' => 'required|numeric',
         ]);
 
