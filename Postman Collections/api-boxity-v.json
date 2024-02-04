@@ -4194,6 +4194,25 @@
 					],
 					"id": "90964c21-1bff-40ca-8fc2-1d5f0b79d4fe",
 					"description": "### Packaging (Pengemasan)\n\n**Endpoint**: `/api/packaging`\n\n- **Deskripsi**: Endpoint ini digunakan untuk mengelola data pengemasan produk daging. Proses ini mencakup pencatatan berat paket, tipe kemasan (misalnya, vakum pack, kotak), dan produk yang dikemas. Pengemasan yang baik esensial untuk menjaga kualitas, kesegaran produk, dan memudahkan distribusi."
+				},
+				{
+					"name": "Process Activity",
+					"item": [
+						{
+							"name": "Create process activity",
+							"id": "64a695e4-8aae-4de1-bacc-13804e84124e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
+					"id": "b157b83f-7e52-44cd-ab3c-1b05ae2b3d4e",
+					"description": "### Deskripsi Umum\n\nEndpoint `processing_activity` dirancang untuk mengelola dan melacak berbagai aktivitas pengolahan yang terjadi pada karkas dalam proses produksi daging.\n\nAktivitas ini mencakup:\n\n- Scalding (perebusan)\n    \n- Feather removal (pencabutan bulu)\n    \n- Deboning (pemisahan daging dari tulang)\n    \n- Parting (pemotongan karkas menjadi bagian yang lebih kecil)\n    \n- Weighting (penimbangan)\n    \n\nSetiap aktivitas direkam dengan detail yang relevan untuk memastikan traceability dan efisiensi produksi."
 				}
 			],
 			"id": "7d6b7534-6a06-4aa2-bf1d-6bc5f2e88701",
