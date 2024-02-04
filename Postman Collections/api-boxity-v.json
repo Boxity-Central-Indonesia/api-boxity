@@ -4234,14 +4234,28 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Get process activities by process ID",
 							"id": "784329ad-7b22-4c07-ac4a-bfb5fdcbba81",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/processing-activities/{{processID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "280202b5-162a-4117-9551-2520ebfec3fd",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/processing-activities/by-carcass/{{carcassesID}}"
 							},
 							"response": []
 						}
