@@ -4106,94 +4106,161 @@
 					"description": "### Viscera (Jeroan)\n\n**Endpoint**: `/api/viscera`\n\n- **Deskripsi**: Endpoint ini mengatur informasi tentang jeroan yang diambil dari karkas. Jeroan mencakup organ dalam seperti hati, jantung, dan usus. Informasi yang dicatat termasuk tipe jeroan, metode penanganan, dan karkas asal jeroan tersebut. Penanganan jeroan yang tepat sangat penting untuk memastikan kualitas dan keamanan produk."
 				},
 				{
-					"name": "Packaging (Pengemasan)",
+					"name": "Packages Data (Pengemasan)",
 					"item": [
 						{
-							"name": "Create packaging",
-							"id": "487764ff-7c05-4100-a3b4-662020fc7ac1",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"product_id\": {{productID}},\n  \"weight\": 2.5,\n  \"package_type\": \"Vacuum\"\n}\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+							"name": "Packaging",
+							"item": [
+								{
+									"name": "Create packaging",
+									"id": "487764ff-7c05-4100-a3b4-662020fc7ac1",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"product_id\": {{productID}},\n  \"weight\": 2.5,\n  \"package_type\": \"Vacuum\"\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/packaging"
+									},
+									"response": []
 								},
-								"url": "{{url}}/api/packaging"
-							},
-							"response": []
-						},
-						{
-							"name": "Get all packaging",
-							"id": "21223813-33f1-4cc8-a3dc-63e8bba3de40",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/packaging"
-							},
-							"response": []
-						},
-						{
-							"name": "Update packaging by ID",
-							"id": "0c21e88d-eb4b-481c-8665-5dbd2fc64c3e",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"product_id\": {{productID}},\n  \"weight\": 3,\n  \"package_type\": \"Box\"\n}\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+								{
+									"name": "Get all packaging",
+									"id": "21223813-33f1-4cc8-a3dc-63e8bba3de40",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/packaging"
+									},
+									"response": []
 								},
-								"url": "{{url}}/api/packaging/{{packagingID}}"
-							},
-							"response": []
+								{
+									"name": "Update packaging by ID",
+									"id": "0c21e88d-eb4b-481c-8665-5dbd2fc64c3e",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"product_id\": {{productID}},\n  \"weight\": 3,\n  \"package_type\": \"Box\"\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/packaging/{{packagingID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Get packaging detail by ID",
+									"id": "c89fe306-9123-4b2f-beae-31c9b2adb714",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/packaging/{{packagingID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete packaging by ID",
+									"id": "a7fc1893-5f0b-41bf-8b2b-dabffcbf2194",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/packaging/{{packagingID}}"
+									},
+									"response": []
+								}
+							],
+							"id": "18c2e7bc-19e2-4e75-8eca-0bd42fd96b0f",
+							"description": "Endpoint ini digunakan untuk mengelola data pengemasan produk daging. Proses ini mencakup pencatatan berat paket, tipe kemasan (misalnya, vakum pack, kotak), dan produk yang dikemas. Pengemasan yang baik esensial untuk menjaga kualitas, kesegaran produk, dan memudahkan distribusi."
 						},
 						{
-							"name": "Get packaging detail by ID",
-							"id": "c89fe306-9123-4b2f-beae-31c9b2adb714",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/packaging/{{packagingID}}"
-							},
-							"response": []
+							"name": "Package product",
+							"item": [],
+							"id": "78521982-2fb2-4132-b23b-ca00b43d901f",
+							"description": "Tabel penghubung yang menghubungkan `Package` dengan produk individual yang termasuk dalam paket tersebut. Ini memungkinkan Anda untuk menentukan produk mana yang termasuk dalam setiap paket."
 						},
 						{
-							"name": "Delete packaging by ID",
-							"id": "a7fc1893-5f0b-41bf-8b2b-dabffcbf2194",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": "{{url}}/api/packaging/{{packagingID}}"
-							},
-							"response": []
+							"name": "Packages",
+							"item": [
+								{
+									"name": "Create package",
+									"id": "c5249f69-d4d7-4ac5-a46b-3dd503caf4d8",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"package_name\": \"Package 1\",\n  \"package_weight\": 5.2\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/packages"
+									},
+									"response": []
+								},
+								{
+									"name": "Get all packages",
+									"id": "45f362de-b913-4997-b134-97afe2006a9f",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/packages"
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"id": "448c2839-3bf1-4fae-ba60-2694d9a91817",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								}
+							],
+							"id": "b7db0bcc-2020-4142-abc7-ea1e2c74f00c",
+							"description": "Tabel yang berisi informasi tentang paket atau paket yang dijual sebagai satu kesatuan. Setiap `Package` dapat berisi satu atau lebih produk individual yang dihubungkan melalui tabel `PackageProduct`."
 						}
 					],
 					"id": "90964c21-1bff-40ca-8fc2-1d5f0b79d4fe",
-					"description": "### Packaging (Pengemasan)\n\n**Endpoint**: `/api/packaging`\n\n- **Deskripsi**: Endpoint ini digunakan untuk mengelola data pengemasan produk daging. Proses ini mencakup pencatatan berat paket, tipe kemasan (misalnya, vakum pack, kotak), dan produk yang dikemas. Pengemasan yang baik esensial untuk menjaga kualitas, kesegaran produk, dan memudahkan distribusi."
+					"description": "### Packaging (Pengemasan)\n\n**Endpoint**: `/api/packaging`\n\n- **Deskripsi**: Endpoint ini digunakan untuk mengelola data pengemasan produk daging. Proses ini mencakup pencatatan berat paket, tipe kemasan (misalnya, vakum pack, kotak), dan produk yang dikemas. Pengemasan yang baik esensial untuk menjaga kualitas, kesegaran produk, dan memudahkan distribusi.\n    \n\n### Relasi antar package\n\n1. **Packaging**:\n    \n    - Deskripsi: `Packaging` adalah tabel yang mengelola informasi tentang pengemasan produk. Setiap entri dalam tabel `Packaging` mewakili pengemasan produk tunggal yang memiliki berat tertentu dan jenis kemasan.\n        \n2. **Package**:\n    \n    - Deskripsi: `Package` adalah tabel yang berisi informasi tentang paket atau paket yang dijual sebagai satu kesatuan. Setiap `Package` dapat berisi satu atau lebih produk individual yang dihubungkan melalui tabel `PackageProduct`.\n        \n3. **PackageProduct**:\n    \n    - Deskripsi: `PackageProduct` adalah tabel penghubung yang menghubungkan `Package` dengan produk individual yang termasuk dalam paket tersebut. Ini memungkinkan Anda untuk menentukan produk mana yang termasuk dalam setiap paket."
 				},
 				{
 					"name": "Process Activity",
