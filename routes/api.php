@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\ProductsCategoriesController;
 use App\Http\Controllers\Api\ProductsPricesController;
 use App\Http\Controllers\Api\ProductsMovementsController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\VendorContactsController;
 use App\Http\Controllers\Api\VendorsController;
 use App\Http\Controllers\Api\VendorTransactionsController;
@@ -102,6 +103,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Leads
     Route::resource('leads', LeadController::class);
+    Route::get('/sales-report', [ReportController::class, 'salesReport']);
+    Route::get('/purchase-report', [ReportController::class, 'purchaseReport']);
+    Route::get('/revenue-report', [ReportController::class, 'revenueReport']);
+    Route::get('/expenses-report', [ReportController::class, 'expensesReport']);
+    Route::get('/inventory-report', [ReportController::class, 'inventoryReport']);
+    Route::get('/leads-report', [ReportController::class, 'leadsReport']);
+    Route::get('/vendor-report', [ReportController::class, 'vendorReport']);
 });
 Route::post('login', [AuthController::class, 'login']);
 

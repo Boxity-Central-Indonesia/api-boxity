@@ -16,7 +16,9 @@ class Order extends Model
         'details',
         'price_per_unit',
         'total_price',
-        'quantity'
+        'quantity',
+        'taxes',
+        'shipping_cost'
     ];
 
     // Hubungan ke Vendor
@@ -37,5 +39,9 @@ class Order extends Model
     public function invoices()
     {
         return $this->hasMany(Invoice::class);
+    }
+    public function vendorTransaction()
+    {
+        return $this->hasOne(VendorTransaction::class);
     }
 }

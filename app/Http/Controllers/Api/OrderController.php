@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\ProductsMovement;
 use App\Models\Vendor;
+use App\Models\VendorTransaction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -51,12 +52,26 @@ class OrderController extends Controller
             'total_price' => 'required|numeric',
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|numeric',
+            'taxes' => 'nullable|numeric',
+            'shipping_cost' => 'nullable|numeric',
         ]);
 
         DB::beginTransaction();
         try {
             $order = Order::create($validatedData);
             $vendor = Vendor::find($request->vendor_id);
+
+            // Buat transaksi vendor yang terkait dengan pesanan
+            VendorTransaction::create([
+                'vendors_id' => $request->vendor_id,
+                'amount' => $validatedData['total_price'],
+                'product_id' => $request->product_id,
+                'unit_price' => $validatedData['price_per_unit'],
+                'total_price' => $validatedData['total_price'],
+                'taxes' => null, // Isi sesuai kebutuhan
+                'shipping_cost' => null, // Isi sesuai kebutuhan
+                'order_id' => $order->id, // Tambahkan ini untuk menghubungkan dengan pesanan
+            ]);
 
             // Tentukan akun berdasarkan jenis transaksi
             $accountReceivable = Account::where('name', 'Piutang Usaha')->first();
@@ -214,17 +229,22 @@ class OrderController extends Controller
             'details' => 'nullable|string',
             'quantity' => 'required|numeric',
             'total_price' => 'sometimes|required|numeric',
+            'taxes' => 'nullable|numeric',
+            'shipping_cost' => 'nullable|numeric',
         ]);
 
-        // Hitung perubahan harga
-        $priceChange = $validatedData['total_price'] ?? $order->total_price - $order->total_price;
+        DB::beginTransaction();
+        try {
+            // Hitung perubahan harga
+            $priceChange = $validatedData['total_price'] ?? $order->total_price - $order->total_price;
 
-        // Perbarui order
-        $order->update($validatedData);
+            // Perbarui order
+            $order->update($validatedData);
 
-        if ($priceChange != 0) {
-            // Dapatkan type dari vendor
+            // Dapatkan vendor terkait
             $vendor = Vendor::find($order->vendor_id);
+
+            // Dapatkan akun yang sesuai berdasarkan jenis transaksi
             $accountName = $vendor->transaction_type === 'outbound' ? 'Piutang Usaha' : 'Utang Usaha';
             $account = Account::where('name', $accountName)->first();
 
@@ -233,21 +253,43 @@ class OrderController extends Controller
                 $this->updateAccountBalance($account->id, abs($priceChange), $priceChange > 0 ? 'debit' : 'credit');
             }
 
-            // Jika perlu, tambahkan logika untuk menyesuaikan 'Persediaan' untuk pembelian
-            if ($vendor->transaction_type !== 'outbound') {
+            // Jika transaksi adalah pembelian (inbound), sesuaikan juga 'Persediaan'
+            if ($vendor->transaction_type === 'inbound') {
                 $inventoryAccount = Account::where('name', 'Persediaan')->first();
                 if ($inventoryAccount) {
-                    $this->updateAccountBalance($inventoryAccount->id, abs($priceChange), 'debit');
+                    $this->updateAccountBalance($inventoryAccount->id, abs($priceChange), $priceChange > 0 ? 'debit' : 'credit');
                 }
             }
-        }
 
-        return response()->json([
-            'status' => 200,
-            'data' => $order,
-            'message' => 'Order updated successfully.',
-        ]);
+            // Perbarui vendor_transaction yang sesuai
+            $vendorTransaction = VendorTransaction::where('order_id', $order->id)->first();
+            if ($vendorTransaction) {
+                $vendorTransaction->update([
+                    'amount' => $validatedData['total_price'],
+                    'product_id' => $order->product_id,
+                    'unit_price' => $validatedData['price_per_unit'],
+                    'total_price' => $validatedData['total_price'],
+                    'taxes' => $validatedData['taxes'],
+                    'shipping_cost' => $validatedData['shipping_cost'],
+                ]);
+            }
+
+            DB::commit();
+            return response()->json([
+                'status' => 200,
+                'data' => $order,
+                'message' => 'Order updated successfully.',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to update order. Error: ' . $e->getMessage(),
+            ]);
+        }
     }
+
+
 
     // Menghapus order
     public function destroy($id)
