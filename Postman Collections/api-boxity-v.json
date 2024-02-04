@@ -2849,13 +2849,66 @@
 						},
 						{
 							"name": "Get accounting data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "3fa7d2d6-dd73-4d96-93f6-ce898177906a",
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>ID</th>",
+											"        <th>Account Name</th>",
+											"        <th>Transaction ID</th>",
+											"        <th>Transaction Date</th>",
+											"        <th>Transaction Type</th>",
+											"        <th>Transaction Amount</th>",
+											"        <th>Transaction Description</th>",
+											"        <th>Account Balance</th>",
+											"    </tr>",
+											"    ",
+											"    {{#each response.data.accounting_data}}",
+											"        <tr>",
+											"            <td>{{id}}</td>",
+											"            <td>{{account_name}}</td>",
+											"            <td>{{transaction_id}}</td>",
+											"            <td>{{transaction_date}}</td>",
+											"            <td>{{transaction_type}}</td>",
+											"            <td>{{transaction_amount}}</td>",
+											"            <td>{{transaction_description}}</td>",
+											"            <td>{{account_balance}}</td>",
+											"        </tr>",
+											"    {{/each}}",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return {response: pm.response.json()}",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"id": "012b8368-39c3-43f5-a537-e885523ec686",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/accounting-data"
 							},
 							"response": []
 						}
@@ -3246,6 +3299,48 @@
 						},
 						{
 							"name": "Get order details by ID with invoice and payment information",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d619f9b7-34d2-4117-8336-ff6688f5156a",
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>Order ID</th>",
+											"        <th>Invoice ID</th>",
+											"        <th>Payment ID</th>",
+											"    </tr>",
+											"    ",
+											"    {{#each response.data}}",
+											"        <tr>",
+											"            <td>{{order_id}}</td>",
+											"            <td>{{invoice_id}}</td>",
+											"            <td>{{payment_id}}</td>",
+											"        </tr>",
+											"    {{/each}}",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return {response: pm.response.json()}",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"id": "3dea48d5-4d89-46de-8b5a-75f10e15a707",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -3409,7 +3504,7 @@
 										},
 										{
 											"key": "amount_paid",
-											"value": "200",
+											"value": "600",
 											"type": "text"
 										},
 										{
