@@ -4200,7 +4200,43 @@
 						},
 						{
 							"name": "Package product",
-							"item": [],
+							"item": [
+								{
+									"name": "Create products in package",
+									"id": "2313b90a-f1c8-4abc-903a-380b2e8f51c9",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"package_id\": {{packageID}},\n  \"product_id\": {{productID}}\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/packages-product"
+									},
+									"response": []
+								},
+								{
+									"name": "Get all package products",
+									"id": "bf492951-aeae-447e-944b-817bc524f3ed",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/packages-product"
+									},
+									"response": []
+								}
+							],
 							"id": "78521982-2fb2-4132-b23b-ca00b43d901f",
 							"description": "Tabel penghubung yang menghubungkan `Package` dengan produk individual yang termasuk dalam paket tersebut. Ini memungkinkan Anda untuk menentukan produk mana yang termasuk dalam setiap paket."
 						},
@@ -4243,14 +4279,63 @@
 									"response": []
 								},
 								{
-									"name": "New Request",
+									"name": "Update package by ID",
 									"id": "448c2839-3bf1-4fae-ba60-2694d9a91817",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"package_name\": \"Package BCA\",\n  \"package_weight\": 6.0\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/packages/{{packageID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Get package detail by ID",
+									"id": "b69e4ef6-0660-4872-adaf-2389f3d85f53",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
 										"method": "GET",
-										"header": []
+										"header": [],
+										"url": "{{url}}/api/packages/{{packageID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Get package by ID with products",
+									"id": "637fb5cc-e1bc-4261-9681-cb04107e7b5b",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/packages/{{packageID}}/with-products"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete package by ID",
+									"id": "a2038bff-ee61-4ad2-9dc6-2fc62af5221f",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/packages/{{packageID}}"
 									},
 									"response": []
 								}
