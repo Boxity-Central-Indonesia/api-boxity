@@ -3828,8 +3828,47 @@
 		},
 		{
 			"name": "Production Manufacturer",
-			"item": [],
-			"id": "7d6b7534-6a06-4aa2-bf1d-6bc5f2e88701"
+			"item": [
+				{
+					"name": "Slaughtering (Penyembelihan)",
+					"item": [
+						{
+							"name": "New Request",
+							"id": "8e788d17-00c7-4e9d-83d4-169a6a216a7b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
+					"id": "ec4049bd-5480-4718-9202-4bcced0ca3cb",
+					"description": "### Slaughtering (Penyembelihan)\n\n**Endpoint**: `/api/slaughtering`\n\n- **Deskripsi**: Endpoint ini digunakan untuk mengelola informasi tentang proses penyembelihan hewan. Proses ini mencakup pencatatan tanggal penyembelihan, metode yang digunakan (misalnya, 'Electrical Stunning', 'Halal'), dan identifikasi produk (hewan) yang disembelih. Proses penyembelihan adalah langkah awal dalam produksi daging, di mana hewan dipersiapkan menjadi karkas."
+				},
+				{
+					"name": "Carcass (Karkas)",
+					"item": [],
+					"id": "5cd0b321-7fd7-4b3a-8367-2de86ca70ee5",
+					"description": "### Carcass (Karkas)\n\n**Endpoint**: `/api/carcasses`\n\n- **Deskripsi**: Endpoint ini bertanggung jawab atas pengelolaan data karkas yang dihasilkan dari proses penyembelihan. Setiap karkas dicatat dengan berat setelah penyembelihan dan grade kualitasnya. Karkas merupakan tubuh hewan yang telah disiapkan untuk diproses lebih lanjut, dengan jeroan, kepala, kaki, dan bulu telah dihilangkan."
+				},
+				{
+					"name": "Viscera (Jeroan)",
+					"item": [],
+					"id": "5014018e-d7d5-46bd-aa97-b4f2060f0848",
+					"description": "### Viscera (Jeroan)\n\n**Endpoint**: `/api/viscera`\n\n- **Deskripsi**: Endpoint ini mengatur informasi tentang jeroan yang diambil dari karkas. Jeroan mencakup organ dalam seperti hati, jantung, dan usus. Informasi yang dicatat termasuk tipe jeroan, metode penanganan, dan karkas asal jeroan tersebut. Penanganan jeroan yang tepat sangat penting untuk memastikan kualitas dan keamanan produk."
+				},
+				{
+					"name": "Packaging (Pengemasan)",
+					"item": [],
+					"id": "90964c21-1bff-40ca-8fc2-1d5f0b79d4fe",
+					"description": "### Packaging (Pengemasan)\n\n**Endpoint**: `/api/packaging`\n\n- **Deskripsi**: Endpoint ini digunakan untuk mengelola data pengemasan produk daging. Proses ini mencakup pencatatan berat paket, tipe kemasan (misalnya, vakum pack, kotak), dan produk yang dikemas. Pengemasan yang baik esensial untuk menjaga kualitas, kesegaran produk, dan memudahkan distribusi."
+				}
+			],
+			"id": "7d6b7534-6a06-4aa2-bf1d-6bc5f2e88701",
+			"description": "### **Proses Kerja Kotor**\n\n#### **Pemesanan Based on Berat:**\n\nIni adalah tahap awal di mana pesanan dibuat berdasarkan berat yang dibutuhkan. Ini penting untuk memastikan bahwa jumlah hewan yang dipotong sesuai dengan kebutuhan produksi.\n\n#### Unloading\n\nSetelah hewan tiba di fasilitas, mereka di-unload dari kendaraan transportasi. Ini adalah langkah penting untuk memulai proses pemotongan.\n\n#### Penimbangan:\n\nHewan ditimbang untuk memastikan bahwa beratnya sesuai dengan yang dipesan. Ini juga bisa digunakan untuk pencatatan dan keperluan administratif.\n\n#### Penyembelihan:\n\nTahap ini melibatkan pembunuhan hewan dengan cara yang humanis sesuai dengan standar dan peraturan yang berlaku.\n\n#### Scalding Tank:\n\nHewan, khususnya unggas, direndam dalam tangki air panas untuk melonggarkan bulu, memudahkan pencabutan bulu.\n\n#### Pencabutan Bulu\n\nSetelah scalding, bulu-bulu dicabut dari tubuh hewan. Ini bisa dilakukan secara manual atau dengan mesin.\n\n#### Pencucian Karkas:\n\nKarkas dicuci untuk menghilangkan sisa-sisa darah dan kotoran, mempersiapkannya untuk proses selanjutnya.\n\n#### Pengeluaran Jeroan:\n\nJeroan seperti usus, hati, dan ginjal diambil dari karkas. Tahap ini memerlukan kehati-hatian untuk menghindari kontaminasi.\n\n#### Penanganan Jeroan:\n\nJeroan yang dihasilkan ditangani secara terpisah, bisa untuk diproses lebih lanjut atau dibuang sesuai dengan kebijakan.\n\n_Note: Karkas merupakan bagian tubuh ayam setelah dilakukan penyembelihan secara halal sesuai dengan CAC/GL 24-1997_\n\n### Proses Kerja Bersih\n\n#### Pencucian Karkas:\n\nIni merupakan tahapan lanjutan dari pencucian karkas pada proses kerja kotor, memastikan karkas benar-benar bersih.\n\n#### Seleksi Karkas (Grading):\n\nKarkas dinilai berdasarkan kualitas dan ukuran. Ini penting untuk memenuhi standar produk.\n\n#### Penimbangan Karkas (Cutting):\n\nKarkas ditimbang sebelum dipotong menjadi bagian-bagian tertentu sesuai dengan kebutuhan.\n\n#### Pemisahan Daging dari Tulang (Deboning):\n\nDaging dipisahkan dari tulang, mempersiapkannya untuk proses pemotongan lebih lanjut atau pengemasan.\n\n#### Pemotongan Karkas (Parting):\n\nKarkas dipotong menjadi bagian-bagian yang lebih kecil, seperti sayap, dada, paha, sesuai dengan kebutuhan pasar.\n\n#### Penimbangan Hasil Potong:\n\nBagian-bagian yang sudah dipotong ditimbang untuk memastikan konsistensi dan memenuhi spesifikasi pesanan.\n\n#### Pengemasan (Packing):\n\nDaging yang sudah dipotong dikemas, bisa dalam bentuk kemasan vakum, plastik, atau kemasan lainnya sesuai dengan kebutuhan.\n\n#### Penimbangan Packaging:\n\nKemasan akhir ditimbang untuk memastikan bahwa beratnya sesuai dengan yang dideklarasikan pada label."
 		}
 	],
 	"auth": {
