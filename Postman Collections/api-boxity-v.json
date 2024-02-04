@@ -3921,13 +3921,116 @@
 				},
 				{
 					"name": "Carcass (Karkas)",
-					"item": [],
+					"item": [
+						{
+							"name": "Create carcasses",
+							"id": "526cfaf7-dcd6-4684-a5e1-13c678304f06",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"slaughtering_id\": {{slaughterID}},\n  \"weight_after_slaughter\": 120.5,\n  \"quality_grade\": \"A\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/carcasses"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all carcasses",
+							"id": "fdf1ea3c-df69-438b-9f8f-3d198ba40074",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/carcasses"
+							},
+							"response": []
+						},
+						{
+							"name": "Update carcasses by ID",
+							"id": "1e9750de-fb14-49a4-b21e-a200e634ab8e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"slaughtering_id\": {{slaughterID}},\n  \"weight_after_slaughter\": 125.0,\n  \"quality_grade\": \"A+\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/carcasses/{{carcassesID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Carcasses by ID",
+							"id": "7cb242bd-b8be-4053-a0a3-0b12d3a6e268",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/carcasses/{{carcassesID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete carcasses by ID",
+							"id": "919e20ae-1837-49ea-b20e-b10f4957610d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/carcasses/{{carcassesID}}"
+							},
+							"response": []
+						}
+					],
 					"id": "5cd0b321-7fd7-4b3a-8367-2de86ca70ee5",
 					"description": "### Carcass (Karkas)\n\n**Endpoint**: `/api/carcasses`\n\n- **Deskripsi**: Endpoint ini bertanggung jawab atas pengelolaan data karkas yang dihasilkan dari proses penyembelihan. Setiap karkas dicatat dengan berat setelah penyembelihan dan grade kualitasnya. Karkas merupakan tubuh hewan yang telah disiapkan untuk diproses lebih lanjut, dengan jeroan, kepala, kaki, dan bulu telah dihilangkan."
 				},
 				{
 					"name": "Viscera (Jeroan)",
-					"item": [],
+					"item": [
+						{
+							"name": "New Request",
+							"id": "9aed0756-2802-4a90-9bc9-86ebc365e602",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
 					"id": "5014018e-d7d5-46bd-aa97-b4f2060f0848",
 					"description": "### Viscera (Jeroan)\n\n**Endpoint**: `/api/viscera`\n\n- **Deskripsi**: Endpoint ini mengatur informasi tentang jeroan yang diambil dari karkas. Jeroan mencakup organ dalam seperti hati, jantung, dan usus. Informasi yang dicatat termasuk tipe jeroan, metode penanganan, dan karkas asal jeroan tersebut. Penanganan jeroan yang tepat sangat penting untuk memastikan kualitas dan keamanan produk."
 				},
