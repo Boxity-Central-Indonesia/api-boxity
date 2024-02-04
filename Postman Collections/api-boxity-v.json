@@ -3138,12 +3138,12 @@
 										},
 										{
 											"key": "total_price",
-											"value": "800",
+											"value": "1000",
 											"type": "text"
 										},
 										{
 											"key": "quantity",
-											"value": "8",
+											"value": "10",
 											"type": "text"
 										}
 									]
@@ -3231,6 +3231,19 @@
 								"url": "{{url}}/api/order-details"
 							},
 							"response": []
+						},
+						{
+							"name": "Get order details by ID with invoice and payment information Copy",
+							"id": "3dea48d5-4d89-46de-8b5a-75f10e15a707",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/order-details/{{orderID}}"
+							},
+							"response": []
 						}
 					],
 					"id": "1efb45ac-b7de-4c4f-834a-db47ac6cb29f"
@@ -3263,12 +3276,12 @@
 										},
 										{
 											"key": "total_amount",
-											"value": "900",
+											"value": "1000",
 											"type": "text"
 										},
 										{
 											"key": "balance_due",
-											"value": "450",
+											"value": "1000",
 											"type": "text"
 										},
 										{
@@ -3384,7 +3397,7 @@
 										},
 										{
 											"key": "amount_paid",
-											"value": "100",
+											"value": "300",
 											"type": "text"
 										},
 										{
