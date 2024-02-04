@@ -4166,14 +4166,28 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Get packaging detail by ID",
 							"id": "c89fe306-9123-4b2f-beae-31c9b2adb714",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/packaging/{{packagingID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete packaging by ID",
+							"id": "a7fc1893-5f0b-41bf-8b2b-dabffcbf2194",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/packaging/{{packagingID}}"
 							},
 							"response": []
 						}
