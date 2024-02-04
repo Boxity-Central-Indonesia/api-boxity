@@ -19,6 +19,30 @@ class AccountsController extends Controller
         $accounts = Account::all();
         return response()->json(['status' => 200, 'data' => $accounts, 'message' => 'Accounts retrieved successfully.']);
     }
+    public function getAccountingData()
+    {
+        // Melakukan join antara accounts, accounts_transactions, dan accounts_balance
+        $accountingData = Account::select(
+            'accounts.id',
+            'accounts.name as account_name',
+            'accounts_transactions.id as transaction_id',
+            'accounts_transactions.date as transaction_date',
+            'accounts_transactions.type as transaction_type',
+            'accounts_transactions.amount as transaction_amount',
+            'accounts_transactions.description as transaction_description',
+            'accounts_balances.balance as account_balance'
+        )
+            ->leftJoin('accounts_transactions', 'accounts_transactions.account_id', '=', 'accounts.id')
+            ->leftJoin('accounts_balances', 'accounts_balances.account_id', '=', 'accounts.id')
+            ->get();
+
+        return response()->json([
+            'status' => 200,
+            'data' => [
+                'accounting_data' => $accountingData,
+            ],
+        ]);
+    }
 
     public function store(Request $request)
     {

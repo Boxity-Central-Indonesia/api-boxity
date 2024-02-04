@@ -15,6 +15,9 @@ use App\Http\Controllers\Api\CompaniesDepartmentController;
 use App\Http\Controllers\Api\CompaniesBranchController;
 use App\Http\Controllers\Api\EmployeesController;
 use App\Http\Controllers\Api\EmployeesCategoryController;
+use App\Http\Controllers\Api\InvoiceController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Api\ProductsCategoriesController;
 use App\Http\Controllers\Api\ProductsPricesController;
@@ -87,6 +90,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('accounts', AccountsController::class);
     Route::apiResource('accounts-transactions', AccountsTransactionsController::class);
     Route::apiResource('accounts-balances', AccountsBalancesController::class);
+    Route::get('/accounting-data', [AccountsController::class, 'getAccountingData']);
+
+    // Data order, invoices, dan payment
+    Route::apiResource('invoices', InvoiceController::class);
+    Route::get('/order-details', [OrderController::class, 'getOrderDetails']);
+    Route::get('/order-details/{orderID}', [OrderController::class, 'getOrderDetail']);
+    Route::apiResource('payments', PaymentController::class);
+    Route::apiResource('orders', OrderController::class);
 });
 Route::post('login', [AuthController::class, 'login']);
 
