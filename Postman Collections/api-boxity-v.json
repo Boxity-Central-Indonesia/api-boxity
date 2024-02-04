@@ -3833,14 +3833,85 @@
 					"name": "Slaughtering (Penyembelihan)",
 					"item": [
 						{
-							"name": "New Request",
+							"name": "Create slaughtering",
 							"id": "8e788d17-00c7-4e9d-83d4-169a6a216a7b",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"product_id\": {{productID}},\n  \"slaughter_date\": \"2024-02-10\",\n  \"method\": \"halal\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/slaughtering"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all slaughtering data",
+							"id": "9813319a-30e0-4658-a191-466a1851ff60",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/slaughtering"
+							},
+							"response": []
+						},
+						{
+							"name": "Update slaughtering by ID",
+							"id": "bdf2c339-e613-4460-9c31-f429dd4179ed",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"product_id\": {{productID}},\n  \"slaughter_date\": \"2024-02-05\",\n  \"method\": \"electrical stunning\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/slaughtering/{{slaughterID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get slaughter by ID",
+							"id": "99a27579-ae89-45a8-9511-34b5ee6a60e1",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/slaughtering/{{slaughterID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete slaughter by ID",
+							"id": "536d6937-befa-480d-8192-48dabbae6b48",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/slaughtering/{{slaughterID}}"
 							},
 							"response": []
 						}
