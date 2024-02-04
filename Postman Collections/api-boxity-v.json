@@ -3210,6 +3210,16 @@
 											"key": "quantity",
 											"value": "10",
 											"type": "text"
+										},
+										{
+											"key": "taxes",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "shipping_cost",
+											"value": "0",
+											"type": "text"
 										}
 									]
 								},
@@ -3247,7 +3257,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"quantity\": 9,\n  \"total_price\": 900\n}\n",
+									"raw": "{\n  \"quantity\": 9,\n  \"total_price\": 900,\n  \"taxes\": 0,\n  \"shipping_cost\": 0\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
