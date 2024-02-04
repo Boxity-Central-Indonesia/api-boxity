@@ -3746,6 +3746,58 @@
 						"url": "{{url}}/api/purchase-report"
 					},
 					"response": []
+				},
+				{
+					"name": "Pendapatan",
+					"id": "611b80fe-65cb-4dfa-8c60-cd7764cda6e8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/revenue-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Pengeluaran",
+					"id": "624d5e81-e132-41b3-8b70-dd13150317d5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/expenses-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Persediaan Barang",
+					"id": "0f502093-88f6-41db-8241-5d950f288fb5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/inventory-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Leads Prospek",
+					"id": "7784dac0-5d98-4254-8ad1-f68b545922f5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/leads-report"
+					},
+					"response": []
 				}
 			],
 			"id": "dc4664a7-5af0-4d14-89f7-1502ab3438c1",
