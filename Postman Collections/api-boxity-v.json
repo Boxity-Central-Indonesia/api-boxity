@@ -3319,9 +3319,53 @@
 								"url": "{{url}}/api/invoices/{{invoiceID}}"
 							},
 							"response": []
+						},
+						{
+							"name": "Get Invoice detail by ID",
+							"id": "b247f43d-569e-4fbf-b1a3-a89af672bd5b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/invoices/{{invoiceID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete invoices by ID",
+							"id": "b3c050a7-6ed3-4409-8e2f-5eeb6530024d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/invoices/{{invoiceID}}"
+							},
+							"response": []
 						}
 					],
 					"id": "e5d3c418-869d-4a41-b3b0-16059468c011"
+				},
+				{
+					"name": "Payments",
+					"item": [
+						{
+							"name": "New Request",
+							"id": "2f9137ff-a261-434e-8f36-be3d32216626",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
+					"id": "68406140-2aaf-4f0d-b064-cece8be5a2cb"
 				}
 			],
 			"id": "b64efe01-14b3-4776-896c-7761daec439d"
