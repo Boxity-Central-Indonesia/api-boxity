@@ -147,18 +147,6 @@
 						"url": "{{url}}/api/users/{{userID}}"
 					},
 					"response": []
-				},
-				{
-					"name": "New Request",
-					"id": "3672930c-510c-4528-abef-8fd1218b54ca",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
 				}
 			],
 			"id": "1fdcb7b6-2a65-4cb0-99ab-8fe33b5dd68a",
