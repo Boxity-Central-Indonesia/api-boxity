@@ -4235,6 +4235,54 @@
 										"url": "{{url}}/api/packages-product"
 									},
 									"response": []
+								},
+								{
+									"name": "Update package product by ID",
+									"id": "c59ee201-5a11-444f-a122-4def1e435000",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"package_id\": {{packageID}},\n  \"product_id\": {{productID}}\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/packages-product/{{packageProductID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Get package product by ID",
+									"id": "2ad7e0a7-f8ea-4007-8f82-880179b11465",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/packages-product/{{packageProductID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete package product by ID",
+									"id": "287c4777-b22a-46d1-b468-022ff3d0093f",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/packages-product/{{packageProductID}}"
+									},
+									"response": []
 								}
 							],
 							"id": "78521982-2fb2-4132-b23b-ca00b43d901f",
