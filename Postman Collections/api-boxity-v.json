@@ -3353,14 +3353,107 @@
 					"name": "Payments",
 					"item": [
 						{
-							"name": "New Request",
+							"name": "Create payment",
 							"id": "2f9137ff-a261-434e-8f36-be3d32216626",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "invoice_id",
+											"value": "{{invoiceID}}",
+											"type": "text"
+										},
+										{
+											"key": "amount_paid",
+											"value": "100",
+											"type": "text"
+										},
+										{
+											"key": "payment_method",
+											"value": "cash",
+											"type": "text"
+										},
+										{
+											"key": "payment_date",
+											"value": "2024-02-04",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/payments"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all payments",
+							"id": "3c059b10-aa48-447d-b8b2-03db3a93d74b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/payments"
+							},
+							"response": []
+						},
+						{
+							"name": "Update payment by ID",
+							"id": "2b030de0-6774-4be2-9b01-269e524457c0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount_paid\": 70.00,\n  \"payment_method\": \"credit\",\n  \"payment_date\": \"2024-02-02\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/payments/{{paymentID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get payment detail by ID",
+							"id": "b3285821-48ec-49a3-9192-c8ae9c3e1479",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/payments/{{paymentID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete payment by ID",
+							"id": "95bd7f0e-7c4b-408f-93c5-16e9089cf6e0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/payments/{{paymentID}}"
 							},
 							"response": []
 						}
