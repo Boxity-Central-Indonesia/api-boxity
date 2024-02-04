@@ -3717,6 +3717,39 @@
 			],
 			"id": "9c12c6e6-a088-4205-a7c0-7a57ef375760",
 			"description": "Modul \"Leads\" digunakan untuk mengelola informasi tentang prospek atau calon pelanggan yang potensial. Modul ini memberikan fungsionalitas untuk:\n\n1. **Menampilkan Daftar Prospek**: Anda dapat melihat daftar lengkap dari semua prospek yang telah tercatat dalam sistem. Setiap entri dalam daftar ini berisi informasi tentang prospek, termasuk nama, email, nomor telepon, dan tipe prospek.\n    \n2. **Tambahkan Prospek Baru**: Anda dapat menambahkan prospek baru ke dalam sistem dengan memberikan detail seperti nama, email, nomor telepon, dan tipe prospek. Tipe prospek dapat berupa \"perorangan\", \"bisnis\", atau \"rekomendasi dari Anda\".\n    \n3. **Edit Informasi Prospek**: Anda memiliki kemampuan untuk mengedit informasi tentang prospek yang sudah ada, termasuk mengubah nama, email, nomor telepon, atau tipe prospek.\n    \n4. **Hapus Prospek**: Anda dapat menghapus entri prospek jika tidak relevan atau tidak diperlukan lagi dalam daftar.\n    \n\nDengan menggunakan modul ini, Anda dapat secara efisien melacak dan mengelola daftar prospek yang potensial menjadi pelanggan Anda. Ini adalah alat yang berguna untuk mengelola hubungan dengan calon pelanggan dan mengambil tindakan yang diperlukan untuk mengonversi mereka menjadi pelanggan aktif."
+		},
+		{
+			"name": "Laporan",
+			"item": [
+				{
+					"name": "Penjualan",
+					"id": "9c874eee-6ff9-40ef-b468-3575093d04d8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/sales-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Pembelian",
+					"id": "342b4a6c-7365-4eab-861b-c39e277889ad",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/purchase-report"
+					},
+					"response": []
+				}
+			],
+			"id": "dc4664a7-5af0-4d14-89f7-1502ab3438c1",
+			"description": "Modul Laporan/Reports adalah bagian dari sistem yang memungkinkan pengguna untuk mengakses informasi terkait dengan berbagai aspek bisnis atau operasional. Modul ini digunakan untuk menghasilkan laporan atau ringkasan data yang dapat membantu dalam pengambilan keputusan, pemantauan kinerja, dan analisis bisnis. Dalam konteks deskripsi Postman, berikut adalah penjelasan singkat tentang modul Laporan/Reports:\n\n### Laporan Penjualan (Sales Report)\n\n**Deskripsi**: Modul Laporan Penjualan digunakan untuk menghasilkan laporan terkait dengan transaksi penjualan produk atau layanan. Laporan ini mencakup informasi seperti pesanan, faktur, dan pembayaran yang berkaitan dengan penjualan. Ini membantu dalam melacak pendapatan dan kinerja penjualan.\n\n### Laporan Pendapatan (Revenue Report)\n\n**Deskripsi**: Modul Laporan Pendapatan digunakan untuk menghasilkan laporan pendapatan perusahaan. Ini mencakup semua transaksi pendapatan yang telah tercatat. Laporan ini membantu dalam pemantauan pendapatan bersih perusahaan.\n\n### Laporan Pengeluaran (Expenses Report)\n\n**Deskripsi**: Modul Laporan Pengeluaran digunakan untuk menghasilkan laporan yang berkaitan dengan pengeluaran perusahaan. Ini mencakup semua transaksi pengeluaran yang telah tercatat. Laporan ini membantu dalam mengelola dan memantau biaya operasional.\n\n### Laporan Persediaan (Inventory Report)\n\n**Deskripsi**: Modul Laporan Persediaan digunakan untuk menghasilkan laporan terkait dengan persediaan produk atau barang. Laporan ini mencakup informasi tentang produk yang tersedia, harga, dan pergerakan persediaan. Ini membantu dalam mengelola persediaan dan mengoptimalkan stok produk.\n\n### Laporan Prospek (Leads Report)\n\n**Deskripsi**: Modul Laporan Prospek digunakan untuk menghasilkan laporan terkait dengan data prospek atau calon pelanggan. Laporan ini mencakup informasi tentang calon pelanggan potensial yang dapat dihubungi atau diikuti lebih lanjut. Ini membantu dalam mengelola peluang bisnis."
 		}
 	],
 	"auth": {
