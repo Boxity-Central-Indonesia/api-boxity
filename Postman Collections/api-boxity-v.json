@@ -3226,14 +3226,97 @@
 					"name": "Invoices",
 					"item": [
 						{
-							"name": "New Request",
+							"name": "Create invoices",
 							"id": "b796453e-4ce3-440d-902b-12c9e00fb829",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "order_id",
+											"value": "{{orderID}}",
+											"type": "text"
+										},
+										{
+											"key": "total_amount",
+											"value": "900",
+											"type": "text"
+										},
+										{
+											"key": "balance_due",
+											"value": "450",
+											"type": "text"
+										},
+										{
+											"key": "invoice_date",
+											"value": "2024-02-04",
+											"type": "text"
+										},
+										{
+											"key": "due_date",
+											"value": "2024-02-06",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "partial",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/invoices"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all invoices",
+							"id": "f169830f-d5a5-45b7-8323-d58c8e005430",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/invoices"
+							},
+							"response": []
+						},
+						{
+							"name": "Update invoices",
+							"id": "26b7f79d-79a4-474d-92f3-6501ec79f1a8",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"total_amount\": 900,\n  \"balance_due\": 250,\n  \"status\": \"partial\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/invoices/{{invoiceID}}"
 							},
 							"response": []
 						}
