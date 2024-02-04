@@ -4247,7 +4247,7 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Track Activities by Carcass ID",
 							"id": "280202b5-162a-4117-9551-2520ebfec3fd",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -4256,6 +4256,41 @@
 								"method": "GET",
 								"header": [],
 								"url": "{{url}}/api/processing-activities/by-carcass/{{carcassesID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Update activities by ID process",
+							"id": "3df4cbf3-6bb4-4a85-8a42-89d87bf567c4",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"carcass_id\": {{carcassesID}},\n//   untuk contoh scalding\n  \"activity_type\": \"scalding\",\n  \"details\": {\n    \"start_time\": \"2024-01-01T10:00:00\",\n    \"end_time\": \"2024-01-01T10:30:00\",\n    \"temperature\": \"62°C\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/processing-activities/{{processID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete activities process by process ID",
+							"id": "ed665dad-eabe-4ee0-9c2f-7f6804415595",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/processing-activities/{{processID}}"
 							},
 							"response": []
 						}
