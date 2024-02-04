@@ -2846,6 +2846,18 @@
 								"url": "{{url}}/api/accounts/{{accountID}}"
 							},
 							"response": []
+						},
+						{
+							"name": "Get accounting data",
+							"id": "012b8368-39c3-43f5-a537-e885523ec686",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "d92a510c-83ff-406c-b6c1-6ae4c1821be4"
