@@ -3353,7 +3353,8 @@
 							"response": []
 						}
 					],
-					"id": "1efb45ac-b7de-4c4f-834a-db47ac6cb29f"
+					"id": "1efb45ac-b7de-4c4f-834a-db47ac6cb29f",
+					"description": "**Order (Pesanan):**  \nOrder adalah permintaan dari pelanggan atau pihak lain untuk membeli produk atau jasa. Saat Order dibuat, belum ada pengaruh keuangan langsung pada perusahaan. Ini adalah tahap awal dari proses transaksi."
 				},
 				{
 					"name": "Invoices",
@@ -3480,7 +3481,8 @@
 							"response": []
 						}
 					],
-					"id": "e5d3c418-869d-4a41-b3b0-16059468c011"
+					"id": "e5d3c418-869d-4a41-b3b0-16059468c011",
+					"description": "**Invoice (Faktur):**  \nSetelah Order diterima, Invoice dibuat oleh perusahaan atau vendor untuk mencatat komitmen pelanggan untuk membayar. Ini menciptakan catatan transaksi keuangan yang mengindikasikan jumlah yang akan diterima oleh perusahaan. Dalam jurnal keuangan, pembuatan Invoice dicatat sebagai \"Debit Piutang Usaha\" (meningkatkan piutang perusahaan) dan \"Kredit Pendapatan Penjualan\" (mengakui pendapatan yang akan datang)."
 				},
 				{
 					"name": "Payments",
@@ -3591,10 +3593,12 @@
 							"response": []
 						}
 					],
-					"id": "68406140-2aaf-4f0d-b064-cece8be5a2cb"
+					"id": "68406140-2aaf-4f0d-b064-cece8be5a2cb",
+					"description": "**Payment (Pembayaran):**  \nKetika pelanggan melakukan pembayaran untuk Invoice, Payment dicatat dalam jurnal keuangan sebagai tindakan nyata pembayaran. Pencatatan ini mengurangkan piutang perusahaan dan meningkatkan saldo kas. Dalam jurnal keuangan, penerimaan pembayaran biasanya dicatat sebagai \"Debit Kas\" (meningkatkan saldo kas) dan \"Kredit Piutang Usaha\" (mengurangi piutang pelanggan)."
 				}
 			],
-			"id": "b64efe01-14b3-4776-896c-7761daec439d"
+			"id": "b64efe01-14b3-4776-896c-7761daec439d",
+			"description": "**Order (Pesanan):**  \nOrder adalah entitas yang merepresentasikan permintaan dari pelanggan atau pihak lain untuk membeli produk atau jasa dari perusahaan atau vendor tertentu. Dalam konteks sistem akuntansi, Order biasanya memiliki beberapa atribut kunci, termasuk:\n\n- **Vendor:** Merupakan pihak yang akan memproses pesanan. Vendor ini biasanya menyediakan produk atau jasa yang dipesan oleh pelanggan.\n- **Warehouse (Gudang):** Gudang ini adalah lokasi fisik di mana produk akan disimpan sebelum dikirim atau diambil oleh pelanggan. Setiap Order harus terkait dengan satu Warehouse.\n- **Status:** Status pesanan mengindikasikan tahap pesanan, seperti \"pending\" (menunggu), \"completed\" (selesai), atau \"cancelled\" (dibatalkan). Ini membantu dalam melacak proses pesanan.\n- **Details (Detail):** Ini adalah catatan atau keterangan tambahan tentang pesanan, seperti kondisi barang atau permintaan khusus pelanggan.\n- **Price per Unit (Harga per Unit):** Harga satu unit dari produk atau jasa yang dipesan.\n- **Total Price (Total Harga):** Total biaya pesanan, yang dihitung berdasarkan jumlah dan harga per unit.\n    \n\n**Invoice (Faktur):**  \nInvoice adalah dokumen keuangan yang dibuat oleh perusahaan atau vendor kepada pelanggan sebagai permintaan pembayaran atas pesanan yang telah dilakukan. Invoice memiliki beberapa atribut penting, termasuk:\n\n- **Order:** Setiap Invoice harus terkait dengan satu Order. Ini menghubungkan Invoice dengan pesanan yang mendasarinya.\n- **Total Amount (Jumlah Total):** Total biaya yang harus dibayarkan oleh pelanggan sesuai dengan pesanan mereka.\n- **Paid Amount (Jumlah yang Sudah Dibayarkan):** Jumlah uang yang telah dibayarkan oleh pelanggan terhadap Invoice ini.\n- **Balance Due (Sisa Saldo):** Sisa jumlah yang harus dibayarkan oleh pelanggan setelah mengurangkan jumlah yang sudah dibayarkan.\n- **Invoice Date (Tanggal Faktur):** Tanggal saat Invoice ini dibuat.\n- **Due Date (Tanggal Jatuh Tempo):** Tanggal di mana pembayaran harus diterima oleh perusahaan atau vendor.\n- **Status:** Status Faktur menunjukkan apakah Invoice ini belum dibayar (\"unpaid\"), sebagian dibayar (\"partial\"), atau sudah lunas (\"paid\").\n    \n\n**Payment (Pembayaran):**  \nPayment adalah entitas yang merepresentasikan transaksi keuangan yang digunakan pelanggan untuk membayar Invoice. Beberapa atribut utama Payment mencakup:\n\n- **Order:** Setiap Payment terkait dengan satu Order, menghubungkan transaksi ini kembali ke pesanan yang berkaitan.\n- **Invoice:** Payment ini juga harus terkait dengan satu Invoice, yang mengindikasikan bahwa pembayaran ini digunakan untuk melunasi Invoice tertentu.\n- **Payment Amount (Jumlah Pembayaran):** Jumlah uang yang dibayarkan oleh pelanggan untuk melunasi Invoice.\n- **Payment Method (Metode Pembayaran):** Cara atau metode yang digunakan oleh pelanggan untuk membayar, seperti \"cash,\" \"credit,\" atau metode lainnya.\n- **Payment Date (Tanggal Pembayaran):** Tanggal ketika pembayaran ini diterima atau dicatat dalam sistem.\n- **Kode Pembayaran (Payment Code):** Kode unik atau referensi yang digunakan untuk mengidentifikasi Payment ini.\n    \n\n**Hubungan dengan Jurnal Keuangan:**\n\n1. **Pembuatan Invoice:** Saat Invoice dibuat, transaksi dicatat sebagai:\n    \n    - Debit Piutang Usaha (meningkatkan piutang perusahaan)\n        \n    - Kredit Pendapatan Penjualan (mengakui pendapatan yang akan datang)\n        \n2. **Penerimaan Pembayaran:** Ketika pembayaran diterima, pencatatan dalam jurnal keuangan adalah:\n    \n    - Debit Kas (meningkatkan saldo kas)\n        \n    - Kredit Piutang Usaha (mengurangi piutang pelanggan)\n        \n3. **Pesanan (Order):** Pencatatan untuk Order mungkin tidak terjadi dalam jurnal keuangan hingga Invoice dibuat dan pembayaran diterima. Ini karena Order adalah permintaan awal dan belum terjadi transaksi keuangan yang signifikan."
 		}
 	],
 	"auth": {
