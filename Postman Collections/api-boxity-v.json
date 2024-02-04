@@ -2025,7 +2025,7 @@
 										},
 										{
 											"key": "name",
-											"value": "Bintang Tobing",
+											"value": "bahari",
 											"type": "text"
 										},
 										{
@@ -2035,7 +2035,7 @@
 										},
 										{
 											"key": "phone_number",
-											"value": "081262845980",
+											"value": "085933780943",
 											"type": "text"
 										}
 									]
@@ -3220,14 +3220,15 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Get all order details with invoice and payment information",
 							"id": "54662ffd-d034-4a5e-ad26-d4492563b0b0",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/order-details"
 							},
 							"response": []
 						}
