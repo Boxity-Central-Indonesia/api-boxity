@@ -30,6 +30,10 @@ class Product extends Model
         'unit_of_measure',
         'warehouse_id',
         'category_id',
+        'weight',
+        'animal_type',
+        'age',
+        'health_status'
     ];
     public static function boot()
     {
@@ -59,5 +63,29 @@ class Product extends Model
     public function movements()
     {
         return $this->hasMany(ProductsMovement::class);
+    }
+    // Menambahkan relasi ke tabel slaughtering
+    public function slaughtering()
+    {
+        return $this->hasOne(ManufacturerSlaughtering::class, 'product_id');
+    }
+
+    // Menambahkan relasi ke tabel carcasses melalui slaughtering
+    public function carcasses()
+    {
+        return $this->hasManyThrough(ManufacturerCarcass::class, ManufacturerSlaughtering::class, 'product_id', 'slaughtering_id');
+    }
+
+    // Menambahkan relasi ke tabel packaging
+    public function packaging()
+    {
+        return $this->hasMany(Packaging::class, 'product_id');
+    }
+    public function viscera()
+    {
+        return ManufacturerViscera::select('manufacturer_viscera.*')
+            ->join('manufacturer_carcasses', 'manufacturer_carcasses.id', '=', 'manufacturer_viscera.carcass_id')
+            ->join('manufacturer_slaughtering', 'manufacturer_slaughtering.id', '=', 'manufacturer_carcasses.slaughtering_id')
+            ->where('manufacturer_slaughtering.product_id', $this->id);
     }
 }

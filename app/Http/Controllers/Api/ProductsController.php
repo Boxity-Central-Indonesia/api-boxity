@@ -33,6 +33,10 @@ class ProductsController extends Controller
             'price' => 'required|numeric',
             'category_id' => 'nullable|exists:products_categories,id',
             'warehouse_id' => 'nullable|exists:warehouses,id',
+            'weight' => 'nullable|numeric|min:0',
+            'animal_type' => 'nullable|string',
+            'age' => 'nullable|integer|min:0',
+            'health_status' => 'nullable|string',
         ]);
 
         $product = Product::create($request->all());
@@ -57,11 +61,15 @@ class ProductsController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'code' => 'required|string',
+            'code' => 'required|string|unique:products,code,' . $id,
             'description' => 'required|string',
             'price' => 'required|numeric',
             'category_id' => 'nullable|exists:products_categories,id',
             'warehouse_id' => 'nullable|exists:warehouses,id',
+            'weight' => 'nullable|numeric|min:0',
+            'animal_type' => 'nullable|string',
+            'age' => 'nullable|integer|min:0',
+            'health_status' => 'nullable|string',
         ]);
 
         $product = Product::findOrFail($id);

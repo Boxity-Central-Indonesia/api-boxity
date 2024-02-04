@@ -17,8 +17,15 @@ use App\Http\Controllers\Api\EmployeesController;
 use App\Http\Controllers\Api\EmployeesCategoryController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\LeadController;
+use App\Http\Controllers\Api\ManufacturerCarcassesController;
+use App\Http\Controllers\Api\ManufacturerSlaughteringController;
+use App\Http\Controllers\Api\ManufacturerVisceraController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PackageController;
+use App\Http\Controllers\Api\PackageProductController;
+use App\Http\Controllers\Api\PackagingController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\ProcessingActivityController;
 use App\Http\Controllers\Api\ProductsController;
 use App\Http\Controllers\Api\ProductsCategoriesController;
 use App\Http\Controllers\Api\ProductsPricesController;
@@ -103,6 +110,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Leads
     Route::resource('leads', LeadController::class);
+
+    // Reports
     Route::get('/sales-report', [ReportController::class, 'salesReport']);
     Route::get('/purchase-report', [ReportController::class, 'purchaseReport']);
     Route::get('/revenue-report', [ReportController::class, 'revenueReport']);
@@ -110,6 +119,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/inventory-report', [ReportController::class, 'inventoryReport']);
     Route::get('/leads-report', [ReportController::class, 'leadsReport']);
     Route::get('/vendor-report', [ReportController::class, 'vendorReport']);
+
+    // Proses produksi
+    Route::apiResource('carcasses', ManufacturerCarcassesController::class);
+    Route::apiResource('viscera', ManufacturerVisceraController::class);
+    Route::apiResource('packaging', PackagingController::class);
+    Route::apiResource('packages', PackageController::class);
+    Route::get('/api/packages/{id}/with-products', [PackageController::class, 'withProducts']);
+    Route::apiResource('packages-product', PackageProductController::class);
+    Route::apiResource('slaughtering', ManufacturerSlaughteringController::class);
+    Route::apiResource('processing-activities', ProcessingActivityController::class);
+    Route::get('processing-activities/by-carcass/{carcass_id}', [ProcessingActivityController::class, 'getActivitiesByCarcass']);
 });
 Route::post('login', [AuthController::class, 'login']);
 
