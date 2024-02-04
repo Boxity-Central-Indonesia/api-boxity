@@ -3173,7 +3173,7 @@
 									"formdata": [
 										{
 											"key": "vendor_id",
-											"value": "{{customerID}}",
+											"value": "{{supplierID}}",
 											"type": "text"
 										},
 										{
@@ -3198,17 +3198,17 @@
 										},
 										{
 											"key": "price_per_unit",
-											"value": "100",
+											"value": "50",
 											"type": "text"
 										},
 										{
 											"key": "total_price",
-											"value": "1000",
+											"value": "11000",
 											"type": "text"
 										},
 										{
 											"key": "quantity",
-											"value": "10",
+											"value": "20",
 											"type": "text"
 										},
 										{
@@ -3218,7 +3218,7 @@
 										},
 										{
 											"key": "shipping_cost",
-											"value": "0",
+											"value": "10000",
 											"type": "text"
 										}
 									]
@@ -3394,12 +3394,12 @@
 										},
 										{
 											"key": "total_amount",
-											"value": "1000",
+											"value": "11000",
 											"type": "text"
 										},
 										{
 											"key": "balance_due",
-											"value": "1000",
+											"value": "11000",
 											"type": "text"
 										},
 										{
