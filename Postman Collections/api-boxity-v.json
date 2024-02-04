@@ -3089,8 +3089,145 @@
 					"name": "Orders",
 					"item": [
 						{
-							"name": "New Request",
+							"name": "Create order",
 							"id": "ed102054-08d1-4086-9a13-0d168e40b3f5",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "vendor_id",
+											"value": "{{customerID}}",
+											"type": "text"
+										},
+										{
+											"key": "warehouse_id",
+											"value": "{{warehouseID}}",
+											"type": "text"
+										},
+										{
+											"key": "product_id",
+											"value": "{{productID}}",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "pending",
+											"type": "text"
+										},
+										{
+											"key": "details",
+											"value": "Excellent condition, new packaging",
+											"type": "text"
+										},
+										{
+											"key": "price_per_unit",
+											"value": "100",
+											"type": "text"
+										},
+										{
+											"key": "total_price",
+											"value": "800",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "8",
+											"type": "text"
+										}
+									]
+								},
+								"url": "{{url}}/api/orders"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all orders",
+							"id": "d32fad57-ab74-4d02-b385-8a1c305469f7",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/orders"
+							},
+							"response": []
+						},
+						{
+							"name": "Update orders",
+							"id": "c9918362-68f9-4ed1-abfd-94f27db0e37c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"quantity\": 9,\n  \"total_price\": 900\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/orders/{{orderID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get detail order by ID",
+							"id": "06a557d9-179e-4a8d-8157-91fe89b7f856",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/orders/{{orderID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Order",
+							"id": "37d58946-e22d-42da-a347-c1178db34647",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/orders/{{orderID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "1efb45ac-b7de-4c4f-834a-db47ac6cb29f"
+				},
+				{
+					"name": "Invoices",
+					"item": [
+						{
+							"name": "New Request",
+							"id": "b796453e-4ce3-440d-902b-12c9e00fb829",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -3101,7 +3238,7 @@
 							"response": []
 						}
 					],
-					"id": "1efb45ac-b7de-4c4f-834a-db47ac6cb29f"
+					"id": "e5d3c418-869d-4a41-b3b0-16059468c011"
 				}
 			],
 			"id": "b64efe01-14b3-4776-896c-7761daec439d"
