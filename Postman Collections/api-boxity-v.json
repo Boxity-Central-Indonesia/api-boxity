@@ -3233,7 +3233,7 @@
 							"response": []
 						},
 						{
-							"name": "Get order details by ID with invoice and payment information Copy",
+							"name": "Get order details by ID with invoice and payment information",
 							"id": "3dea48d5-4d89-46de-8b5a-75f10e15a707",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
