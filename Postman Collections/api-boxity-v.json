@@ -1439,7 +1439,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"name\": \"Nama Produk\",\n    \"code\": \"PRD-001\",\n    \"description\": \"Deskripsi produk\",\n    \"price\": 100000,\n    \"type\": \"Makanan\",\n    \"stock\": 50,\n    \"warehouse_id\": {{warehouseID}},\n    \"category_id\": {{productCategoryID}}\n}\n"
+											"raw": "{\n  \"name\": \"Ayam Broiler\",\n  \"code\": \"ayam-broiler\",\n  \"description\": \"Ayam pedaging yang cepat tumbuh dan memiliki daging yang empuk.\",\n  \"price\": 25000,\n  \"type\": \"Ternak\",\n  \"animal_type\": \"Ayam\",\n  \"age\": 35,\n  \"weight\": 2,\n  \"health_status\": \"Sehat\",\n  \"stock\": 100,\n  \"category_id\": {{productCategoryID}},\n  \"warehouse_id\": {{warehouseID}},\n  \"unit_of_measure\": \"kg\",\n  \"raw_material\": false\n}\n"
 										},
 										"url": "{{url}}/api/products"
 									},
@@ -1500,7 +1500,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"name\": \"Ayam AB\",\n    \"code\": \"PRD-001\",\n    \"description\": \"Deskripsi produk\",\n    \"price\": 100000,\n    \"type\": \"Makanan\",\n    \"stock\": 50,\n    \"warehouse_id\": {{warehouseID}},\n    \"category_id\": {{productCategoryID}}\n}\n",
+											"raw": "{\n  \"name\": \"Ayam Broiler\",\n  \"code\": \"ayam-broiler\",\n  \"description\": \"Ayam pedaging yang cepat tumbuh dan memiliki daging yang empuk.\",\n  \"price\": 25000,\n  \"type\": \"Livestock\",\n  \"animal_type\": \"Ayam\",\n  \"age\": 35,\n  \"weight\": 2,\n  \"health_status\": \"Sehat\",\n  \"stock\": 100,\n  \"category_id\": {{productCategoryID}},\n  \"warehouse_id\": {{warehouseID}},\n  \"unit_of_measure\": \"kg\",\n  \"raw_material\": false\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3837,7 +3837,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "2792d943-e505-4c6b-8a51-18c8d7befaa9",
+				"id": "621f6a74-1b8c-4105-b5da-c66cef25c415",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -3847,7 +3847,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "593a7fa8-d10d-4ae4-8c9a-6f0ff3733556",
+				"id": "2eba2ea3-10b0-4627-b598-3b7c75c06d76",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -3882,7 +3882,7 @@
 		},
 		{
 			"key": "productID",
-			"value": "3"
+			"value": "4"
 		},
 		{
 			"key": "branchID",
