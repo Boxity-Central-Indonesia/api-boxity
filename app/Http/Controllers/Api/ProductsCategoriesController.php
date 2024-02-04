@@ -29,6 +29,9 @@ class ProductsCategoriesController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+        ],[
+            'name.required' => 'The name field is required.',
+            'description.required' => 'The description field is required.',
         ]);
 
         $category = ProductsCategory::create($request->all());
@@ -59,7 +62,7 @@ class ProductsCategoriesController extends Controller
         $category = ProductsCategory::findOrFail($id);
         $category->update($request->all());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $category,
             'message' => 'Category updated successfully.',
         ]);

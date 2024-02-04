@@ -19,7 +19,10 @@ class WarehouseLocationsController extends Controller
     public function index()
     {
         $locations = WarehouseLocation::with('warehouse')->get();
-        return response()->json($locations);
+        return response()->json([
+            'status' => 200,
+            'data' => $locations
+        ]);
     }
 
     public function store(Request $request)
@@ -31,13 +34,19 @@ class WarehouseLocationsController extends Controller
         ]);
 
         $location = WarehouseLocation::create($request->all());
-        return response()->json($location, 201);
+        return response()->json([
+            'status' => 201,
+            'data' => $location
+        ],201);
     }
 
     public function show($id)
     {
         $location = WarehouseLocation::with('warehouse')->findOrFail($id);
-        return response()->json($location);
+        return response()->json([
+            'status' => 200,
+            'data' => $location
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -50,7 +59,10 @@ class WarehouseLocationsController extends Controller
 
         $location = WarehouseLocation::findOrFail($id);
         $location->update($request->all());
-        return response()->json($location);
+        return response()->json([
+            'status' => 201,
+            'data' => $location
+        ],201);
     }
 
     public function destroy($id)

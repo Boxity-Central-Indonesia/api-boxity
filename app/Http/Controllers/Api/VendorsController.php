@@ -110,7 +110,7 @@ class VendorsController extends Controller
         $vendor = Vendor::findOrFail($id);
         $vendor->update($validated, $customMessages);
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $vendor,
             'message' => 'Vendor updated successfully.',
         ]);

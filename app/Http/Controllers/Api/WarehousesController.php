@@ -19,6 +19,7 @@ class WarehousesController extends Controller
         $warehouses = Warehouse::all();
 
         return response()->json([
+            'status' => 200,
             'data' => $warehouses,
             'message' => 'Warehouses retrieved successfully.',
         ]);
