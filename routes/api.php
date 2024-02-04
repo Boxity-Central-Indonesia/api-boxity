@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\CompaniesBranchController;
 use App\Http\Controllers\Api\EmployeesController;
 use App\Http\Controllers\Api\EmployeesCategoryController;
 use App\Http\Controllers\Api\InvoiceController;
+use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ProductsController;
@@ -98,6 +99,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/order-details/{orderID}', [OrderController::class, 'getOrderDetail']);
     Route::apiResource('payments', PaymentController::class);
     Route::apiResource('orders', OrderController::class);
+
+    // Leads
+    Route::resource('leads', LeadController::class);
 });
 Route::post('login', [AuthController::class, 'login']);
 
