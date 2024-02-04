@@ -3599,6 +3599,124 @@
 			],
 			"id": "b64efe01-14b3-4776-896c-7761daec439d",
 			"description": "**Order (Pesanan):**  \nOrder adalah entitas yang merepresentasikan permintaan dari pelanggan atau pihak lain untuk membeli produk atau jasa dari perusahaan atau vendor tertentu. Dalam konteks sistem akuntansi, Order biasanya memiliki beberapa atribut kunci, termasuk:\n\n- **Vendor:** Merupakan pihak yang akan memproses pesanan. Vendor ini biasanya menyediakan produk atau jasa yang dipesan oleh pelanggan.\n- **Warehouse (Gudang):** Gudang ini adalah lokasi fisik di mana produk akan disimpan sebelum dikirim atau diambil oleh pelanggan. Setiap Order harus terkait dengan satu Warehouse.\n- **Status:** Status pesanan mengindikasikan tahap pesanan, seperti \"pending\" (menunggu), \"completed\" (selesai), atau \"cancelled\" (dibatalkan). Ini membantu dalam melacak proses pesanan.\n- **Details (Detail):** Ini adalah catatan atau keterangan tambahan tentang pesanan, seperti kondisi barang atau permintaan khusus pelanggan.\n- **Price per Unit (Harga per Unit):** Harga satu unit dari produk atau jasa yang dipesan.\n- **Total Price (Total Harga):** Total biaya pesanan, yang dihitung berdasarkan jumlah dan harga per unit.\n    \n\n**Invoice (Faktur):**  \nInvoice adalah dokumen keuangan yang dibuat oleh perusahaan atau vendor kepada pelanggan sebagai permintaan pembayaran atas pesanan yang telah dilakukan. Invoice memiliki beberapa atribut penting, termasuk:\n\n- **Order:** Setiap Invoice harus terkait dengan satu Order. Ini menghubungkan Invoice dengan pesanan yang mendasarinya.\n- **Total Amount (Jumlah Total):** Total biaya yang harus dibayarkan oleh pelanggan sesuai dengan pesanan mereka.\n- **Paid Amount (Jumlah yang Sudah Dibayarkan):** Jumlah uang yang telah dibayarkan oleh pelanggan terhadap Invoice ini.\n- **Balance Due (Sisa Saldo):** Sisa jumlah yang harus dibayarkan oleh pelanggan setelah mengurangkan jumlah yang sudah dibayarkan.\n- **Invoice Date (Tanggal Faktur):** Tanggal saat Invoice ini dibuat.\n- **Due Date (Tanggal Jatuh Tempo):** Tanggal di mana pembayaran harus diterima oleh perusahaan atau vendor.\n- **Status:** Status Faktur menunjukkan apakah Invoice ini belum dibayar (\"unpaid\"), sebagian dibayar (\"partial\"), atau sudah lunas (\"paid\").\n    \n\n**Payment (Pembayaran):**  \nPayment adalah entitas yang merepresentasikan transaksi keuangan yang digunakan pelanggan untuk membayar Invoice. Beberapa atribut utama Payment mencakup:\n\n- **Order:** Setiap Payment terkait dengan satu Order, menghubungkan transaksi ini kembali ke pesanan yang berkaitan.\n- **Invoice:** Payment ini juga harus terkait dengan satu Invoice, yang mengindikasikan bahwa pembayaran ini digunakan untuk melunasi Invoice tertentu.\n- **Payment Amount (Jumlah Pembayaran):** Jumlah uang yang dibayarkan oleh pelanggan untuk melunasi Invoice.\n- **Payment Method (Metode Pembayaran):** Cara atau metode yang digunakan oleh pelanggan untuk membayar, seperti \"cash,\" \"credit,\" atau metode lainnya.\n- **Payment Date (Tanggal Pembayaran):** Tanggal ketika pembayaran ini diterima atau dicatat dalam sistem.\n- **Kode Pembayaran (Payment Code):** Kode unik atau referensi yang digunakan untuk mengidentifikasi Payment ini.\n    \n\n**Hubungan dengan Jurnal Keuangan:**\n\n1. **Pembuatan Invoice:** Saat Invoice dibuat, transaksi dicatat sebagai:\n    \n    - Debit Piutang Usaha (meningkatkan piutang perusahaan)\n        \n    - Kredit Pendapatan Penjualan (mengakui pendapatan yang akan datang)\n        \n2. **Penerimaan Pembayaran:** Ketika pembayaran diterima, pencatatan dalam jurnal keuangan adalah:\n    \n    - Debit Kas (meningkatkan saldo kas)\n        \n    - Kredit Piutang Usaha (mengurangi piutang pelanggan)\n        \n3. **Pesanan (Order):** Pencatatan untuk Order mungkin tidak terjadi dalam jurnal keuangan hingga Invoice dibuat dan pembayaran diterima. Ini karena Order adalah permintaan awal dan belum terjadi transaksi keuangan yang signifikan."
+		},
+		{
+			"name": "Leads prospek",
+			"item": [
+				{
+					"name": "Create leads",
+					"id": "a896c0c8-1b6b-424f-9829-9aaab822ca9f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{bearer_token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nama_prospek",
+									"value": "Tobing Bahar",
+									"type": "text"
+								},
+								{
+									"key": "email_prospek",
+									"value": "tobingbahar@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "nomor_telepon_prospek",
+									"value": "0811111111",
+									"type": "text"
+								},
+								{
+									"key": "tipe_prospek",
+									"value": "perorangan",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{url}}/api/leads"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all leads",
+					"id": "0f4dc59a-6ac5-4d74-9626-e77503fd4242",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/leads"
+					},
+					"response": []
+				},
+				{
+					"name": "Update leads by ID",
+					"id": "a32295c1-ad29-4da1-bb5a-49ba8cb32193",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{bearer_token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nama_prospek\": \"Tobing Bahari\",\n  \"email_prospek\": \"tobingbahari@gmail.com\",\n  \"nomor_telepon_prospek\": \"0811111111\",\n  \"tipe_prospek\": \"perorangan\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/leads/{{leadID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get leads by ID",
+					"id": "4b0048b8-9d31-4938-8185-112f8fe7974a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/leads/{{leadID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete leads by ID",
+					"id": "88da2e0e-eb0d-435f-8aa2-83e8e895f515",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{url}}/api/leads/{{leadID}}"
+					},
+					"response": []
+				}
+			],
+			"id": "9c12c6e6-a088-4205-a7c0-7a57ef375760",
+			"description": "Modul \"Leads\" digunakan untuk mengelola informasi tentang prospek atau calon pelanggan yang potensial. Modul ini memberikan fungsionalitas untuk:\n\n1. **Menampilkan Daftar Prospek**: Anda dapat melihat daftar lengkap dari semua prospek yang telah tercatat dalam sistem. Setiap entri dalam daftar ini berisi informasi tentang prospek, termasuk nama, email, nomor telepon, dan tipe prospek.\n    \n2. **Tambahkan Prospek Baru**: Anda dapat menambahkan prospek baru ke dalam sistem dengan memberikan detail seperti nama, email, nomor telepon, dan tipe prospek. Tipe prospek dapat berupa \"perorangan\", \"bisnis\", atau \"rekomendasi dari Anda\".\n    \n3. **Edit Informasi Prospek**: Anda memiliki kemampuan untuk mengedit informasi tentang prospek yang sudah ada, termasuk mengubah nama, email, nomor telepon, atau tipe prospek.\n    \n4. **Hapus Prospek**: Anda dapat menghapus entri prospek jika tidak relevan atau tidak diperlukan lagi dalam daftar.\n    \n\nDengan menggunakan modul ini, Anda dapat secara efisien melacak dan mengelola daftar prospek yang potensial menjadi pelanggan Anda. Ini adalah alat yang berguna untuk mengelola hubungan dengan calon pelanggan dan mengambil tindakan yang diperlukan untuk mengonversi mereka menjadi pelanggan aktif."
 		}
 	],
 	"auth": {
