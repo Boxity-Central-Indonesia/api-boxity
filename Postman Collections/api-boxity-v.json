@@ -3808,6 +3808,19 @@
 						"url": "{{url}}/api/leads-report"
 					},
 					"response": []
+				},
+				{
+					"name": "Track Vendor Transactions",
+					"id": "017cf6e1-10f2-4441-bee7-75a379de8b07",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/vendor-report"
+					},
+					"response": []
 				}
 			],
 			"id": "dc4664a7-5af0-4d14-89f7-1502ab3438c1",
