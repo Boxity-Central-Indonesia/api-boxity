@@ -1204,7 +1204,12 @@
 												},
 												{
 													"key": "capacity",
-													"value": "40",
+													"value": "10000",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "chiller",
 													"type": "text"
 												}
 											]
@@ -1316,7 +1321,7 @@
 												},
 												{
 													"key": "capacity",
-													"value": "500",
+													"value": "10000",
 													"type": "text"
 												}
 											]
@@ -1989,7 +1994,7 @@
 									"formdata": [
 										{
 											"key": "name",
-											"value": "PT SUPPLIER",
+											"value": "PT CUSTOMER",
 											"type": "text"
 										},
 										{
@@ -2004,12 +2009,12 @@
 										},
 										{
 											"key": "email",
-											"value": "supplier@gmail.com",
+											"value": "customer@gmail.com",
 											"type": "text"
 										},
 										{
 											"key": "transaction_type",
-											"value": "inbound",
+											"value": "outbound",
 											"type": "text"
 										}
 									]
