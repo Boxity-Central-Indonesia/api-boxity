@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\Product;
 use App\Models\ProductMovement;
 use App\Models\Lead;
+use App\Models\ManufacturerSlaughtering;
 use App\Models\Vendor;
 use App\Models\VendorTransaction;
 use Illuminate\Http\Request;
@@ -111,6 +112,45 @@ class ReportController extends Controller
                 'transactions' => $transactions,
             ],
             'message' => 'Vendor report retrieved successfully.',
+        ]);
+    }
+    // Laporan Produksi
+    public function productionReport()
+    {
+        // Ambil data produksi beserta join relasi
+        $reportData = ManufacturerSlaughtering::with(['carcass', 'carcass.viscera', 'carcass.processingActivities', 'carcass.packaging'])
+            ->get();
+
+        // Format data produksi sesuai kebutuhan
+        $formattedReport = [];
+
+        foreach ($reportData as $data) {
+            $processingActivities = $data->carcass->processingActivities;
+
+            // Menentukan status produksi berdasarkan aktivitas produksi
+            $productionStatus = 'Selesai'; // Default status jika tidak ada aktivitas produksi
+            if ($processingActivities->count() > 0) {
+                $latestActivity = $processingActivities->last();
+                $productionStatus = $latestActivity->activity_type;
+            }
+
+            $formattedReport[] = [
+                'slaughter_date' => $data->slaughter_date,
+                'production_type' => $data->method,
+                'carcass_weight' => $data->carcass->weight_after_slaughter,
+                'carcass_quality_grade' => $data->carcass->quality_grade,
+                'viscera_type' => $data->carcass->viscera->type,
+                'viscera_handling_method' => $data->carcass->viscera->handling_method,
+                'production_status' => $productionStatus, // Menambahkan status produksi
+                // Anda dapat menambahkan informasi lainnya sesuai kebutuhan
+            ];
+        }
+
+
+        return response()->json([
+            'status' => 200,
+            'data' => $formattedReport,
+            'message' => 'Production report retrieved successfully.',
         ]);
     }
 }

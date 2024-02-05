@@ -121,6 +121,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/inventory-report', [ReportController::class, 'inventoryReport']);
     Route::get('/leads-report', [ReportController::class, 'leadsReport']);
     Route::get('/vendor-report', [ReportController::class, 'vendorReport']);
+    Route::get('/production-report', [ReportController::class, 'productionReport']);
 
     // Proses produksi
     Route::apiResource('carcasses', ManufacturerCarcassesController::class);
