@@ -117,67 +117,56 @@ class ReportController extends Controller
     // Laporan Produksi
     public function productionReport()
     {
-        $reportData = ManufacturerSlaughtering::with(['carcasses.processingActivities', 'carcasses.viscera', 'carcasses.packaging'])
+        $summary = DB::table('manufacturer_manufacturer_processing_activities')
+            ->join('orders', 'manufacturer_manufacturer_processing_activities.order_id', '=', 'orders.id')
+            ->join('products', 'manufacturer_manufacturer_processing_activities.product_id', '=', 'products.id')
+            ->select(
+                DB::raw('CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0")) as kodeOrder'),
+                'products.name as product_name',
+                'manufacturer_manufacturer_processing_activities.activity_type as activity_type',
+                'manufacturer_manufacturer_processing_activities.status_activities as status_production'
+            )
+            ->orderBy('orders.created_at', 'asc')
             ->get();
 
-        $formattedReport = [];
-
-        foreach ($reportData as $slaughter) {
-            foreach ($slaughter->carcass as $carcass) {
-                $activities = [
-                    [
-                        'activity_type' => 'Slaughtering',
-                        'details' => [
-                            'method' => $slaughter->method,
-                            'slaughter_date' => $slaughter->slaughter_date,
-                        ],
-                    ],
-                ];
-
-                // Check if 'viscera' relationship exists, if not, use an empty array
-                $visceraActivities = $carcass->viscera ? $carcass->viscera : [];
-                foreach ($visceraActivities as $viscera) {
-                    $activities[] = [
-                        'activity_type' => 'Viscera Handling',
-                        'details' => [
-                            'type' => $viscera->type,
-                            'handling_method' => $viscera->handling_method,
-                        ],
-                    ];
-                }
-
-                // Check if 'processingActivities' relationship exists, if not, use an empty array
-                $processingActivities = $carcass->processingActivities ? $carcass->processingActivities : [];
-                foreach ($processingActivities as $activity) {
-                    $activities[] = [
-                        'activity_type' => $activity->activity_type,
-                        'details' => $activity->details,
-                    ];
-                }
-
-                // Check if 'packaging' relationship exists, if not, use an empty array
-                $packagingActivity = $carcass->packaging ? $carcass->packaging : [];
-                $activities[] = [
-                    'activity_type' => 'Packaging',
-                    'details' => [
-                        'weight' => $packagingActivity->weight ?? null,
-                        'package_type' => $packagingActivity->package_type ?? null,
-                    ],
-                ];
-
-                $formattedReport[] = [
-                    'slaughtering_date' => $slaughter->slaughter_date,
-                    'carcass_weight' => $carcass->weight_after_slaughter,
-                    'carcass_quality_grade' => $carcass->quality_grade,
-                    'activities' => $activities,
-                ];
-            }
+        if ($summary->isEmpty()) {
+            return response()->json(['message' => 'No production activities found.', 'status' => 404], 404);
         }
 
+        return response()->json(['data' => $summary, 'status' => 200, 'message' => 'Production summary retrieved successfully.']);
+    }
+    public function productionReportDetails($order_id)
+    {
+        $details = DB::table('manufacturer_processing_activities')
+            ->join('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
+            ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
+            ->where('manufacturer_processing_activities.order_id', '=', $order_id)
+            ->select(
+                DB::raw('CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0")) as kodeOrder'),
+                'products.name as product_name',
+                'manufacturer_processing_activities.activity_type',
+                'manufacturer_processing_activities.details'
+            )
+            ->orderBy('manufacturer_processing_activities.created_at', 'asc')
+            ->get();
+
+        if ($details->isEmpty()) {
+            return response()->json(['message' => 'No details found for this order.', 'status' => 404], 404);
+        }
+
+        $formattedDetails = $details->map(function ($item) {
+            $item->details = json_decode($item->details, true);
+            return $item;
+        });
+
         return response()->json([
+            'data' => [
+                'kodeOrder' => $details->first()->kodeOrder,
+                'product_name' => $details->first()->product_name,
+                'activities' => $formattedDetails
+            ],
             'status' => 200,
-            'data' => $formattedReport,
-            'message' => 'Production report retrieved successfully.',
+            'message' => 'Production details retrieved successfully.'
         ]);
     }
 }

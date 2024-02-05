@@ -42,6 +42,10 @@ class Order extends Model
     {
         return $this->hasMany(Invoice::class);
     }
+    public function processingActivities()
+    {
+        return $this->hasMany(ProcessingActivity::class);
+    }
     public function vendorTransaction()
     {
         return $this->hasOne(VendorTransaction::class);

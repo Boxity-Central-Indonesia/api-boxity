@@ -15,6 +15,7 @@ class Warehouse extends Model
         'name',
         'address',
         'capacity',
+        'description'
     ];
     public static function boot()
     {

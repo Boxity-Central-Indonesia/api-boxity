@@ -3,53 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\ProcessingActivityRequest;
+use App\Models\Order;
 use App\Models\ProcessingActivity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProcessingActivityController extends Controller
 {
     public function index()
     {
-        $activities = ProcessingActivity::with('carcass')->get();
+        // Ubah 'carcass' menjadi 'product' untuk memuat relasi produk
+        $activities = ProcessingActivity::all();
         return response()->json([
             'status' => 200,
             'data' => $activities,
             'message' => 'All processing activities retrieved successfully.',
-        ]);
-    }
-    public function getActivitiesByCarcass($carcass_id)
-    {
-        // Mengambil data aktivitas dengan informasi produk dan slaughter yang terkait
-        $groupedActivities = ProcessingActivity::with(['carcass.slaughtering.product'])
-            ->whereHas('carcass', function ($query) use ($carcass_id) {
-                $query->where('id', $carcass_id);
-            })
-            ->get();
-
-        if ($groupedActivities->isEmpty()) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'No processing activities found for the specified carcass ID.',
-            ], 404);
-        }
-
-        $groupedData = [];
-        foreach ($groupedActivities as $activity) {
-            $slaughteringInfo = $activity->carcass->slaughtering;
-            $productInfo = $slaughteringInfo->product;
-
-            $groupedData[] = [
-                'slaughtering_id' => $slaughteringInfo->id,
-                'slaughtering_info' => $slaughteringInfo,
-                'product_info' => $productInfo,
-                'activity' => $activity,
-            ];
-        }
-
-        return response()->json([
-            'status' => 200,
-            'data' => $groupedData,
-            'message' => 'Processing activities grouped by slaughtering ID retrieved successfully.'
         ]);
     }
 
@@ -57,17 +25,43 @@ class ProcessingActivityController extends Controller
     {
         $validated = $request->validated();
 
-        $activity = ProcessingActivity::create($validated);
+        // Pastikan untuk menghapus referensi ke 'carcass_id' dalam validasi dan pembuatan
+        $activity = ProcessingActivity::create([
+            'product_id' => $validated['product_id'],
+            'order_id' => $validated['order_id'],
+            'activity_type' => $validated['activity_type'],
+            'status_activities' => 'In Production',
+            'details' => $validated['details'],
+        ]);
+        // Cek dan tandai order sebagai completed jika memenuhi kriteria
+        $this->markOrderAsCompleted($validated['order_id']);
         return response()->json([
             'status' => 201,
             'data' => $activity,
             'message' => 'Processing activity created successfully.',
         ]);
     }
+    private function markOrderAsCompleted($order_id)
+    {
+        $statusActivity = ProcessingActivity::find($order_id);
+        if ($statusActivity->status_activities !== 'Completed') {
+            $lastActivityType = 'packaging_weighing'; // Misalkan aktivitas terakhir yang menandakan order selesai
+
+            $lastActivityExists = ProcessingActivity::where('order_id', $order_id)
+                ->where('activity_type', $lastActivityType)
+                ->exists();
+
+            if ($lastActivityExists) {
+                $statusActivity->status_activities = 'Completed';
+                $statusActivity->save();
+            }
+        }
+    }
 
     public function show($id)
     {
-        $activity = ProcessingActivity::with('carcass')->findOrFail($id);
+        // Ubah 'carcass' menjadi 'product' untuk memuat relasi produk
+        $activity = ProcessingActivity::with('product', 'order')->findOrFail($id);
         return response()->json([
             'status' => 200,
             'data' => $activity,
@@ -81,6 +75,7 @@ class ProcessingActivityController extends Controller
 
         $validated = $request->validated();
 
+        // Pastikan untuk menghapus referensi ke 'carcass_id' dalam pembaruan
         $activity->update($validated);
         return response()->json([
             'status' => 200,
@@ -96,5 +91,41 @@ class ProcessingActivityController extends Controller
             'status' => 200,
             'message' => 'Processing activity deleted successfully.',
         ]);
+    }
+    public function getActivitiesByOrder($order_id)
+    {
+        $activities = DB::table('manufacturer_processing_activities')
+            ->join('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
+            ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
+            ->where('manufacturer_processing_activities.order_id', $order_id)
+            ->select(
+                'manufacturer_processing_activities.*',
+                'orders.order_status as order_status',
+                'products.name as product_name',
+                'products.description as product_description',
+                DB::raw('CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0")) as kodeOrder')
+            )
+            ->get();
+
+        if ($activities->isEmpty()) {
+            return response()->json(['message' => 'No activities found for this order.', 'status' => 404], 404);
+        }
+
+        return response()->json(['data' => $activities, 'status' => 200, 'message' => 'Processing activities by Order retrieved successfully.']);
+    }
+
+    public function getActivitiesByProduct($product_id)
+    {
+        $activities = DB::table('manufacturer_processing_activities')
+            ->join('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
+            ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
+            ->where('manufacturer_processing_activities.product_id', $product_id)
+            ->select('manufacturer_processing_activities.*', 'orders.order_status as order_status', 'products.name as product_name', 'products.description as product_description')
+            ->get();
+
+        if ($activities->isEmpty()) {
+            return response()->json(['message' => 'No activities found for this product.', 'status' => 404], 404);
+        }
+        return response()->json(['data' => $activities, 'status' => 200, 'message' => 'Processing activities by Product retrieved successfully.']);
     }
 }

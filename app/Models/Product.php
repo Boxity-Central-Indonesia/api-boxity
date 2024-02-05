@@ -64,28 +64,14 @@ class Product extends Model
     {
         return $this->hasMany(ProductsMovement::class);
     }
-    // Menambahkan relasi ke tabel slaughtering
-    public function slaughtering()
-    {
-        return $this->hasOne(ManufacturerSlaughtering::class, 'product_id');
-    }
-
-    // Menambahkan relasi ke tabel carcasses melalui slaughtering
-    public function carcasses()
-    {
-        return $this->hasManyThrough(ManufacturerCarcass::class, ManufacturerSlaughtering::class, 'product_id', 'slaughtering_id');
-    }
 
     // Menambahkan relasi ke tabel packaging
     public function packaging()
     {
         return $this->hasMany(Packaging::class, 'product_id');
     }
-    public function viscera()
+    public function processingActivities()
     {
-        return ManufacturerViscera::select('manufacturer_viscera.*')
-            ->join('manufacturer_carcasses', 'manufacturer_carcasses.id', '=', 'manufacturer_viscera.carcass_id')
-            ->join('manufacturer_slaughtering', 'manufacturer_slaughtering.id', '=', 'manufacturer_carcasses.slaughtering_id')
-            ->where('manufacturer_slaughtering.product_id', $this->id);
+        return $this->hasMany(ProcessingActivity::class);
     }
 }

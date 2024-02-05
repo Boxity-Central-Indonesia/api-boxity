@@ -14,8 +14,10 @@ class ProcessingActivityRequest extends FormRequest
     public function rules()
     {
         return [
-            'carcass_id' => 'required|exists:manufacturer_carcasses,id',
+            'product_id' => 'required|exists:products,id',
+            'order_id' => 'required|exists:orders,id',
             'activity_type' => 'required|string',
+            'status_activities' => 'nullable|string',
             'details' => 'nullable|array',
         ];
     }
@@ -23,8 +25,10 @@ class ProcessingActivityRequest extends FormRequest
     public function messages()
     {
         return [
-            'carcass_id.required' => 'The carcass ID is required.',
-            'carcass_id.exists' => 'The selected carcass ID does not exist.',
+            'product_id.required' => 'The product ID is required.',
+            'product_id.exists' => 'The selected product ID does not exist.',
+            'order_id.required' => 'The order ID is required.',
+            'order_id.exists' => 'The selected order ID does not exist.',
             'activity_type.required' => 'The activity type is required.',
             'activity_type.string' => 'The activity type must be a string.',
         ];

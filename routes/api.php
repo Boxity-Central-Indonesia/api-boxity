@@ -15,12 +15,8 @@ use App\Http\Controllers\Api\CompaniesDepartmentController;
 use App\Http\Controllers\Api\CompaniesBranchController;
 use App\Http\Controllers\Api\EmployeeCategoryController;
 use App\Http\Controllers\Api\EmployeesController;
-use App\Http\Controllers\Api\EmployeesCategoryController;
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\LeadController;
-use App\Http\Controllers\Api\ManufacturerCarcassesController;
-use App\Http\Controllers\Api\ManufacturerSlaughteringController;
-use App\Http\Controllers\Api\ManufacturerVisceraController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PackageController;
 use App\Http\Controllers\Api\PackageProductController;
@@ -81,6 +77,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('product-categories', ProductsCategoriesController::class);
     Route::apiResource('product-prices', ProductsPricesController::class);
     Route::apiResource('product-movements', ProductsMovementsController::class);
+    Route::get('/products/{productId}/processing-activities', [ProductsController::class, 'processingActivities'])->name('products.processingActivities');
+
 
     // Warehouses routes
     Route::apiResource('warehouses', WarehousesController::class);
@@ -109,6 +107,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/order-details/{orderID}', [OrderController::class, 'getOrderDetail']);
     Route::apiResource('payments', PaymentController::class);
     Route::apiResource('orders', OrderController::class);
+    Route::get('/orders/{orderId}/processing-activities', [OrderController::class, 'processingActivities'])->name('orders.processingActivities');
+
 
     // Leads
     Route::resource('leads', LeadController::class);
@@ -122,17 +122,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/leads-report', [ReportController::class, 'leadsReport']);
     Route::get('/vendor-report', [ReportController::class, 'vendorReport']);
     Route::get('/production-report', [ReportController::class, 'productionReport']);
+    Route::get('/production-report/{order_id}', [ReportController::class, 'productionReportDetails']);
 
     // Proses produksi
-    Route::apiResource('carcasses', ManufacturerCarcassesController::class);
-    Route::apiResource('viscera', ManufacturerVisceraController::class);
     Route::apiResource('packaging', PackagingController::class);
     Route::apiResource('packages', PackageController::class);
     Route::get('/api/packages/{id}/with-products', [PackageController::class, 'withProducts']);
     Route::apiResource('packages-product', PackageProductController::class);
-    Route::apiResource('slaughtering', ManufacturerSlaughteringController::class);
     Route::apiResource('processing-activities', ProcessingActivityController::class);
-    Route::get('processing-activities/by-carcass/{carcass_id}', [ProcessingActivityController::class, 'getActivitiesByCarcass']);
+    Route::get('processing-activities/by-order/{order_id}', [ProcessingActivityController::class, 'getActivitiesByOrder']);
+    Route::get('processing-activities/by-product/{product_id}', [ProcessingActivityController::class, 'getActivitiesByProduct']);
 });
 Route::post('login', [AuthController::class, 'login']);
 

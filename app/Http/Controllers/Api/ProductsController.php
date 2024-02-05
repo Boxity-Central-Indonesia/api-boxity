@@ -65,4 +65,21 @@ class ProductsController extends Controller
             'message' => 'Product deleted successfully.',
         ]);
     }
+    public function processingActivities($productId)
+    {
+        $product = Product::with('processingActivities')->find($productId);
+
+        if (!$product) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Product not found.',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $product->processingActivities,
+            'message' => 'Processing activities for product retrieved successfully.',
+        ]);
+    }
 }

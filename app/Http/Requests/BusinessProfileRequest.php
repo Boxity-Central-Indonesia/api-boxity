@@ -26,11 +26,17 @@ class BusinessProfileRequest extends FormRequest
                 Rule::unique('businesses')->ignore($businessId)
             ],
             'business_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'phone_number' => 'required|numeric',
+            'pic_business' => 'required|string',
+            'bank_account_name' => 'required|string',
+            'bank_branch' => 'required|string',
+            'bank_account_number' => 'required|numeric',
         ];
 
         if ($this->isMethod('post')) {
             // For store operation, enforce unique check without ignoring any business
             $rules['email'] = 'required|string|email|max:255|unique:businesses';
+            $rules['full_address'] = 'required|string|max:100000';
         }
 
         return $rules;

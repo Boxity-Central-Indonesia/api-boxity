@@ -294,4 +294,22 @@ class OrderController extends Controller
             ]);
         }
     }
+
+    public function processingActivities($orderId)
+    {
+        $order = Order::with(['processingActivities', 'processingActivities.product'])->find($orderId);
+
+        if (!$order) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Order not found.',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $order->processingActivities,
+            'message' => 'Processing activities for order retrieved successfully.',
+        ]);
+    }
 }

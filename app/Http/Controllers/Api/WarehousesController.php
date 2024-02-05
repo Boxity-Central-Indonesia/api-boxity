@@ -37,6 +37,7 @@ class WarehousesController extends Controller
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'capacity' => 'required|numeric|min:0',
+            'description' => 'nullable|string|max:10000',
         ];
 
         $customMessages = [
@@ -94,6 +95,7 @@ class WarehousesController extends Controller
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'capacity' => 'required|numeric|min:0',
+            'description' => 'nullable|string|max:10000',
         ];
 
         $customMessages = [
