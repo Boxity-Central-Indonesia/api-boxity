@@ -902,8 +902,94 @@
 										"method": "POST",
 										"header": [],
 										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phone_number\": \"+1234567890\",\n  \"company_id\": {{companyID}},\n  \"category_id\": {{employeeCategoryID}},\n  \"job_title\": \"Software Engineer\",\n  \"date_of_birth\": \"1990-01-01\",\n  \"employment_status\": \"Full-time\",\n  \"hire_date\": \"2023-01-01\",\n  \"address\": \"123 Main Street\",\n  \"city\": \"Anytown\",\n  \"province\": \"California\",\n  \"postal_code\": \"12345\",\n  \"country\": \"USA\",\n  \"emergency_contact_name\": \"Jane Doe\",\n  \"emergency_contact_phone_number\": \"+1987654321\",\n  \"department_id\": {{departmentID}}\n}\n"
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "name",
+													"value": "Bintang Tobing",
+													"type": "text"
+												},
+												{
+													"key": "email",
+													"value": "bintangjtobing@gmail.com",
+													"type": "text"
+												},
+												{
+													"key": "phone_number",
+													"value": "081262845980",
+													"type": "text"
+												},
+												{
+													"key": "company_id",
+													"value": "{{companyID}}",
+													"type": "text"
+												},
+												{
+													"key": "job_title",
+													"value": "Web Developer",
+													"type": "text"
+												},
+												{
+													"key": "date_of_birth",
+													"value": "1998-10-21",
+													"type": "text"
+												},
+												{
+													"key": "employment_status",
+													"value": "active",
+													"type": "text"
+												},
+												{
+													"key": "hire_date",
+													"value": "2021-07-01",
+													"type": "text"
+												},
+												{
+													"key": "address",
+													"value": "Jl Pelita IV Gg Aman No 7",
+													"type": "text"
+												},
+												{
+													"key": "city",
+													"value": "Medan",
+													"type": "text"
+												},
+												{
+													"key": "province",
+													"value": "Sumatera Utara",
+													"type": "text"
+												},
+												{
+													"key": "postal_code",
+													"value": "20236",
+													"type": "text"
+												},
+												{
+													"key": "country",
+													"value": "ID",
+													"type": "text"
+												},
+												{
+													"key": "emergency_contact_name",
+													"value": "Ayu Sinaga",
+													"type": "text"
+												},
+												{
+													"key": "emergency_contact_phone_number",
+													"value": "085933780943",
+													"type": "text"
+												},
+												{
+													"key": "department_id",
+													"value": "{{departmentID}}",
+													"type": "text"
+												},
+												{
+													"key": "category_id",
+													"value": "{{employeeCategoryID}}",
+													"type": "text"
+												}
+											]
 										},
 										"url": "{{url}}/api/employees"
 									},
