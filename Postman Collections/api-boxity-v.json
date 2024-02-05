@@ -1072,6 +1072,24 @@
 								}
 							],
 							"id": "605062b7-2e4b-4d20-9340-b70c7ee64e22"
+						},
+						{
+							"name": "Category",
+							"item": [
+								{
+									"name": "New Request",
+									"id": "7b3ebb05-92dd-4f50-85a3-af4db7776387",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								}
+							],
+							"id": "20dd5dd9-7ef4-4d56-93df-fb6d5dd4b097"
 						}
 					],
 					"id": "68fa4505-8219-477a-b545-1d53b0ab7bfe",
