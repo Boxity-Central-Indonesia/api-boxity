@@ -1253,6 +1253,32 @@
 										"url": "{{url}}/api/warehouses/{{warehouseID}}"
 									},
 									"response": []
+								},
+								{
+									"name": "Get warehouses by ID",
+									"id": "f3ade904-b35c-4351-bb1f-29ee96a7d4f9",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/warehouses/{{warehouseID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete warehouses by ID",
+									"id": "3188f543-5fbf-410c-8661-582926e67a88",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/warehouses/{{warehouseID}}"
+									},
+									"response": []
 								}
 							],
 							"id": "07ae505d-2373-410f-8698-d9b8bd351315"
