@@ -117,14 +117,14 @@ class ReportController extends Controller
     // Laporan Produksi
     public function productionReport()
     {
-        $summary = DB::table('manufacturer_manufacturer_processing_activities')
-            ->join('orders', 'manufacturer_manufacturer_processing_activities.order_id', '=', 'orders.id')
-            ->join('products', 'manufacturer_manufacturer_processing_activities.product_id', '=', 'products.id')
+        $summary = DB::table('manufacturer_processing_activities')
+            ->join('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
+            ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
             ->select(
                 DB::raw('CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0")) as kodeOrder'),
                 'products.name as product_name',
-                'manufacturer_manufacturer_processing_activities.activity_type as activity_type',
-                'manufacturer_manufacturer_processing_activities.status_activities as status_production'
+                'manufacturer_processing_activities.activity_type as activity_type',
+                'manufacturer_processing_activities.status_activities as status_production'
             )
             ->orderBy('orders.created_at', 'asc')
             ->get();
