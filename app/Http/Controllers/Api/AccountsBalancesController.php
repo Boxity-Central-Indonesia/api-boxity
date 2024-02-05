@@ -26,14 +26,9 @@ class AccountsBalancesController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(AccountsBalance $request)
     {
-        $validated = $request->validate([
-            'date' => 'required|date',
-            'balance' => 'required|numeric',
-            'account_id' => 'required|exists:accounts,id',
-        ]);
-
+        $validated = $request->validated();
         $balance = AccountsBalance::create($validated);
         return response()->json([
             'status' => 201,
@@ -52,15 +47,10 @@ class AccountsBalancesController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(AccountsBalance $request, $id)
     {
-        $validated = $request->validate([
-            'date' => 'required|date',
-            'balance' => 'required|numeric',
-            'account_id' => 'required|exists:accounts,id',
-        ]);
-
         $balance = AccountsBalance::findOrFail($id);
+        $validated = $request->validated();
         $balance->update($validated);
         return response()->json([
             'status' => 200,

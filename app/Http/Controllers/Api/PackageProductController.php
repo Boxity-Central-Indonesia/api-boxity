@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\PackageProductRequest;
 use App\Models\PackageProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -40,25 +41,10 @@ class PackageProductController extends Controller
     }
 
     // Membuat PackageProduct baru
-    public function store(Request $request)
+    public function store(PackageProductRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'package_id' => 'required|exists:packages,id',
-            'product_id' => 'required|exists:products,id',
-        ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 400,
-                'message' => 'Validation error.',
-                'errors' => $validator->errors()
-            ], 400);
-        }
-
-        $packageProduct = PackageProduct::create([
-            'package_id' => $request->input('package_id'),
-            'product_id' => $request->input('product_id'),
-        ]);
+        $packageProduct = PackageProduct::create($request->validated());
 
         return response()->json([
             'status' => 201,
@@ -68,7 +54,7 @@ class PackageProductController extends Controller
     }
 
     // Mengupdate PackageProduct berdasarkan ID
-    public function update(Request $request, $id)
+    public function update(PackageProductRequest $request, $id)
     {
         $packageProduct = PackageProduct::find($id);
 
@@ -79,27 +65,7 @@ class PackageProductController extends Controller
             ], 404);
         }
 
-        $validator = Validator::make($request->all(), [
-            'package_id' => [
-                'required',
-                'exists:packages,id',
-                Rule::unique('package_products')->ignore($packageProduct->id),
-            ],
-            'product_id' => 'required|exists:products,id',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 400,
-                'message' => 'Validation error.',
-                'errors' => $validator->errors()
-            ], 400);
-        }
-
-        $packageProduct->update([
-            'package_id' => $request->input('package_id'),
-            'product_id' => $request->input('product_id'),
-        ]);
+        $packageProduct->update($request->validated());
 
         return response()->json([
             'status' => 200,

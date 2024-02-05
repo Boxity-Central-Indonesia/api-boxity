@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\AssetRequest;
 use App\Models\Asset;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -24,21 +25,9 @@ class AssetsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(AssetRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'code' => 'required|string|max:255|unique:assets',
-            'type' => 'required|in:tangible,intangible',
-            'description' => 'nullable|string',
-            'acquisition_date' => 'required|date',
-            'acquisition_cost' => 'required|numeric',
-            'book_value' => 'required|numeric',
-            'location_id' => 'nullable|exists:asset_locations,id',
-            'condition_id' => 'nullable|exists:asset_conditions,id',
-        ]);
-
-        $asset = Asset::create($validated);
+        $asset = Asset::create($request->validated());
         return response()->json([
             'status' => 201,
             'data' => $asset,
@@ -56,22 +45,10 @@ class AssetsController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(AssetRequest $request, $id)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'code' => 'required|string|max:255|unique:assets,code,' . $id,
-            'type' => 'required|in:tangible,intangible',
-            'description' => 'nullable|string',
-            'acquisition_date' => 'required|date',
-            'acquisition_cost' => 'required|numeric',
-            'book_value' => 'required|numeric',
-            'location_id' => 'nullable|exists:asset_locations,id',
-            'condition_id' => 'nullable|exists:asset_conditions,id',
-        ]);
-
         $asset = Asset::findOrFail($id);
-        $asset->update($validated);
+        $asset->update($request->validated());
         return response()->json([
             'status' => 200,
             'data' => $asset,

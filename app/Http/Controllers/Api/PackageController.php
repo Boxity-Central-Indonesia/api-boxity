@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\PackageRequest;
 use App\Models\Package;
+use App\Models\PackageProduct;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -40,26 +43,21 @@ class PackageController extends Controller
     }
 
     // Membuat Package baru
-    public function store(Request $request)
+    public function store(PackageRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'package_name' => 'required|unique:packages,package_name',
-            'package_weight' => 'required|numeric',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 400,
-                'message' => 'Validation error.',
-                'errors' => $validator->errors()
-            ], 400);
+        $package = Package::create($request->validated());
+        $itemCount = PackageProduct::where('package_id', $package->id)->count();
+        if ($itemCount > 0) {
+            // Membuat produk baru yang mewakili paket jika ada satu atau lebih item
+            $product = Product::create([
+                'name' => $request->input('package_name'), // Nama paket sebagai nama produk
+                'code' => 'PKG-' . strtoupper(uniqid()), // Membuat kode unik
+                'description' => 'Package product with ' . $itemCount . ' items',
+                'price' => 0, // Tentukan harga sesuai kebutuhan
+                'weight' => $request->input('package_weight'),
+                // Sesuaikan dengan kolom yang ada di tabel products
+            ]);
         }
-
-        $package = Package::create([
-            'package_name' => $request->input('package_name'),
-            'package_weight' => $request->input('package_weight'),
-        ]);
-
         return response()->json([
             'status' => 201,
             'data' => $package,
@@ -68,7 +66,7 @@ class PackageController extends Controller
     }
 
     // Mengupdate Package berdasarkan ID
-    public function update(Request $request, $id)
+    public function update(PackageRequest $request, $id)
     {
         $package = Package::find($id);
 
@@ -79,27 +77,14 @@ class PackageController extends Controller
             ], 404);
         }
 
-        $validator = Validator::make($request->all(), [
-            'package_name' => [
-                'required',
-                Rule::unique('packages')->ignore($package->id),
-            ],
-            'package_weight' => 'required|numeric',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 400,
-                'message' => 'Validation error.',
-                'errors' => $validator->errors()
-            ], 400);
+        $package->update($request->validated());
+        $product = Product::where('name', $package->package_name)->first();
+        if ($product) {
+            $product->update([
+                'name' => $request->input('package_name'), // atau gunakan nama lain jika paket diubah
+                'weight' => $request->input('package_weight'),
+            ]);
         }
-
-        $package->update([
-            'package_name' => $request->input('package_name'),
-            'package_weight' => $request->input('package_weight'),
-        ]);
-
         return response()->json([
             'status' => 200,
             'data' => $package,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\InvoiceRequest;
 use App\Models\Account;
 use App\Models\AccountsTransaction;
 use Illuminate\Http\Request;
@@ -35,20 +36,12 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(InvoiceRequest $request)
     {
-        $validated = $request->validate([
-            'order_id' => 'required|exists:orders,id',
-            'total_amount' => 'required|numeric',
-            'balance_due' => 'required|numeric',
-            'invoice_date' => 'required|date',
-            'due_date' => 'required|date',
-            'status' => 'required|in:unpaid,partial,paid',
-        ]);
-
         DB::beginTransaction();
 
         try {
+            $validated = $request->validated();
             $invoice = Invoice::create($validated);
 
             // Mengambil order dan vendor terkait
@@ -122,7 +115,7 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(InvoiceRequest $request, $id)
     {
         $invoice = Invoice::find($id);
         if (!$invoice) {
@@ -131,14 +124,6 @@ class InvoiceController extends Controller
                 'message' => 'Invoice not found.',
             ]);
         }
-
-        $validated = $request->validate([
-            'total_amount' => 'sometimes|required|numeric',
-            'balance_due' => 'sometimes|required|numeric',
-            'invoice_date' => 'sometimes|required|date',
-            'due_date' => 'sometimes|required|date',
-            'status' => 'sometimes|required|in:unpaid,partial,paid',
-        ]);
 
         DB::beginTransaction();
 
@@ -184,6 +169,7 @@ class InvoiceController extends Controller
             }
 
             // Perbarui invoice
+            $validated = $request->validated();
             $invoice->update($validated);
 
             // Pembaruan status invoice dan saldo Piutang Usaha

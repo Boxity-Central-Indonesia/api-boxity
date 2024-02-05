@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\AccountsTransactionRequest;
 use App\Models\Account;
 use App\Models\AccountsTransaction;
 use Illuminate\Http\Request;
@@ -26,15 +27,9 @@ class AccountsTransactionsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(AccountsTransactionRequest $request)
     {
-        $validated = $request->validate([
-            'type' => 'required|string',
-            'date' => 'required|date',
-            'amount' => 'required|numeric',
-            'account_id' => 'required|exists:accounts,id',
-        ]);
-
+        $validated = $request->validated();
         $transaction = AccountsTransaction::create($validated);
         return response()->json([
             'status' => 201,
@@ -53,16 +48,10 @@ class AccountsTransactionsController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(AccountsTransactionRequest $request, $id)
     {
-        $validated = $request->validate([
-            'type' => 'required|string',
-            'date' => 'required|date',
-            'amount' => 'required|numeric',
-            'account_id' => 'required|exists:accounts,id',
-        ]);
-
         $transaction = AccountsTransaction::findOrFail($id);
+        $validated = $request->validated();
         $transaction->update($validated);
         return response()->json([
             'status' => 200,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\ProductsPriceRequest;
 use App\Models\Product;
 use App\Models\ProductsPrice;
 use Illuminate\Http\Request;
@@ -25,27 +26,8 @@ class ProductsPricesController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(ProductsPriceRequest $request)
     {
-        $customMessages = [
-            'product_id.required' => 'The product ID field is required.',
-            'product_id.exists' => 'The selected product ID does not exist in the database.',
-            'selling_price.required' => 'The selling price field is required.',
-            'selling_price.numeric' => 'The selling price must be a number.',
-            'selling_price.min' => 'The selling price must be at least 0.',
-            'buying_price.required' => 'The buying price field is required.',
-            'buying_price.numeric' => 'The buying price must be a number.',
-            'buying_price.min' => 'The buying price must be at least 0.',
-            'discount_price.numeric' => 'The discount price must be a number.',
-            'discount_price.min' => 'The discount price must be at least 0.',
-        ];
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'selling_price' => 'required|numeric',
-            'buying_price' => 'required|numeric',
-            'discount_price' => 'required|numeric',
-        ]);
-
         $price = ProductsPrice::create($request->all());
         return response()->json([
             'status' => 201,
@@ -64,27 +46,8 @@ class ProductsPricesController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(ProductsPriceRequest $request, $id)
     {
-        $customMessages = [
-            'product_id.required' => 'The product ID field is required.',
-            'product_id.exists' => 'The selected product ID does not exist in the database.',
-            'selling_price.required' => 'The selling price field is required.',
-            'selling_price.numeric' => 'The selling price must be a number.',
-            'selling_price.min' => 'The selling price must be at least 0.',
-            'buying_price.required' => 'The buying price field is required.',
-            'buying_price.numeric' => 'The buying price must be a number.',
-            'buying_price.min' => 'The buying price must be at least 0.',
-            'discount_price.numeric' => 'The discount price must be a number.',
-            'discount_price.min' => 'The discount price must be at least 0.',
-        ];
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'selling_price' => 'required|numeric',
-            'buying_price' => 'required|numeric',
-            'discount_price' => 'required|numeric',
-        ]);
-
         $price = ProductsPrice::findOrFail($id);
         $price->update($request->all());
         return response()->json([

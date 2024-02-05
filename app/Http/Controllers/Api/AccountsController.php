@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\AccountRequest;
 use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -44,16 +45,15 @@ class AccountsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(AccountRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'type' => 'required|in:Aset,Liabilitas,Ekuitas,Pendapatan,Pengeluaran,Biaya',
-            'balance' => 'required|numeric',
-        ]);
-
+        $validated = $request->validated();
         $account = Account::create($validated);
-        return response()->json(['status' => 201, 'data' => $account, 'message' => 'Account created successfully.'], 201);
+        return response()->json([
+            'status' => 201,
+            'data' => $account,
+            'message' => 'Account created successfully.',
+        ], 201);
     }
 
     public function show($id)
@@ -62,17 +62,16 @@ class AccountsController extends Controller
         return response()->json(['status' => 200, 'data' => $account, 'message' => 'Account retrieved successfully.']);
     }
 
-    public function update(Request $request, $id)
+    public function update(AccountRequest $request, $id)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'type' => 'required|in:Aset,Liabilitas,Ekuitas,Pendapatan,Pengeluaran,Biaya',
-            'balance' => 'required|numeric',
-        ]);
-
         $account = Account::findOrFail($id);
+        $validated = $request->validated();
         $account->update($validated);
-        return response()->json(['status' => 200, 'data' => $account, 'message' => 'Account updated successfully.']);
+        return response()->json([
+            'status' => 200,
+            'data' => $account,
+            'message' => 'Account updated successfully.',
+        ]);
     }
 
     public function destroy($id)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\WarehouseLocationRequest;
 use App\Models\Warehouse;
 use App\Models\WarehouseLocation;
 use Illuminate\Http\Request;
@@ -25,19 +26,14 @@ class WarehouseLocationsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(WarehouseLocationRequest $request)
     {
-        $request->validate([
-            'warehouse_id' => 'required|exists:warehouses,id',
-            'number' => 'required|string',
-            'capacity' => 'required|numeric',
-        ]);
 
         $location = WarehouseLocation::create($request->all());
         return response()->json([
             'status' => 201,
             'data' => $location
-        ],201);
+        ], 201);
     }
 
     public function show($id)
@@ -49,20 +45,15 @@ class WarehouseLocationsController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(WarehouseLocationRequest $request, $id)
     {
-        $request->validate([
-            'warehouse_id' => 'required|exists:warehouses,id',
-            'number' => 'required|string',
-            'capacity' => 'required|numeric',
-        ]);
 
         $location = WarehouseLocation::findOrFail($id);
         $location->update($request->all());
         return response()->json([
             'status' => 201,
             'data' => $location
-        ],201);
+        ], 201);
     }
 
     public function destroy($id)

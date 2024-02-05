@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\CompanyDepartmentRequest;
 use App\Models\CompaniesDepartment;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -28,42 +29,9 @@ class CompaniesDepartmentController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(CompanyDepartmentRequest $request)
     {
-        $validationRules = [
-            'name' => 'required|string|max:255',
-            'responsibilities' => 'required|string|max:255',
-            'company_id' => 'required|exists:companies,id',
-        ];
-
-        $customMessages = [
-            'name.required' => 'The name field is required.',
-            'name.string' => 'The name must be a string.',
-            'name.max' => 'The name must not exceed 255 characters.',
-            'responsibilities.required' => 'The responsibilities field is required.',
-            'responsibilities.string' => 'The responsibilities must be a string.',
-            'responsibilities.max' => 'The responsibilities must not exceed 255 characters.',
-            'company_id.required' => 'The company ID field is required.',
-            'company_id.exists' => 'The selected company ID does not exist in the database.',
-        ];
-
-
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $department = CompaniesDepartment::create($request->all());
-
-        $department->save();
-
+        $department = CompaniesDepartment::create($request->validated());
         return response()->json([
             'status' => 201,
             'data' => $department,
@@ -71,76 +39,39 @@ class CompaniesDepartmentController extends Controller
         ], 201);
     }
 
-// CompaniesDepartmentController.php
-
-/**
- * Display the specified resource.
- *
- * @param  \App\Models\Company  $company
- * @param  \App\Models\CompaniesDepartment  $department
- * @return \Illuminate\Http\Response
- */
-public function show(Company $company, CompaniesDepartment $department)
-{
-    // Assuming 'departments' is the relationship method in the Company model
-    $departmentModel = $company->departments()->find($department->id);
-
-    if (!$departmentModel) {
-        return response()->json(['message' => 'Department not found.'], 404);
+    public function update(CompanyDepartmentRequest $request, $department)
+    {
+        $department = CompaniesDepartment::findOrFail($department);
+        $department->update($request->validated());
+        return response()->json([
+            'status' => 200,
+            'data' => $department,
+            'message' => 'Department updated successfully.',
+        ]);
     }
 
-    return response()->json([
-        'status' => 200,
-        'data' => $departmentModel,
-        'message' => 'Department retrieved successfully.',
-    ]);
-}
-
-
-
+    // CompaniesDepartmentController.php
 
     /**
-     * Update the specified resource in storage.
+     * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Company  $company
      * @param  \App\Models\CompaniesDepartment  $department
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $company, $department)
+    public function show(Company $company, CompaniesDepartment $department)
     {
-        $validationRules = [
-            'name' => 'sometimes|string|max:255',
-            'responsibilities' => 'sometimes|string|max:255',
-            'company_id' => 'sometimes|exists:companies,id',
-        ];
+        // Assuming 'departments' is the relationship method in the Company model
+        $departmentModel = $company->departments()->find($department->id);
 
-        $customMessages = [
-            'name.string' => 'The name must be a string.',
-            'name.max' => 'The name must not exceed 255 characters.',
-            'responsibilities.string' => 'The responsibilities must be a string.',
-            'responsibilities.max' => 'The responsibilities must not exceed 255 characters.',
-            'company_id.exists' => 'The selected company ID does not exist in the database.',
-        ];
-
-        $validator = Validator::make($request->all(), $validationRules, $customMessages);
-
-        if ($validator->fails()) {
-            Log::info('Validation errors:', $validator->errors()->toArray());
-            return response()->json($validator->errors(), 422);
-        }
-
-        $branchModel = CompaniesDepartment::find($department);
-
-        if (!$branchModel) {
+        if (!$departmentModel) {
             return response()->json(['message' => 'Department not found.'], 404);
         }
 
-        $branchModel->update($request->all());
-
         return response()->json([
-            'status' => 201,
-            'data' => $branchModel,
-            'message' => 'Department updated successfully.',
+            'status' => 200,
+            'data' => $departmentModel,
+            'message' => 'Department retrieved successfully.',
         ]);
     }
 

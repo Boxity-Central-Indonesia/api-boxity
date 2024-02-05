@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\LeadRequest;
 use Illuminate\Http\Request;
 use App\Models\Lead;
 
@@ -17,17 +18,9 @@ class LeadController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(LeadRequest $request)
     {
-        $request->validate([
-            'nama_prospek' => 'required',
-            'email_prospek' => 'required|email|unique:leads',
-            'nomor_telepon_prospek' => 'nullable',
-            'tipe_prospek' => 'required|in:perorangan,bisnis,rekomendasi',
-        ]);
-
         $lead = Lead::create($request->all());
-
         return response()->json([
             'status' => 200,
             'data' => $lead,
@@ -50,23 +43,10 @@ class LeadController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(LeadRequest $request, $id)
     {
-        $lead = Lead::find($id);
-
-        if (!$lead) {
-            return response()->json(['message' => 'Lead not found'], 404);
-        }
-
-        $request->validate([
-            'nama_prospek' => 'required',
-            'email_prospek' => 'required|email|unique:leads,email_prospek,' . $lead->id,
-            'nomor_telepon_prospek' => 'nullable',
-            'tipe_prospek' => 'required|in:perorangan,bisnis,rekomendasi',
-        ]);
-
+        $lead = Lead::findOrFail($id);
         $lead->update($request->all());
-
         return response()->json([
             'status' => 200,
             'data' => $lead,

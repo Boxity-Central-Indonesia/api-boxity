@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\PaymentRequest;
 use App\Models\Account;
 use App\Models\AccountsBalance;
 use Illuminate\Http\Request;
@@ -22,18 +23,13 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(PaymentRequest $request)
     {
-        $validated = $request->validate([
-            'invoice_id' => 'required|exists:invoices,id',
-            'amount_paid' => 'required|numeric',
-            'payment_method' => 'required|in:cash,credit,online,other',
-            'payment_date' => 'required|date',
-        ]);
 
         DB::beginTransaction();
 
         try {
+            $validated = $request->validated();
             $payment = Payment::create($validated);
             $invoice = Invoice::with('order.vendor')->find($validated['invoice_id']);
 
@@ -160,7 +156,7 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(PaymentRequest $request, $id)
     {
         $payment = Payment::find($id);
 
@@ -171,14 +167,8 @@ class PaymentController extends Controller
             ]);
         }
 
-        $validated = $request->validate([
-            'amount_paid' => 'required|numeric',
-            'payment_method' => 'required|in:cash,credit,online,other',
-            'payment_date' => 'required|date',
-        ]);
-
         DB::beginTransaction();
-
+        $validated = $request->validated();
         try {
             $amountDifference = $validated['amount_paid'] - $payment->amount_paid;
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -24,27 +25,25 @@ class ProductsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'code' => 'required|string',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'category_id' => 'nullable|exists:products_categories,id',
-            'warehouse_id' => 'nullable|exists:warehouses,id',
-            'weight' => 'nullable|numeric|min:0',
-            'animal_type' => 'nullable|string',
-            'age' => 'nullable|integer|min:0',
-            'health_status' => 'nullable|string',
-        ]);
-
         $product = Product::create($request->all());
         return response()->json([
             'status' => 201,
             'data' => $product,
             'message' => 'Product created successfully.',
         ], 201);
+    }
+
+    public function update(ProductRequest $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        $product->update($request->all());
+        return response()->json([
+            'status' => 200,
+            'data' => $product,
+            'message' => 'Product updated successfully.',
+        ]);
     }
 
     public function show($id)
@@ -54,30 +53,6 @@ class ProductsController extends Controller
             'status' => 200,
             'data' => $product,
             'message' => 'Product retrieved successfully.',
-        ]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|string',
-            'code' => 'required|string|unique:products,code,' . $id,
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'category_id' => 'nullable|exists:products_categories,id',
-            'warehouse_id' => 'nullable|exists:warehouses,id',
-            'weight' => 'nullable|numeric|min:0',
-            'animal_type' => 'nullable|string',
-            'age' => 'nullable|integer|min:0',
-            'health_status' => 'nullable|string',
-        ]);
-
-        $product = Product::findOrFail($id);
-        $product->update($request->all());
-        return response()->json([
-            'status' => 200,
-            'data' => $product,
-            'message' => 'Product updated successfully.',
         ]);
     }
 

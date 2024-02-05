@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\ProcessingActivityRequest;
 use App\Models\ProcessingActivity;
 use Illuminate\Http\Request;
 
@@ -52,13 +53,9 @@ class ProcessingActivityController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(ProcessingActivityRequest $request)
     {
-        $validated = $request->validate([
-            'carcass_id' => 'required|exists:manufacturer_carcasses,id',
-            'activity_type' => 'required|string',
-            'details' => 'nullable|array',
-        ]);
+        $validated = $request->validated();
 
         $activity = ProcessingActivity::create($validated);
         return response()->json([
@@ -78,15 +75,11 @@ class ProcessingActivityController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(ProcessingActivityRequest $request, $id)
     {
         $activity = ProcessingActivity::findOrFail($id);
 
-        $validated = $request->validate([
-            'carcass_id' => 'required|exists:manufacturer_carcasses,id',
-            'activity_type' => 'required|string',
-            'details' => 'nullable|array',
-        ]);
+        $validated = $request->validated();
 
         $activity->update($validated);
         return response()->json([

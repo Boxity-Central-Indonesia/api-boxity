@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\AssetConditionRequest;
 use App\Models\AssetCondition;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -24,13 +25,9 @@ class AssetConditionsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(AssetConditionRequest $request)
     {
-        $validated = $request->validate([
-            'condition' => 'required|string|max:255',
-        ]);
-
-        $condition = AssetCondition::create($validated);
+        $condition = AssetCondition::create($request->validated());
         return response()->json([
             'status' => 201,
             'data' => $condition,
@@ -48,14 +45,10 @@ class AssetConditionsController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(AssetConditionRequest $request, $id)
     {
-        $validated = $request->validate([
-            'condition' => 'required|string|max:255',
-        ]);
-
         $condition = AssetCondition::findOrFail($id);
-        $condition->update($validated);
+        $condition->update($request->validated());
         return response()->json([
             'status' => 200,
             'data' => $condition,

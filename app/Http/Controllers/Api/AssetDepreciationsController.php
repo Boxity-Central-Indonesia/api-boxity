@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\AssetDepreciationRequest;
 use App\Models\Asset;
 use App\Models\AssetDepreciation;
 use Illuminate\Http\Request;
@@ -26,18 +27,9 @@ class AssetDepreciationsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(AssetDepreciationRequest $request)
     {
-        $validated = $request->validate([
-            'asset_id' => 'required|exists:assets,id',
-            'method' => 'required|in:linear,declining_balance,sum_of_the_years_digits,units_of_production,double_declining_balance',
-            'useful_life' => 'required|integer',
-            'residual_value' => 'required|numeric',
-            'start_date' => 'required|date',
-            'current_value' => 'required|numeric',
-        ]);
-
-        $depreciation = AssetDepreciation::create($validated);
+        $depreciation = AssetDepreciation::create($request->validated());
         return response()->json([
             'status' => 201,
             'data' => $depreciation,
@@ -55,19 +47,10 @@ class AssetDepreciationsController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(AssetDepreciationRequest $request, $id)
     {
-        $validated = $request->validate([
-            'asset_id' => 'required|exists:assets,id',
-            'method' => 'required|in:linear,declining_balance,sum_of_the_years_digits,units_of_production,double_declining_balance',
-            'useful_life' => 'required|integer',
-            'residual_value' => 'required|numeric',
-            'start_date' => 'required|date',
-            'current_value' => 'required|numeric',
-        ]);
-
         $depreciation = AssetDepreciation::findOrFail($id);
-        $depreciation->update($validated);
+        $depreciation->update($request->validated());
         return response()->json([
             'status' => 200,
             'data' => $depreciation,

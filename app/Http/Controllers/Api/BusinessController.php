@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\BusinessProfileRequest;
 use Illuminate\Http\Request;
 use App\Models\businesses;
 use App\Models\profiles;
@@ -30,17 +31,11 @@ class BusinessController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(BusinessProfileRequest $request)
     {
         $profileId = $this->getProfileId();
-        $request->validate([
-            'nama_bisnis' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:businesses',
-            'business_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            // Tambahkan validasi lain sesuai kebutuhan
-        ]);
+        $data = $request->validated();
 
-        $data = $request->all();
         if ($request->hasFile('business_logo')) {
             $result = cloudinary()->upload($request->file('business_logo')->getRealPath())->getSecurePath();
             $data['business_logo'] = $result;
@@ -69,17 +64,12 @@ class BusinessController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(BusinessProfileRequest $request, $id)
     {
         $profileId = $this->getProfileId();
-        $business = businesses::where('id', $id)->where('profile_id', $profileId)->first();
-        if (!$business) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Business not found',
-            ], 404);
-        }
-        $data = $request->all();
+        $business = businesses::where('id', $id)->where('profile_id', $profileId)->firstOrFail();
+
+        $data = $request->validated();
         if ($request->hasFile('business_logo')) {
             $result = cloudinary()->upload($request->file('business_logo')->getRealPath())->getSecurePath();
             $data['business_logo'] = $result;

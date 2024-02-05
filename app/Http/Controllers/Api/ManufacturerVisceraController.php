@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\ManufacturerVisceraRequest;
 use App\Models\ManufacturerViscera;
 use Illuminate\Http\Request;
 
@@ -16,14 +17,24 @@ class ManufacturerVisceraController extends Controller
             'message' => 'Viscera records retrieved successfully.',
         ]);
     }
-
-    public function store(Request $request)
+    public function store(ManufacturerVisceraRequest $request)
     {
-        $viscerum = ManufacturerViscera::create($request->all());
+        $viscerum = ManufacturerViscera::create($request->validated());
         return response()->json([
             'status' => 201,
             'data' => $viscerum,
             'message' => 'Viscerum record created successfully.',
+        ]);
+    }
+
+    public function update(ManufacturerVisceraRequest $request, $id)
+    {
+        $viscerum = ManufacturerViscera::findOrFail($id);
+        $viscerum->update($request->validated());
+        return response()->json([
+            'status' => 200,
+            'data' => $viscerum,
+            'message' => 'Viscerum record updated successfully.',
         ]);
     }
 
@@ -34,17 +45,6 @@ class ManufacturerVisceraController extends Controller
             'status' => 200,
             'data' => $viscerum,
             'message' => 'Viscerum record retrieved successfully.',
-        ]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $viscerum = ManufacturerViscera::findOrFail($id);
-        $viscerum->update($request->all());
-        return response()->json([
-            'status' => 200,
-            'data' => $viscerum,
-            'message' => 'Viscerum record updated successfully.',
         ]);
     }
 

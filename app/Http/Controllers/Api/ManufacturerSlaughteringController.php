@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\ManufacturerSlaughteringRequest;
 use Illuminate\Http\Request;
 use App\Models\ManufacturerSlaughtering;
 
@@ -17,13 +18,24 @@ class ManufacturerSlaughteringController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(ManufacturerSlaughteringRequest $request)
     {
-        $slaughtering = ManufacturerSlaughtering::create($request->all());
+        $slaughtering = ManufacturerSlaughtering::create($request->validated());
         return response()->json([
             'status' => 201,
             'data' => $slaughtering,
             'message' => 'Slaughtering record created successfully.',
+        ]);
+    }
+
+    public function update(ManufacturerSlaughteringRequest $request, $id)
+    {
+        $slaughtering = ManufacturerSlaughtering::findOrFail($id);
+        $slaughtering->update($request->validated());
+        return response()->json([
+            'status' => 200,
+            'data' => $slaughtering,
+            'message' => 'Slaughtering record updated successfully.',
         ]);
     }
 
@@ -34,17 +46,6 @@ class ManufacturerSlaughteringController extends Controller
             'status' => 200,
             'data' => $slaughtering,
             'message' => 'Slaughtering record retrieved successfully.',
-        ]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $slaughtering = ManufacturerSlaughtering::findOrFail($id);
-        $slaughtering->update($request->all());
-        return response()->json([
-            'status' => 200,
-            'data' => $slaughtering,
-            'message' => 'Slaughtering record updated successfully.',
         ]);
     }
 

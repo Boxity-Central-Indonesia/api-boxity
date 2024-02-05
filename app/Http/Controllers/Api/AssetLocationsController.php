@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\AssetLocationRequest;
 use App\Models\AssetLocation;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -24,14 +25,9 @@ class AssetLocationsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(AssetLocationRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string',
-        ]);
-
-        $location = AssetLocation::create($validated);
+        $location = AssetLocation::create($request->validated());
         return response()->json([
             'status' => 201,
             'data' => $location,
@@ -49,15 +45,10 @@ class AssetLocationsController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(AssetLocationRequest $request, $id)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string',
-        ]);
-
         $location = AssetLocation::findOrFail($id);
-        $location->update($validated);
+        $location->update($request->validated());
         return response()->json([
             'status' => 200,
             'data' => $location,

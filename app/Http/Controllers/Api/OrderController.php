@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\OrderRequest;
 use App\Models\Account;
 use App\Models\AccountsTransaction;
 use Illuminate\Http\Request;
@@ -41,23 +42,11 @@ class OrderController extends Controller
     }
 
     // Membuat order baru
-    public function store(Request $request)
+    public function store(OrderRequest $request)
     {
-        $validatedData = $request->validate([
-            'vendor_id' => 'required|exists:vendors,id',
-            'warehouse_id' => 'required|exists:warehouses,id',
-            'status' => 'required|in:pending,completed,cancelled',
-            'details' => 'nullable|string',
-            'price_per_unit' => 'required|numeric',
-            'total_price' => 'required|numeric',
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|numeric',
-            'taxes' => 'nullable|numeric',
-            'shipping_cost' => 'nullable|numeric',
-        ]);
-
         DB::beginTransaction();
         try {
+            $validatedData = $request->validated();
             $order = Order::create($validatedData);
             $vendor = Vendor::find($request->vendor_id);
 
@@ -213,7 +202,7 @@ class OrderController extends Controller
         }
     }
     // Mengupdate order
-    public function update(Request $request, $id)
+    public function update(OrderRequest $request, $id)
     {
         $order = Order::find($id);
         if (!$order) {
@@ -222,16 +211,7 @@ class OrderController extends Controller
                 'message' => 'Order not found.',
             ]);
         }
-
-        // Validasi request
-        $validatedData = $request->validate([
-            'status' => 'sometimes|required|in:pending,completed,cancelled',
-            'details' => 'nullable|string',
-            'quantity' => 'required|numeric',
-            'total_price' => 'sometimes|required|numeric',
-            'taxes' => 'nullable|numeric',
-            'shipping_cost' => 'nullable|numeric',
-        ]);
+        $validatedData = $request->validated();
 
         DB::beginTransaction();
         try {
