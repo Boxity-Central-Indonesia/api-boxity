@@ -4381,14 +4381,15 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Get Produksi Detail by Order ID",
 					"id": "7257de84-9a85-4548-bf85-d56bc35990b4",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": "{{url}}/api/production-report/{{orderID}}"
 					},
 					"response": []
 				}
