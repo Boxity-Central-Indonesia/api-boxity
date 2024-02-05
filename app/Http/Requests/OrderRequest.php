@@ -22,6 +22,7 @@ class OrderRequest extends FormRequest
             'total_price' => 'required|numeric',
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|numeric',
+            'order_type' => 'required|string',
             'taxes' => 'nullable|numeric',
             'shipping_cost' => 'nullable|numeric',
         ];
@@ -47,6 +48,8 @@ class OrderRequest extends FormRequest
             'warehouse_id.exists' => 'The selected warehouse ID does not exist.',
             'status.required' => 'Order status is required.',
             'status.in' => 'Invalid order status. Valid statuses are: pending, completed, cancelled.',
+            'order_type.required' => 'Order type is required.',
+            'order_type.in' => 'Invalid order type. Valid types are: Direct Order, and Production',
             'price_per_unit.required' => 'Price per unit is required.',
             'total_price.required' => 'Total price is required.',
             'product_id.required' => 'A product ID is required.',

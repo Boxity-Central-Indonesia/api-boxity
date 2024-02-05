@@ -18,7 +18,9 @@ class Order extends Model
         'total_price',
         'quantity',
         'taxes',
-        'shipping_cost'
+        'shipping_cost',
+        'order_status',
+        'order_type'
     ];
 
     // Hubungan ke Vendor

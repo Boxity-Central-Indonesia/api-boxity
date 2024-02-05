@@ -47,7 +47,13 @@ class OrderController extends Controller
         DB::beginTransaction();
         try {
             $validatedData = $request->validated();
-            $order = Order::create($validatedData);
+            $order = new Order($validatedData);
+            if ($order->order_type == 'Direct Order') {
+                $order->order_status = 'Completed';
+            } elseif ($order->order_type == 'Production Order') {
+                $order->order_status = 'In Production';
+            }
+            $order->save();
             $vendor = Vendor::find($request->vendor_id);
 
             // Buat transaksi vendor yang terkait dengan pesanan
