@@ -3910,7 +3910,7 @@
 							"response": []
 						},
 						{
-							"name": "Track Activities by Carcass ID",
+							"name": "Track Activities by Order ID",
 							"id": "280202b5-162a-4117-9551-2520ebfec3fd",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -3918,7 +3918,20 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{url}}/api/processing-activities/by-carcass/{{carcassesID}}"
+								"url": "{{url}}/api/processing-activities/by-order/{{orderID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Track Activities by Product ID",
+							"id": "b1f85401-2b36-4c29-9d33-5b39d9d392dc",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/processing-activities/by-product/{{productID}}"
 							},
 							"response": []
 						},
