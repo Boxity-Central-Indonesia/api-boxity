@@ -3824,104 +3824,6 @@
 			"description": "Modul \"Leads\" digunakan untuk mengelola informasi tentang prospek atau calon pelanggan yang potensial. Modul ini memberikan fungsionalitas untuk:\n\n1. **Menampilkan Daftar Prospek**: Anda dapat melihat daftar lengkap dari semua prospek yang telah tercatat dalam sistem. Setiap entri dalam daftar ini berisi informasi tentang prospek, termasuk nama, email, nomor telepon, dan tipe prospek.\n    \n2. **Tambahkan Prospek Baru**: Anda dapat menambahkan prospek baru ke dalam sistem dengan memberikan detail seperti nama, email, nomor telepon, dan tipe prospek. Tipe prospek dapat berupa \"perorangan\", \"bisnis\", atau \"rekomendasi dari Anda\".\n    \n3. **Edit Informasi Prospek**: Anda memiliki kemampuan untuk mengedit informasi tentang prospek yang sudah ada, termasuk mengubah nama, email, nomor telepon, atau tipe prospek.\n    \n4. **Hapus Prospek**: Anda dapat menghapus entri prospek jika tidak relevan atau tidak diperlukan lagi dalam daftar.\n    \n\nDengan menggunakan modul ini, Anda dapat secara efisien melacak dan mengelola daftar prospek yang potensial menjadi pelanggan Anda. Ini adalah alat yang berguna untuk mengelola hubungan dengan calon pelanggan dan mengambil tindakan yang diperlukan untuk mengonversi mereka menjadi pelanggan aktif."
 		},
 		{
-			"name": "Laporan",
-			"item": [
-				{
-					"name": "Penjualan",
-					"id": "9c874eee-6ff9-40ef-b468-3575093d04d8",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{url}}/api/sales-report"
-					},
-					"response": []
-				},
-				{
-					"name": "Pembelian",
-					"id": "342b4a6c-7365-4eab-861b-c39e277889ad",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{url}}/api/purchase-report"
-					},
-					"response": []
-				},
-				{
-					"name": "Pendapatan",
-					"id": "611b80fe-65cb-4dfa-8c60-cd7764cda6e8",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{url}}/api/revenue-report"
-					},
-					"response": []
-				},
-				{
-					"name": "Pengeluaran",
-					"id": "624d5e81-e132-41b3-8b70-dd13150317d5",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{url}}/api/expenses-report"
-					},
-					"response": []
-				},
-				{
-					"name": "Persediaan Barang",
-					"id": "0f502093-88f6-41db-8241-5d950f288fb5",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{url}}/api/inventory-report"
-					},
-					"response": []
-				},
-				{
-					"name": "Leads Prospek",
-					"id": "7784dac0-5d98-4254-8ad1-f68b545922f5",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{url}}/api/leads-report"
-					},
-					"response": []
-				},
-				{
-					"name": "Track Vendor Transactions",
-					"id": "017cf6e1-10f2-4441-bee7-75a379de8b07",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{url}}/api/vendor-report"
-					},
-					"response": []
-				}
-			],
-			"id": "dc4664a7-5af0-4d14-89f7-1502ab3438c1",
-			"description": "Modul Laporan/Reports adalah bagian dari sistem yang memungkinkan pengguna untuk mengakses informasi terkait dengan berbagai aspek bisnis atau operasional. Modul ini digunakan untuk menghasilkan laporan atau ringkasan data yang dapat membantu dalam pengambilan keputusan, pemantauan kinerja, dan analisis bisnis. Dalam konteks deskripsi Postman, berikut adalah penjelasan singkat tentang modul Laporan/Reports:\n\n### Laporan Penjualan (Sales Report)\n\n**Deskripsi**: Modul Laporan Penjualan digunakan untuk menghasilkan laporan terkait dengan transaksi penjualan produk atau layanan. Laporan ini mencakup informasi seperti pesanan, faktur, dan pembayaran yang berkaitan dengan penjualan. Ini membantu dalam melacak pendapatan dan kinerja penjualan.\n\n### Laporan Pendapatan (Revenue Report)\n\n**Deskripsi**: Modul Laporan Pendapatan digunakan untuk menghasilkan laporan pendapatan perusahaan. Ini mencakup semua transaksi pendapatan yang telah tercatat. Laporan ini membantu dalam pemantauan pendapatan bersih perusahaan.\n\n### Laporan Pengeluaran (Expenses Report)\n\n**Deskripsi**: Modul Laporan Pengeluaran digunakan untuk menghasilkan laporan yang berkaitan dengan pengeluaran perusahaan. Ini mencakup semua transaksi pengeluaran yang telah tercatat. Laporan ini membantu dalam mengelola dan memantau biaya operasional.\n\n### Laporan Persediaan (Inventory Report)\n\n**Deskripsi**: Modul Laporan Persediaan digunakan untuk menghasilkan laporan terkait dengan persediaan produk atau barang. Laporan ini mencakup informasi tentang produk yang tersedia, harga, dan pergerakan persediaan. Ini membantu dalam mengelola persediaan dan mengoptimalkan stok produk.\n\n### Laporan Prospek (Leads Report)\n\n**Deskripsi**: Modul Laporan Prospek digunakan untuk menghasilkan laporan terkait dengan data prospek atau calon pelanggan. Laporan ini mencakup informasi tentang calon pelanggan potensial yang dapat dihubungi atau diikuti lebih lanjut. Ini membantu dalam mengelola peluang bisnis.\n\n### **Laporan Vendor**\n\nLaporan vendor adalah sebuah ringkasan data yang memberikan informasi penting tentang vendor atau pemasok tertentu dalam konteks bisnis atau organisasi. Laporan ini dapat digunakan untuk memahami interaksi dan transaksi antara bisnis atau organisasi dengan vendor, serta untuk mengambil keputusan yang lebih baik terkait dengan manajemen rantai pasokan dan keuangan."
-		},
-		{
 			"name": "Production Manufacturer",
 			"item": [
 				{
@@ -4596,6 +4498,117 @@
 			],
 			"id": "7d6b7534-6a06-4aa2-bf1d-6bc5f2e88701",
 			"description": "### **Proses Kerja Kotor**\n\n#### **Pemesanan Based on Berat:**\n\nIni adalah tahap awal di mana pesanan dibuat berdasarkan berat yang dibutuhkan. Ini penting untuk memastikan bahwa jumlah hewan yang dipotong sesuai dengan kebutuhan produksi.\n\n#### Unloading\n\nSetelah hewan tiba di fasilitas, mereka di-unload dari kendaraan transportasi. Ini adalah langkah penting untuk memulai proses pemotongan.\n\n#### Penimbangan:\n\nHewan ditimbang untuk memastikan bahwa beratnya sesuai dengan yang dipesan. Ini juga bisa digunakan untuk pencatatan dan keperluan administratif.\n\n#### Penyembelihan:\n\nTahap ini melibatkan pembunuhan hewan dengan cara yang humanis sesuai dengan standar dan peraturan yang berlaku.\n\n#### Scalding Tank:\n\nHewan, khususnya unggas, direndam dalam tangki air panas untuk melonggarkan bulu, memudahkan pencabutan bulu.\n\n#### Pencabutan Bulu\n\nSetelah scalding, bulu-bulu dicabut dari tubuh hewan. Ini bisa dilakukan secara manual atau dengan mesin.\n\n#### Pencucian Karkas:\n\nKarkas dicuci untuk menghilangkan sisa-sisa darah dan kotoran, mempersiapkannya untuk proses selanjutnya.\n\n#### Pengeluaran Jeroan:\n\nJeroan seperti usus, hati, dan ginjal diambil dari karkas. Tahap ini memerlukan kehati-hatian untuk menghindari kontaminasi.\n\n#### Penanganan Jeroan:\n\nJeroan yang dihasilkan ditangani secara terpisah, bisa untuk diproses lebih lanjut atau dibuang sesuai dengan kebijakan.\n\n_Note: Karkas merupakan bagian tubuh ayam setelah dilakukan penyembelihan secara halal sesuai dengan CAC/GL 24-1997_\n\n### Proses Kerja Bersih\n\n#### Pencucian Karkas:\n\nIni merupakan tahapan lanjutan dari pencucian karkas pada proses kerja kotor, memastikan karkas benar-benar bersih.\n\n#### Seleksi Karkas (Grading):\n\nKarkas dinilai berdasarkan kualitas dan ukuran. Ini penting untuk memenuhi standar produk.\n\n#### Penimbangan Karkas (Cutting):\n\nKarkas ditimbang sebelum dipotong menjadi bagian-bagian tertentu sesuai dengan kebutuhan.\n\n#### Pemisahan Daging dari Tulang (Deboning):\n\nDaging dipisahkan dari tulang, mempersiapkannya untuk proses pemotongan lebih lanjut atau pengemasan.\n\n#### Pemotongan Karkas (Parting):\n\nKarkas dipotong menjadi bagian-bagian yang lebih kecil, seperti sayap, dada, paha, sesuai dengan kebutuhan pasar.\n\n#### Penimbangan Hasil Potong:\n\nBagian-bagian yang sudah dipotong ditimbang untuk memastikan konsistensi dan memenuhi spesifikasi pesanan.\n\n#### Pengemasan (Packing):\n\nDaging yang sudah dipotong dikemas, bisa dalam bentuk kemasan vakum, plastik, atau kemasan lainnya sesuai dengan kebutuhan.\n\n#### Penimbangan Packaging:\n\nKemasan akhir ditimbang untuk memastikan bahwa beratnya sesuai dengan yang dideklarasikan pada label."
+		},
+		{
+			"name": "Laporan",
+			"item": [
+				{
+					"name": "Penjualan",
+					"id": "9c874eee-6ff9-40ef-b468-3575093d04d8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/sales-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Pembelian",
+					"id": "342b4a6c-7365-4eab-861b-c39e277889ad",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/purchase-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Pendapatan",
+					"id": "611b80fe-65cb-4dfa-8c60-cd7764cda6e8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/revenue-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Pengeluaran",
+					"id": "624d5e81-e132-41b3-8b70-dd13150317d5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/expenses-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Persediaan Barang",
+					"id": "0f502093-88f6-41db-8241-5d950f288fb5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/inventory-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Leads Prospek",
+					"id": "7784dac0-5d98-4254-8ad1-f68b545922f5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/leads-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Track Vendor Transactions",
+					"id": "017cf6e1-10f2-4441-bee7-75a379de8b07",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/vendor-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Produksi",
+					"id": "6d36ae16-7407-4325-b2c9-1610ed5af228",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/production-report"
+					},
+					"response": []
+				}
+			],
+			"id": "dc4664a7-5af0-4d14-89f7-1502ab3438c1",
+			"description": "Modul Laporan/Reports adalah bagian dari sistem yang memungkinkan pengguna untuk mengakses informasi terkait dengan berbagai aspek bisnis atau operasional. Modul ini digunakan untuk menghasilkan laporan atau ringkasan data yang dapat membantu dalam pengambilan keputusan, pemantauan kinerja, dan analisis bisnis. Dalam konteks deskripsi Postman, berikut adalah penjelasan singkat tentang modul Laporan/Reports:\n\n### Laporan Penjualan (Sales Report)\n\n**Deskripsi**: Modul Laporan Penjualan digunakan untuk menghasilkan laporan terkait dengan transaksi penjualan produk atau layanan. Laporan ini mencakup informasi seperti pesanan, faktur, dan pembayaran yang berkaitan dengan penjualan. Ini membantu dalam melacak pendapatan dan kinerja penjualan.\n\n### Laporan Pendapatan (Revenue Report)\n\n**Deskripsi**: Modul Laporan Pendapatan digunakan untuk menghasilkan laporan pendapatan perusahaan. Ini mencakup semua transaksi pendapatan yang telah tercatat. Laporan ini membantu dalam pemantauan pendapatan bersih perusahaan.\n\n### Laporan Pengeluaran (Expenses Report)\n\n**Deskripsi**: Modul Laporan Pengeluaran digunakan untuk menghasilkan laporan yang berkaitan dengan pengeluaran perusahaan. Ini mencakup semua transaksi pengeluaran yang telah tercatat. Laporan ini membantu dalam mengelola dan memantau biaya operasional.\n\n### Laporan Persediaan (Inventory Report)\n\n**Deskripsi**: Modul Laporan Persediaan digunakan untuk menghasilkan laporan terkait dengan persediaan produk atau barang. Laporan ini mencakup informasi tentang produk yang tersedia, harga, dan pergerakan persediaan. Ini membantu dalam mengelola persediaan dan mengoptimalkan stok produk.\n\n### Laporan Prospek (Leads Report)\n\n**Deskripsi**: Modul Laporan Prospek digunakan untuk menghasilkan laporan terkait dengan data prospek atau calon pelanggan. Laporan ini mencakup informasi tentang calon pelanggan potensial yang dapat dihubungi atau diikuti lebih lanjut. Ini membantu dalam mengelola peluang bisnis.\n\n### **Laporan Vendor**\n\nLaporan vendor adalah sebuah ringkasan data yang memberikan informasi penting tentang vendor atau pemasok tertentu dalam konteks bisnis atau organisasi. Laporan ini dapat digunakan untuk memahami interaksi dan transaksi antara bisnis atau organisasi dengan vendor, serta untuk mengambil keputusan yang lebih baik terkait dengan manajemen rantai pasokan dan keuangan."
 		}
 	],
 	"auth": {
