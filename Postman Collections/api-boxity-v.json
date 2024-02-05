@@ -3853,136 +3853,11 @@
 			"name": "Production Manufacturer",
 			"item": [
 				{
-					"name": "Slaughtering (Penyembelihan)",
+					"name": "Process Activity",
 					"item": [
 						{
-							"name": "Create slaughtering",
-							"id": "8e788d17-00c7-4e9d-83d4-169a6a216a7b",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"product_id\": {{productID}},\n  \"slaughter_date\": \"2024-02-05\",\n  \"method\": \"halal\"\n}\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{url}}/api/slaughtering"
-							},
-							"response": []
-						},
-						{
-							"name": "Get all slaughtering data",
-							"id": "9813319a-30e0-4658-a191-466a1851ff60",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/slaughtering"
-							},
-							"response": []
-						},
-						{
-							"name": "Update slaughtering by ID",
-							"id": "bdf2c339-e613-4460-9c31-f429dd4179ed",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"product_id\": {{productID}},\n  \"slaughter_date\": \"2024-02-05\",\n  \"method\": \"electrical stunning\"\n}\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{url}}/api/slaughtering/{{slaughterID}}"
-							},
-							"response": []
-						},
-						{
-							"name": "Get slaughter by ID",
-							"id": "99a27579-ae89-45a8-9511-34b5ee6a60e1",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/slaughtering/{{slaughterID}}"
-							},
-							"response": []
-						},
-						{
-							"name": "Delete slaughter by ID",
-							"id": "536d6937-befa-480d-8192-48dabbae6b48",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": "{{url}}/api/slaughtering/{{slaughterID}}"
-							},
-							"response": []
-						}
-					],
-					"id": "ec4049bd-5480-4718-9202-4bcced0ca3cb",
-					"description": "### Slaughtering (Penyembelihan)\n\n**Endpoint**: `/api/slaughtering`\n\n- **Deskripsi**: Endpoint ini digunakan untuk mengelola informasi tentang proses penyembelihan hewan. Proses ini mencakup pencatatan tanggal penyembelihan, metode yang digunakan (misalnya, 'Electrical Stunning', 'Halal'), dan identifikasi produk (hewan) yang disembelih. Proses penyembelihan adalah langkah awal dalam produksi daging, di mana hewan dipersiapkan menjadi karkas."
-				},
-				{
-					"name": "Carcass (Karkas)",
-					"item": [
-						{
-							"name": "Create carcasses",
-							"id": "526cfaf7-dcd6-4684-a5e1-13c678304f06",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"slaughtering_id\": {{slaughterID}},\n  \"weight_after_slaughter\": 120.5,\n  \"quality_grade\": \"A\"\n}\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{url}}/api/carcasses"
-							},
-							"response": []
-						},
-						{
-							"name": "Get all carcasses",
-							"id": "fdf1ea3c-df69-438b-9f8f-3d198ba40074",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/carcasses"
-							},
-							"response": []
-						},
-						{
-							"name": "Update carcasses by ID",
-							"id": "1e9750de-fb14-49a4-b21e-a200e634ab8e",
+							"name": "Create process activity",
+							"id": "64a695e4-8aae-4de1-bacc-13804e84124e",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -3993,92 +3868,63 @@
 										"token": "{{bearer_token}}"
 									}
 								},
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"slaughtering_id\": {{slaughterID}},\n  \"weight_after_slaughter\": 125.0,\n  \"quality_grade\": \"A+\"\n}\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{url}}/api/carcasses/{{carcassesID}}"
-							},
-							"response": []
-						},
-						{
-							"name": "Get Carcasses by ID",
-							"id": "7cb242bd-b8be-4053-a0a3-0b12d3a6e268",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/carcasses/{{carcassesID}}"
-							},
-							"response": []
-						},
-						{
-							"name": "Delete carcasses by ID",
-							"id": "919e20ae-1837-49ea-b20e-b10f4957610d",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": "{{url}}/api/carcasses/{{carcassesID}}"
-							},
-							"response": []
-						}
-					],
-					"id": "5cd0b321-7fd7-4b3a-8367-2de86ca70ee5",
-					"description": "### Carcass (Karkas)\n\n**Endpoint**: `/api/carcasses`\n\n- **Deskripsi**: Endpoint ini bertanggung jawab atas pengelolaan data karkas yang dihasilkan dari proses penyembelihan. Setiap karkas dicatat dengan berat setelah penyembelihan dan grade kualitasnya. Karkas merupakan tubuh hewan yang telah disiapkan untuk diproses lebih lanjut, dengan jeroan, kepala, kaki, dan bulu telah dihilangkan."
-				},
-				{
-					"name": "Viscera (Jeroan)",
-					"item": [
-						{
-							"name": "Create viscera",
-							"id": "9aed0756-2802-4a90-9bc9-86ebc365e602",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"carcass_id\": {{carcassesID}},\n  \"type\": \"Liver\",\n  \"handling_method\": \"Chilled\"\n}\n",
+									"raw": "{\n  \"carcass_id\": {{carcassesID}},\n//   Untuk scalding\n//   \"activity_type\": \"scalding\",\n//   \"details\": {\n//     \"start_time\": \"2024-01-01T10:00:00\",\n//     \"end_time\": \"2024-01-01T10:30:00\",\n//     \"temperature\": \"60°C\"\n//   }\n\n\n// untuk contoh feather removal\n// \"activity_type\": \"feather_removal\",\n//   \"details\": {\n//     \"method\": \"mechanical\",\n//     \"duration\": \"15 minutes\"\n//   }\n\n// untuk contoh deboning\n// \"activity_type\": \"deboning\",\n//   \"details\": {\n//     \"start_time\": \"2024-01-01T11:00:00\",\n//     \"end_time\": \"2024-01-01T11:45:00\",\n//     \"tools_used\": \"knife and saw\"\n//   }\n\n// untuk contoh parting\n// \"activity_type\": \"parting\",\n//   \"details\": {\n//     \"parts\": [\n//       {\"type\": \"breast\", \"weight\": \"1.2kg\"},\n//       {\"type\": \"thigh\", \"weight\": \"0.8kg\"},\n//       {\"type\": \"wing\", \"weight\": \"0.3kg\"}\n//     ]\n//   }\n\n// untuk weighting\n\"activity_type\": \"weighting\",\n  \"details\": {\n    \"total_weight\": \"3.5kg\",\n    \"date\": \"2024-01-01T12:00:00\"\n  }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{url}}/api/viscera"
+								"url": "{{url}}/api/processing-activities"
 							},
 							"response": []
 						},
 						{
-							"name": "Get all viscera",
-							"id": "00da28f2-87fc-4d9f-b060-1b20148f4ce7",
+							"name": "Get all processing activities",
+							"id": "32ae8db2-ad7b-4b7f-8f9e-dbc23ea8382a",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{url}}/api/viscera"
+								"url": "{{url}}/api/processing-activities"
 							},
 							"response": []
 						},
 						{
-							"name": "Update viscera by ID",
-							"id": "a489b654-ba9b-4646-96fc-20a6a0a35fca",
+							"name": "Get process activities by process ID",
+							"id": "784329ad-7b22-4c07-ac4a-bfb5fdcbba81",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/processing-activities/{{processID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Track Activities by Carcass ID",
+							"id": "280202b5-162a-4117-9551-2520ebfec3fd",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/processing-activities/by-carcass/{{carcassesID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Update activities by ID process",
+							"id": "3df4cbf3-6bb4-4a85-8a42-89d87bf567c4",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -4087,46 +3933,33 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"carcass_id\": {{carcassesID}},\n  \"type\": \"Heart\",\n  \"handling_method\": \"Frozen\"\n}\n",
+									"raw": "{\n  \"carcass_id\": {{carcassesID}},\n//   untuk contoh scalding\n  \"activity_type\": \"scalding\",\n  \"details\": {\n    \"start_time\": \"2024-01-01T10:00:00\",\n    \"end_time\": \"2024-01-01T10:30:00\",\n    \"temperature\": \"62°C\"\n  }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{url}}/api/viscera/{{visceraID}}"
+								"url": "{{url}}/api/processing-activities/{{processID}}"
 							},
 							"response": []
 						},
 						{
-							"name": "Get Viscera detail by ID",
-							"id": "9154f6c0-aa89-4f31-aef3-89a9a02c6dca",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/viscera/{{visceraID}}"
-							},
-							"response": []
-						},
-						{
-							"name": "Delete viscera by ID",
-							"id": "9ad249ec-9a59-48b3-9974-2c1838a0cc4b",
+							"name": "Delete activities process by process ID",
+							"id": "ed665dad-eabe-4ee0-9c2f-7f6804415595",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{url}}/api/viscera/{{visceraID}}"
+								"url": "{{url}}/api/processing-activities/{{processID}}"
 							},
 							"response": []
 						}
 					],
-					"id": "5014018e-d7d5-46bd-aa97-b4f2060f0848",
-					"description": "### Viscera (Jeroan)\n\n**Endpoint**: `/api/viscera`\n\n- **Deskripsi**: Endpoint ini mengatur informasi tentang jeroan yang diambil dari karkas. Jeroan mencakup organ dalam seperti hati, jantung, dan usus. Informasi yang dicatat termasuk tipe jeroan, metode penanganan, dan karkas asal jeroan tersebut. Penanganan jeroan yang tepat sangat penting untuk memastikan kualitas dan keamanan produk."
+					"id": "b157b83f-7e52-44cd-ab3c-1b05ae2b3d4e",
+					"description": "### Deskripsi Umum\n\nEndpoint `processing_activity` dirancang untuk mengelola dan melacak berbagai aktivitas pengolahan yang terjadi pada karkas dalam proses produksi daging.\n\nAktivitas ini mencakup:\n\n- Scalding (perebusan)\n    \n- Feather removal (pencabutan bulu)\n    \n- Deboning (pemisahan daging dari tulang)\n    \n- Parting (pemotongan karkas menjadi bagian yang lebih kecil)\n    \n- Weighting (penimbangan)\n    \n\nSetiap aktivitas direkam dengan detail yang relevan untuk memastikan traceability dan efisiensi produksi."
 				},
 				{
 					"name": "Packages Data (Pengemasan)",
@@ -4417,115 +4250,6 @@
 					],
 					"id": "90964c21-1bff-40ca-8fc2-1d5f0b79d4fe",
 					"description": "### Packaging (Pengemasan)\n\n**Endpoint**: `/api/packaging`\n\n- **Deskripsi**: Endpoint ini digunakan untuk mengelola data pengemasan produk daging. Proses ini mencakup pencatatan berat paket, tipe kemasan (misalnya, vakum pack, kotak), dan produk yang dikemas. Pengemasan yang baik esensial untuk menjaga kualitas, kesegaran produk, dan memudahkan distribusi.\n    \n\n### Relasi antar package\n\n1. **Packaging**:\n    \n    - Deskripsi: `Packaging` adalah tabel yang mengelola informasi tentang pengemasan produk. Setiap entri dalam tabel `Packaging` mewakili pengemasan produk tunggal yang memiliki berat tertentu dan jenis kemasan.\n        \n2. **Package**:\n    \n    - Deskripsi: `Package` adalah tabel yang berisi informasi tentang paket atau paket yang dijual sebagai satu kesatuan. Setiap `Package` dapat berisi satu atau lebih produk individual yang dihubungkan melalui tabel `PackageProduct`.\n        \n3. **PackageProduct**:\n    \n    - Deskripsi: `PackageProduct` adalah tabel penghubung yang menghubungkan `Package` dengan produk individual yang termasuk dalam paket tersebut. Ini memungkinkan Anda untuk menentukan produk mana yang termasuk dalam setiap paket."
-				},
-				{
-					"name": "Process Activity",
-					"item": [
-						{
-							"name": "Create process activity",
-							"id": "64a695e4-8aae-4de1-bacc-13804e84124e",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": {
-										"token": "{{bearer_token}}"
-									}
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"carcass_id\": {{carcassesID}},\n//   Untuk scalding\n//   \"activity_type\": \"scalding\",\n//   \"details\": {\n//     \"start_time\": \"2024-01-01T10:00:00\",\n//     \"end_time\": \"2024-01-01T10:30:00\",\n//     \"temperature\": \"60°C\"\n//   }\n\n\n// untuk contoh feather removal\n// \"activity_type\": \"feather_removal\",\n//   \"details\": {\n//     \"method\": \"mechanical\",\n//     \"duration\": \"15 minutes\"\n//   }\n\n// untuk contoh deboning\n// \"activity_type\": \"deboning\",\n//   \"details\": {\n//     \"start_time\": \"2024-01-01T11:00:00\",\n//     \"end_time\": \"2024-01-01T11:45:00\",\n//     \"tools_used\": \"knife and saw\"\n//   }\n\n// untuk contoh parting\n// \"activity_type\": \"parting\",\n//   \"details\": {\n//     \"parts\": [\n//       {\"type\": \"breast\", \"weight\": \"1.2kg\"},\n//       {\"type\": \"thigh\", \"weight\": \"0.8kg\"},\n//       {\"type\": \"wing\", \"weight\": \"0.3kg\"}\n//     ]\n//   }\n\n// untuk weighting\n\"activity_type\": \"weighting\",\n  \"details\": {\n    \"total_weight\": \"3.5kg\",\n    \"date\": \"2024-01-01T12:00:00\"\n  }\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{url}}/api/processing-activities"
-							},
-							"response": []
-						},
-						{
-							"name": "Get all processing activities",
-							"id": "32ae8db2-ad7b-4b7f-8f9e-dbc23ea8382a",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/processing-activities"
-							},
-							"response": []
-						},
-						{
-							"name": "Get process activities by process ID",
-							"id": "784329ad-7b22-4c07-ac4a-bfb5fdcbba81",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/processing-activities/{{processID}}"
-							},
-							"response": []
-						},
-						{
-							"name": "Track Activities by Carcass ID",
-							"id": "280202b5-162a-4117-9551-2520ebfec3fd",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/processing-activities/by-carcass/{{carcassesID}}"
-							},
-							"response": []
-						},
-						{
-							"name": "Update activities by ID process",
-							"id": "3df4cbf3-6bb4-4a85-8a42-89d87bf567c4",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"carcass_id\": {{carcassesID}},\n//   untuk contoh scalding\n  \"activity_type\": \"scalding\",\n  \"details\": {\n    \"start_time\": \"2024-01-01T10:00:00\",\n    \"end_time\": \"2024-01-01T10:30:00\",\n    \"temperature\": \"62°C\"\n  }\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{url}}/api/processing-activities/{{processID}}"
-							},
-							"response": []
-						},
-						{
-							"name": "Delete activities process by process ID",
-							"id": "ed665dad-eabe-4ee0-9c2f-7f6804415595",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": "{{url}}/api/processing-activities/{{processID}}"
-							},
-							"response": []
-						}
-					],
-					"id": "b157b83f-7e52-44cd-ab3c-1b05ae2b3d4e",
-					"description": "### Deskripsi Umum\n\nEndpoint `processing_activity` dirancang untuk mengelola dan melacak berbagai aktivitas pengolahan yang terjadi pada karkas dalam proses produksi daging.\n\nAktivitas ini mencakup:\n\n- Scalding (perebusan)\n    \n- Feather removal (pencabutan bulu)\n    \n- Deboning (pemisahan daging dari tulang)\n    \n- Parting (pemotongan karkas menjadi bagian yang lebih kecil)\n    \n- Weighting (penimbangan)\n    \n\nSetiap aktivitas direkam dengan detail yang relevan untuk memastikan traceability dan efisiensi produksi."
 				}
 			],
 			"id": "7d6b7534-6a06-4aa2-bf1d-6bc5f2e88701",
