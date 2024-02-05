@@ -1077,14 +1077,91 @@
 							"name": "Category",
 							"item": [
 								{
-									"name": "New Request",
+									"name": "Create employee categories",
 									"id": "7b3ebb05-92dd-4f50-85a3-af4db7776387",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\":\"Testing Category\",\n    \"description\":\"Lorem ipsum\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/employee-categories"
+									},
+									"response": []
+								},
+								{
+									"name": "Get all categories",
+									"id": "eee40e91-05c5-4590-8695-46c78aafb85f",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
 										"method": "GET",
-										"header": []
+										"header": [],
+										"url": "{{url}}/api/employee-categories"
+									},
+									"response": []
+								},
+								{
+									"name": "Update category",
+									"id": "15297c14-a304-44fa-8442-6f57693ec427",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\":\"Testing Category\",\n    \"description\":\"Lorem ipsum dolor\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/employee-categories/{{employeeCategoryID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Get detail category by ID",
+									"id": "b5cc3aad-0122-4b50-a000-d24bc80096fe",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/employee-categories/{{employeeCategoryID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete category by ID",
+									"id": "ad769c23-5445-4633-8036-6d8c5d86ef7f",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/employee-categories/{{employeeCategoryID}}"
 									},
 									"response": []
 								}
