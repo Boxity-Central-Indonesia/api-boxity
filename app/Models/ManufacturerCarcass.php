@@ -17,4 +17,12 @@ class ManufacturerCarcass extends Model
     {
         return $this->hasMany(ProcessingActivity::class, 'carcass_id');
     }
+    public function viscera()
+    {
+        return $this->hasOne(ManufacturerViscera::class, 'carcass_id');
+    }
+    public function packaging()
+    {
+        return $this->hasOne(Packaging::class, 'product_id', 'slaughtering_id');
+    }
 }

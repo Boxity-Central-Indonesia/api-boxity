@@ -117,35 +117,62 @@ class ReportController extends Controller
     // Laporan Produksi
     public function productionReport()
     {
-        // Ambil data produksi beserta join relasi
-        $reportData = ManufacturerSlaughtering::with(['carcass', 'carcass.viscera', 'carcass.processingActivities', 'carcass.packaging'])
+        $reportData = ManufacturerSlaughtering::with(['carcasses.processingActivities', 'carcasses.viscera', 'carcasses.packaging'])
             ->get();
 
-        // Format data produksi sesuai kebutuhan
         $formattedReport = [];
 
-        foreach ($reportData as $data) {
-            $processingActivities = $data->carcass->processingActivities;
+        foreach ($reportData as $slaughter) {
+            foreach ($slaughter->carcass as $carcass) {
+                $activities = [
+                    [
+                        'activity_type' => 'Slaughtering',
+                        'details' => [
+                            'method' => $slaughter->method,
+                            'slaughter_date' => $slaughter->slaughter_date,
+                        ],
+                    ],
+                ];
 
-            // Menentukan status produksi berdasarkan aktivitas produksi
-            $productionStatus = 'Selesai'; // Default status jika tidak ada aktivitas produksi
-            if ($processingActivities->count() > 0) {
-                $latestActivity = $processingActivities->last();
-                $productionStatus = $latestActivity->activity_type;
+                // Check if 'viscera' relationship exists, if not, use an empty array
+                $visceraActivities = $carcass->viscera ? $carcass->viscera : [];
+                foreach ($visceraActivities as $viscera) {
+                    $activities[] = [
+                        'activity_type' => 'Viscera Handling',
+                        'details' => [
+                            'type' => $viscera->type,
+                            'handling_method' => $viscera->handling_method,
+                        ],
+                    ];
+                }
+
+                // Check if 'processingActivities' relationship exists, if not, use an empty array
+                $processingActivities = $carcass->processingActivities ? $carcass->processingActivities : [];
+                foreach ($processingActivities as $activity) {
+                    $activities[] = [
+                        'activity_type' => $activity->activity_type,
+                        'details' => $activity->details,
+                    ];
+                }
+
+                // Check if 'packaging' relationship exists, if not, use an empty array
+                $packagingActivity = $carcass->packaging ? $carcass->packaging : [];
+                $activities[] = [
+                    'activity_type' => 'Packaging',
+                    'details' => [
+                        'weight' => $packagingActivity->weight ?? null,
+                        'package_type' => $packagingActivity->package_type ?? null,
+                    ],
+                ];
+
+                $formattedReport[] = [
+                    'slaughtering_date' => $slaughter->slaughter_date,
+                    'carcass_weight' => $carcass->weight_after_slaughter,
+                    'carcass_quality_grade' => $carcass->quality_grade,
+                    'activities' => $activities,
+                ];
             }
-
-            $formattedReport[] = [
-                'slaughter_date' => $data->slaughter_date,
-                'production_type' => $data->method,
-                'carcass_weight' => $data->carcass->weight_after_slaughter,
-                'carcass_quality_grade' => $data->carcass->quality_grade,
-                'viscera_type' => $data->carcass->viscera->type,
-                'viscera_handling_method' => $data->carcass->viscera->handling_method,
-                'production_status' => $productionStatus, // Menambahkan status produksi
-                // Anda dapat menambahkan informasi lainnya sesuai kebutuhan
-            ];
         }
-
 
         return response()->json([
             'status' => 200,
