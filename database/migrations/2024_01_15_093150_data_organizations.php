@@ -55,13 +55,11 @@ return new class extends Migration
 
         // buat tabel kategori karyawan
         Schema::create('employees_categories', function (Blueprint $table) {
-            $table->unsignedInteger('id');
-            $table->index('id');
+            $table->id();
             $table->string('name');
-            $table->longText('description', 100000)->nullable();
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
-
         // Buat tabel karyawan
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
@@ -85,10 +83,12 @@ return new class extends Migration
 
 
             $table->unsignedBigInteger('department_id');
+            $table->unsignedBigInteger('category_id');
             $table->timestamps();
 
             // Buat constraint untuk kolom department_id
             $table->foreign('department_id')->references('id')->on('companies_departments')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('employees_categories')->onDelete('cascade');
         });
     }
 

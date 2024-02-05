@@ -30,7 +30,7 @@ class Employee extends Model
         'emergency_contact_phone_number',
         'notes',
         'department_id',
-        'job_title_category_id'
+        'category_id'
     ];
     public static function boot()
     {
@@ -50,5 +50,9 @@ class Employee extends Model
     public function department()
     {
         return $this->belongsTo(CompaniesDepartment::class);
+    }
+    public function category()
+    {
+        return $this->belongsTo(EmployeeCategory::class, 'category_id');
     }
 }

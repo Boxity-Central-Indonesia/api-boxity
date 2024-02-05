@@ -56,7 +56,7 @@ class EmployeesController extends Controller
     public function show(Employee $employee)
     {
         // Eager load the 'company' relationship
-        $employeeWithCompany = Employee::with('company')->find($employee->id);
+        $employeeWithCompany = Employee::with('company', 'category')->find($employee->id);
 
         return response()->json([
             'status' => 200,

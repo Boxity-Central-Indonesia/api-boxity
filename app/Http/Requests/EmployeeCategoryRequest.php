@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductsCategoryRequest extends FormRequest
+class EmployeeCategoryRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,17 +14,16 @@ class ProductsCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'name' => 'required|string',
+            'description' => 'nullable|string',
         ];
     }
-
     public function messages()
     {
         return [
             'name.required' => 'The name field is required.',
-            'description.required' => 'The description field is required.',
-            'name.max' => 'The name field may not be greater than 255 characters.',
+            'name.string' => 'The name field must be a string.',
+            'description.string' => 'The description field must be a string.',
         ];
     }
 }

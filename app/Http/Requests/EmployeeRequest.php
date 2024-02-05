@@ -7,12 +7,9 @@ use Illuminate\Validation\Rule;
 
 class EmployeeRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     public function rules()
@@ -24,6 +21,7 @@ class EmployeeRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('employees')->ignore($employeeId)],
             'phone_number' => 'required|string|max:255',
             'company_id' => 'required|integer|exists:companies,id',
+            'category_id' => 'required|integer|exists:employees_categories,id',
             'job_title' => 'required|string|max:255',
             'date_of_birth' => 'required|date',
             'employment_status' => 'required|string',
@@ -42,7 +40,6 @@ class EmployeeRequest extends FormRequest
     public function messages()
     {
         return [
-            // Custom messages for validation rules
             'name.required' => 'The name field is required.',
             'email.required' => 'The email field is required.',
             'email.email' => 'Please provide a valid email address.',
@@ -50,6 +47,8 @@ class EmployeeRequest extends FormRequest
             'phone_number.required' => 'The phone number field is required.',
             'company_id.required' => 'The company ID field is required.',
             'company_id.exists' => 'The selected company ID does not exist.',
+            'category_id.required' => 'The Employee Category ID field is required.',
+            'category_id.exists' => 'The selected Employee Category ID does not exist.',
             'job_title.required' => 'The job title field is required.',
             'date_of_birth.required' => 'The date of birth field is required.',
             'employment_status.required' => 'The employment status field is required.',
@@ -63,7 +62,6 @@ class EmployeeRequest extends FormRequest
             'emergency_contact_phone_number.required' => 'The emergency contact phone number field is required.',
             'department_id.required' => 'The department ID field is required.',
             'department_id.exists' => 'The selected department ID does not exist.',
-            // Optionally, adjust or add messages for other fields as needed
         ];
     }
 }

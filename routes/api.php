@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\MasterUsersController;
 use App\Http\Controllers\Api\CompaniesController;
 use App\Http\Controllers\Api\CompaniesDepartmentController;
 use App\Http\Controllers\Api\CompaniesBranchController;
+use App\Http\Controllers\Api\EmployeeCategoryController;
 use App\Http\Controllers\Api\EmployeesController;
 use App\Http\Controllers\Api\EmployeesCategoryController;
 use App\Http\Controllers\Api\InvoiceController;
@@ -73,6 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Employees routes
     Route::apiResource('employees', EmployeesController::class);
+    Route::resource('employee-categories', EmployeeCategoryController::class);
 
     // Products routes
     Route::apiResource('products', ProductsController::class);
