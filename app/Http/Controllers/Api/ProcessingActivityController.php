@@ -6,6 +6,7 @@ use App\Http\Requests\ProcessingActivityRequest;
 use App\Models\Order;
 use App\Models\ProcessingActivity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 class ProcessingActivityController extends Controller
@@ -30,6 +31,7 @@ class ProcessingActivityController extends Controller
             'product_id' => $validated['product_id'],
             'order_id' => $validated['order_id'],
             'activity_type' => $validated['activity_type'],
+            'activity_date' => Date::now(),
             'status_activities' => 'In Production',
             'details' => $validated['details'],
         ]);
