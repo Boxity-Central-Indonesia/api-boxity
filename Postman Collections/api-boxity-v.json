@@ -4402,11 +4402,17 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"carcass_id\": {{carcassesID}},\n//   untuk contoh scalding\n//   \"activity_type\": \"scalding\",\n//   \"details\": {\n//     \"start_time\": \"2024-01-01T10:00:00\",\n//     \"end_time\": \"2024-01-01T10:30:00\",\n//     \"temperature\": \"60°C\"\n//   }\n\n// untuk contoh feather removal\n// \"activity_type\": \"feather_removal\",\n//   \"details\": {\n//     \"method\": \"mechanical\",\n//     \"duration\": \"15 minutes\"\n//   }\n\n// untuk contoh deboning\n// \"activity_type\": \"deboning\",\n//   \"details\": {\n//     \"start_time\": \"2024-01-01T11:00:00\",\n//     \"end_time\": \"2024-01-01T11:45:00\",\n//     \"tools_used\": \"knife and saw\"\n//   }\n\n// untuk contoh parting\n// \"activity_type\": \"parting\",\n//   \"details\": {\n//     \"parts\": [\n//       {\"type\": \"breast\", \"weight\": \"1.2kg\"},\n//       {\"type\": \"thigh\", \"weight\": \"0.8kg\"},\n//       {\"type\": \"wing\", \"weight\": \"0.3kg\"}\n//     ]\n//   }\n\n// untuk weighting\n\"activity_type\": \"weighting\",\n  \"details\": {\n    \"total_weight\": \"3.5kg\",\n    \"date\": \"2024-01-01T12:00:00\"\n  }\n}",
+									"raw": "{\n  \"carcass_id\": {{carcassesID}},\n//   Untuk scalding\n//   \"activity_type\": \"scalding\",\n//   \"details\": {\n//     \"start_time\": \"2024-01-01T10:00:00\",\n//     \"end_time\": \"2024-01-01T10:30:00\",\n//     \"temperature\": \"60°C\"\n//   }\n\n\n// untuk contoh feather removal\n\"activity_type\": \"feather_removal\",\n  \"details\": {\n    \"method\": \"mechanical\",\n    \"duration\": \"15 minutes\"\n  }\n\n// untuk contoh deboning\n// \"activity_type\": \"deboning\",\n//   \"details\": {\n//     \"start_time\": \"2024-01-01T11:00:00\",\n//     \"end_time\": \"2024-01-01T11:45:00\",\n//     \"tools_used\": \"knife and saw\"\n//   }\n\n// untuk contoh parting\n// \"activity_type\": \"parting\",\n//   \"details\": {\n//     \"parts\": [\n//       {\"type\": \"breast\", \"weight\": \"1.2kg\"},\n//       {\"type\": \"thigh\", \"weight\": \"0.8kg\"},\n//       {\"type\": \"wing\", \"weight\": \"0.3kg\"}\n//     ]\n//   }\n\n// untuk weighting\n// \"activity_type\": \"weighting\",\n//   \"details\": {\n//     \"total_weight\": \"3.5kg\",\n//     \"date\": \"2024-01-01T12:00:00\"\n//   }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
