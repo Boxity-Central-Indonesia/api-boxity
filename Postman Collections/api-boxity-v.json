@@ -782,7 +782,7 @@
 										}
 									]
 								},
-								"url": "{{url}}/api/companies/{{companyID}}/branches/"
+								"url": "{{url}}/api/companies/{{companyID}}/branches"
 							},
 							"response": []
 						},
