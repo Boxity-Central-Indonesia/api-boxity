@@ -1963,7 +1963,7 @@
 									"formdata": [
 										{
 											"key": "name",
-											"value": "PT CUSTOMER",
+											"value": "PT SUPPLIER",
 											"type": "text"
 										},
 										{
@@ -1978,7 +1978,7 @@
 										},
 										{
 											"key": "email",
-											"value": "customer@gmail.com",
+											"value": "supplier@gmail.com",
 											"type": "text"
 										},
 										{
@@ -2047,7 +2047,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"name\": \"PT CUSTOMER A\",\n  \"address\": \"Jalan Jalan No 1\",\n  \"phone_number\": \"081234567890\",\n  \"email\": \"customera@gmail.com\",\n  \"transaction_type\": \"inbound\"\n}\n",
+									"raw": "{\n  \"name\": \"PT CUSTOMER A\",\n  \"address\": \"Jalan Jalan No 1\",\n  \"phone_number\": \"081234567890\",\n  \"email\": \"customera@gmail.com\",\n  \"transaction_type\": \"outbound\"\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3309,6 +3309,11 @@
 										{
 											"key": "shipping_cost",
 											"value": "10000",
+											"type": "text"
+										},
+										{
+											"key": "order_type",
+											"value": "Direct Order",
 											"type": "text"
 										}
 									]
@@ -4603,7 +4608,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "621f6a74-1b8c-4105-b5da-c66cef25c415",
+				"id": "cbb44e80-dcd9-4efb-8b77-fdcba5a753a8",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4613,7 +4618,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "2eba2ea3-10b0-4627-b598-3b7c75c06d76",
+				"id": "9f6a71b8-f50c-42d7-92ef-e6ec28359e89",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4648,7 +4653,7 @@
 		},
 		{
 			"key": "productID",
-			"value": "4"
+			"value": "1"
 		},
 		{
 			"key": "branchID",
