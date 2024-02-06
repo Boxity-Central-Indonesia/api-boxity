@@ -26,7 +26,12 @@ class ReportController extends Controller
         $salesData = DB::table('orders')
             ->join('vendors', 'orders.vendor_id', '=', 'vendors.id')
             ->join('products', 'orders.product_id', '=', 'products.id')
-            ->select('orders.*', 'vendors.name as vendor_name', 'products.name as product_name')
+            ->select(
+                'orders.*',
+                'vendors.name as vendor_name',
+                'products.name as product_name',
+                DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
+            )
             ->where('vendors.transaction_type', 'outbound')
             ->get();
 
@@ -43,7 +48,12 @@ class ReportController extends Controller
         $purchaseData = DB::table('orders')
             ->join('vendors', 'orders.vendor_id', '=', 'vendors.id')
             ->join('products', 'orders.product_id', '=', 'products.id')
-            ->select('orders.*', 'vendors.name as vendor_name', 'products.name as product_name')
+            ->select(
+                'orders.*',
+                'vendors.name as vendor_name',
+                'products.name as product_name',
+                DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
+            )
             ->where('vendors.transaction_type', 'inbound')
             ->get();
 
@@ -103,22 +113,42 @@ class ReportController extends Controller
     }
     public function vendorReport(Request $request)
     {
+        // Ambil transaksi vendor terkait dengan detail order dan product
+        $transactions = VendorTransaction::with(['vendor', 'order' => function ($query) {
+            $query->select('id', 'created_at');
+        }, 'product' => function ($query) {
+            $query->select('id', 'name');
+        }])->get();
 
-        // Ambil transaksi vendor terkait
-        $transactions = VendorTransaction::with('vendor', 'order')->get();
+        // Tampilkan hanya data yang diperlukan
+        $filteredTransactions = $transactions->map(function ($transaction) {
+            $kodeOrder = $transaction->order
+                ? 'ORD/' . $transaction->order->created_at->format('Y/m/') . str_pad($transaction->order->id, 4, '0', STR_PAD_LEFT)
+                : 'N/A'; // Atau format default jika order tidak ada
+            return [
+                'kode_order' => $kodeOrder,
+                'nama_vendor' => $transaction->vendor->name,
+                'nama_product' => $transaction->product ? $transaction->product->name : 'N/A', // Cek apakah product tersedia
+                'amount' => $transaction->amount,
+                'unit_price' => $transaction->unit_price,
+                'taxes' => $transaction->taxes,
+                'shipping_cost' => $transaction->shipping_cost,
+                'total_price' => $transaction->total_price,
+            ];
+        });
 
         return response()->json([
             'status' => 200,
-            'data' => [
-                'transactions' => $transactions,
-            ],
+            'data' => $filteredTransactions,
             'message' => 'Vendor report retrieved successfully.',
         ]);
     }
+
+
     // Laporan Produksi
     public function productionReport()
     {
-        $summary = DB::table('manufacturer_processing_activities')
+        $activities = DB::table('manufacturer_processing_activities')
             ->join('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
             ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
             ->select(
@@ -130,12 +160,34 @@ class ReportController extends Controller
             ->orderBy('orders.created_at', 'asc')
             ->get();
 
-        if ($summary->isEmpty()) {
+        if ($activities->isEmpty()) {
             return response()->json(['message' => 'No production activities found.', 'status' => 404], 404);
         }
 
-        return response()->json(['data' => $summary, 'status' => 200, 'message' => 'Production summary retrieved successfully.']);
+        // Mengelompokkan data berdasarkan kodeOrder
+        $groupedActivities = $activities->groupBy('kodeOrder')->map(function ($items, $kodeOrder) {
+            // Ambil detail produk dari item pertama karena diasumsikan semua item dalam grup memiliki produk yang sama
+            $firstItem = $items->first();
+
+            return [
+                'kodeOrder' => $kodeOrder,
+                'product_name' => $firstItem->product_name,
+                'activities' => $items->map(function ($item) {
+                    return [
+                        'activity_type' => $item->activity_type,
+                        'status_production' => $item->status_production,
+                    ];
+                })->values()->all(), // Pastikan untuk mereset index array
+            ];
+        })->values()->all(); // Konversi hasil dari map ke array numerik untuk respons JSON
+
+        if (empty($groupedActivities)) {
+            return response()->json(['message' => 'No production activities found.', 'status' => 404], 404);
+        }
+
+        return response()->json(['data' => $groupedActivities, 'status' => 200, 'message' => 'Production summary retrieved successfully.']);
     }
+
     public function productionReportDetails($order_id)
     {
         $details = DB::table('manufacturer_processing_activities')
@@ -178,21 +230,30 @@ class ReportController extends Controller
         $equity = Account::where('type', 'Ekuitas')->sum('balance');
 
         return response()->json([
-            'assets' => $assets,
-            'liabilities' => $liabilities,
-            'equity' => $equity,
+            'data' => [
+                'assets' => $assets,
+                'liabilities' => $liabilities,
+                'equity' => $equity,
+            ],
+            'status' => 200,
+            'message' => 'Balance sheets retrieved successfully.'
         ]);
     }
     // Laporan hutang (piutang usaha)
     public function PayablesReport()
     {
-        $vendors = Vendor::with(['orders.invoices' => function ($query) {
+        $vendors = Vendor::with(['orders' => function ($query) {
+            // Pastikan untuk memilih 'created_at' juga
+            $query->select('id', 'vendor_id', 'created_at');
+        }, 'orders.invoices' => function ($query) {
             $query->selectRaw('order_id, SUM(total_amount) as total_tagihan, SUM(paid_amount) as total_dibayar')
                 ->groupBy('order_id');
         }])->where('transaction_type', 'inbound')->get();
 
         $payablesReport = $vendors->map(function ($vendor) {
             $vendor->orders->each(function ($order) {
+                // Tambahkan kode_order ke setiap order
+                $order->kode_order = 'ORD/' . $order->created_at->format('Y/m/') . str_pad($order->id, 4, '0', STR_PAD_LEFT);
                 $order->invoices->each(function ($invoice) use ($order) {
                     $order->total_tagihan = $invoice->total_tagihan ?? 0;
                     $order->total_dibayar = $invoice->total_dibayar ?? 0;
@@ -204,6 +265,7 @@ class ReportController extends Controller
                 'orders' => $vendor->orders->map(function ($order) {
                     return [
                         'order_id' => $order->id,
+                        'kode_order' => $order->kode_order,
                         'total_tagihan' => $order->total_tagihan,
                         'total_dibayar' => $order->total_dibayar,
                         'sisa_tagihan' => $order->sisa_tagihan,
@@ -226,18 +288,24 @@ class ReportController extends Controller
             })
             ->with(['order.vendor' => function ($query) {
                 $query->select('id', 'name');
+            }, 'order' => function ($query) {
+                $query->select('id', 'vendor_id', 'created_at'); // Pastikan 'created_at' juga diambil
             }])
             ->get([
                 'id', 'order_id', 'total_amount', 'paid_amount', 'balance_due', 'status'
             ])
             ->map(function ($invoice) {
-                $invoice->total_tagihan = $invoice->total_amount;
-                $invoice->total_dibayar = $invoice->paid_amount;
-                $invoice->sisa_tagihan = $invoice->balance_due;
-                $invoice->vendor_name = $invoice->order->vendor->name; // Di sini vendor_name mewakili nama pelanggan
-                $invoice->kode_order = $invoice->order->kode_order;
+                // Pastikan bahwa instance 'order' tersedia dan memiliki properti yang diperlukan
+                if ($invoice->order) {
+                    $invoice->total_tagihan = $invoice->total_amount;
+                    $invoice->total_dibayar = $invoice->paid_amount;
+                    $invoice->sisa_tagihan = $invoice->balance_due;
+                    $invoice->vendor_name = $invoice->order->vendor->name; // Nama pelanggan
+                    // Format kode_order sesuai dengan kebutuhan
+                    $invoice->kode_order = 'ORD/' . $invoice->order->created_at->format('Y/m/') . str_pad($invoice->order->id, 4, '0', STR_PAD_LEFT);
+                }
 
-                unset($invoice->order);
+                unset($invoice->order); // Hapus 'order' untuk menghindari data yang tidak perlu di respons
 
                 return $invoice;
             });
