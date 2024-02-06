@@ -3050,7 +3050,7 @@
 									"formdata": [
 										{
 											"key": "type",
-											"value": "inbound",
+											"value": "credit",
 											"type": "text"
 										},
 										{
