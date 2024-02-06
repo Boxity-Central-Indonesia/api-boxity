@@ -4432,6 +4432,52 @@
 				},
 				{
 					"name": "Produksi",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d553d0e0-aba8-47ab-9209-287bd390f311",
+								"exec": [
+									"var template = `",
+									"<style type=\"text/css\">",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+									"    .tftable tr {background-color:#ffffff;}",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+									"    .tftable tr:hover {background-color:#e0ffff;}",
+									"</style>",
+									"",
+									"<table class=\"tftable\" border=\"1\">",
+									"    <tr>",
+									"        <th>Order Code</th>",
+									"        <th>Product Name</th>",
+									"        <th>Activity Type</th>",
+									"        <th>Status</th>",
+									"    </tr>",
+									"    ",
+									"    {{#each response.data}}",
+									"        {{#each activities}}",
+									"            <tr>",
+									"                <td>{{../kodeOrder}}</td>",
+									"                <td>{{product_name}}</td>",
+									"                <td>{{activity_type}}</td>",
+									"                <td>{{status_production}}</td>",
+									"            </tr>",
+									"        {{/each}}",
+									"    {{/each}}",
+									"</table>",
+									"`;",
+									"",
+									"function constructVisualizerPayload() {",
+									"    return {response: pm.response.json()}",
+									"}",
+									"",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"id": "6d36ae16-7407-4325-b2c9-1610ed5af228",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
