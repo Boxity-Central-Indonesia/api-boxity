@@ -121,6 +121,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/inventory-report', [ReportController::class, 'inventoryReport']);
     Route::get('/leads-report', [ReportController::class, 'leadsReport']);
     Route::get('/vendor-report', [ReportController::class, 'vendorReport']);
+    Route::get('/balance-sheet-report', [ReportController::class, 'BalanceSheetReport']);
+    Route::get('/payables-report', [ReportController::class, 'PayablesReport']);
+    Route::get('/receivables-report', [ReportController::class, 'ReceivablesReport']);
+    Route::get('/cashflow-report', [ReportController::class, 'CashFlowReport']);
+    Route::get('/ledger-report', [ReportController::class, 'LedgerReport']);
+    Route::get('/cash-ledger-report', [ReportController::class, 'generateCashLedgerReport']);
     Route::get('/production-report', [ReportController::class, 'productionReport']);
     Route::get('/production-report/{order_id}', [ReportController::class, 'productionReportDetails']);
 

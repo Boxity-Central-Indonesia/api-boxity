@@ -39,6 +39,11 @@ class Vendor extends Model
         return $this->hasMany(VendorTransaction::class);
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function getTransactionTypeLabelAttribute()
     {
         switch ($this->transaction_type) {

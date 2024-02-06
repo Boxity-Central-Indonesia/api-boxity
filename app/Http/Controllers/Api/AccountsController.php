@@ -24,18 +24,14 @@ class AccountsController extends Controller
     {
         // Melakukan join antara accounts, accounts_transactions, dan accounts_balance
         $accountingData = Account::select(
-            'accounts.id',
-            'accounts.name as account_name',
-            'accounts_transactions.id as transaction_id',
-            'accounts_transactions.date as transaction_date',
-            'accounts_transactions.type as transaction_type',
-            'accounts_transactions.amount as transaction_amount',
-            'accounts_transactions.description as transaction_description',
-            'accounts_balances.balance as account_balance'
-        )
-            ->leftJoin('accounts_transactions', 'accounts_transactions.account_id', '=', 'accounts.id')
-            ->leftJoin('accounts_balances', 'accounts_balances.account_id', '=', 'accounts.id')
-            ->get();
+            'name as account_name',
+            'type',
+            'balance', // Mengambil balance langsung dari accounts
+            'created_at',
+            'updated_at',
+            'user_created',
+            'user_updated'
+        )->get();
 
         return response()->json([
             'status' => 200,

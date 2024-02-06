@@ -36,4 +36,8 @@ class Account extends Model
     {
         return $this->hasMany(AccountsBalance::class);
     }
+    public function journalEntries()
+    {
+        return $this->hasMany(JournalEntry::class);
+    }
 }

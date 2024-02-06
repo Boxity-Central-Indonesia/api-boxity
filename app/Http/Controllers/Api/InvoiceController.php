@@ -8,6 +8,7 @@ use App\Models\AccountsTransaction;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\Order; // Pastikan Anda memiliki model ini
+use App\Models\ProductsPrice;
 use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
@@ -80,6 +81,7 @@ class InvoiceController extends Controller
                 $accountsReceivable->save();
             }
 
+            $this->updateProductPricesBasedOnInvoice($order, $invoice, $order->vendor->transaction_type);
             DB::commit();
 
             return response()->json([
@@ -95,7 +97,37 @@ class InvoiceController extends Controller
             ]);
         }
     }
+    private function updateProductPricesBasedOnInvoice($order, $invoice, $transactionType)
+    {
+        $productPrice = ProductsPrice::where('product_id', $order->product_id)->first();
 
+        if (!$productPrice) {
+            return; // Early return jika tidak ada data harga produk
+        }
+
+        if ($transactionType === 'outbound') {
+            // Untuk penjualan, perbarui selling_price
+            $newSellingPrice = $this->calculateNewSellingPriceBasedOnInvoice($invoice->total_amount, $order->quantity);
+            $productPrice->update(['selling_price' => $newSellingPrice]);
+        } elseif ($transactionType === 'inbound') {
+            // Untuk pembelian, perbarui buying_price
+            // Ini mungkin tidak umum dalam konteks invoice, tetapi untuk keperluan ilustrasi:
+            $newBuyingPrice = $this->calculateNewBuyingPriceBasedOnInvoice($invoice->total_amount, $order->quantity);
+            $productPrice->update(['buying_price' => $newBuyingPrice]);
+        }
+    }
+
+    private function calculateNewSellingPriceBasedOnInvoice($totalAmount, $quantity)
+    {
+        // Logika perhitungan harga jual berdasarkan total jumlah invoice dan kuantitas
+        return $totalAmount / $quantity;
+    }
+
+    private function calculateNewBuyingPriceBasedOnInvoice($totalAmount, $quantity)
+    {
+        // Logika perhitungan harga beli mungkin serupa atau berbeda, tergantung kebijakan
+        return $totalAmount / $quantity;
+    }
 
     public function show($id)
     {
