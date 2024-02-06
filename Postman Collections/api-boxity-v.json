@@ -4500,6 +4500,35 @@
 						"url": "{{url}}/api/ledger-report"
 					},
 					"response": []
+				},
+				{
+					"name": "New Request",
+					"id": "e5a97e32-c1b6-4649-ba02-567439079a2e",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/cash-ledger-report?account_id={{accountID}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"cash-ledger-report"
+							],
+							"query": [
+								{
+									"key": "account_id",
+									"value": "{{accountID}}",
+									"type": "text"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"id": "dc4664a7-5af0-4d14-89f7-1502ab3438c1",
