@@ -4425,6 +4425,58 @@
 				},
 				{
 					"name": "Arus Kas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "776a7707-eaaa-422d-a369-91caeab3725e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var template = `",
+									"<style type=\"text/css\">",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+									"    .tftable tr {background-color:#ffffff;}",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+									"    .tftable tr:hover {background-color:#e0ffff;}",
+									"</style>",
+									"",
+									"<table class=\"tftable\" border=\"1\">",
+									"    <tr>",
+									"        <th>Account Name</th>",
+									"        <th>Type</th>",
+									"        <th>Opening Balance</th>",
+									"        <th>Total Debit</th>",
+									"        <th>Total Credit</th>",
+									"        <th>Net Cash Flow</th>",
+									"    </tr>",
+									"",
+									"    {{#each response.data}}",
+									"        <tr id=row_{{@key}}>",
+									"            <td>{{account_name}}</td>",
+									"            <td>{{type}}</td>",
+									"            <td>{{opening_balance}}</td>",
+									"            <td>{{total_debit}}</td>",
+									"            <td>{{total_credit}}</td>",
+									"            <td>{{net_cash_flow}}</td>",
+									"        </tr>",
+									"    {{/each}}",
+									"</table>",
+									"`;",
+									"",
+									"function constructVisualizerPayload() {",
+									"    return {response: pm.response.json()};",
+									"}",
+									"",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"id": "9499e345-2c04-4bb4-a94a-25244029dec7",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -4433,6 +4485,19 @@
 						"method": "GET",
 						"header": [],
 						"url": "{{url}}/api/cashflow-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Buku besar",
+					"id": "d959bf67-c58d-4a64-9ac0-7c9daed8cba4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/ledger-report"
 					},
 					"response": []
 				}
