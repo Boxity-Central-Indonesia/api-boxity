@@ -4594,8 +4594,7 @@
 							"query": [
 								{
 									"key": "account_id",
-									"value": "{{accountID}}",
-									"type": "text"
+									"value": "{{accountID}}"
 								}
 							]
 						}
