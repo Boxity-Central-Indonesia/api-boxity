@@ -2987,33 +2987,24 @@
 											"",
 											"<table class=\"tftable\" border=\"1\">",
 											"    <tr>",
-											"        <th>ID</th>",
 											"        <th>Account Name</th>",
-											"        <th>Transaction ID</th>",
-											"        <th>Transaction Date</th>",
 											"        <th>Transaction Type</th>",
-											"        <th>Transaction Amount</th>",
-											"        <th>Transaction Description</th>",
 											"        <th>Account Balance</th>",
 											"    </tr>",
 											"    ",
 											"    {{#each response.data.accounting_data}}",
 											"        <tr>",
-											"            <td>{{id}}</td>",
 											"            <td>{{account_name}}</td>",
-											"            <td>{{transaction_id}}</td>",
-											"            <td>{{transaction_date}}</td>",
-											"            <td>{{transaction_type}}</td>",
-											"            <td>{{transaction_amount}}</td>",
-											"            <td>{{transaction_description}}</td>",
-											"            <td>{{account_balance}}</td>",
+											"            <td>{{type}}</td>",
+											"            <td>{{balance}}</td>",
 											"        </tr>",
 											"    {{/each}}",
 											"</table>",
 											"`;",
 											"",
 											"function constructVisualizerPayload() {",
-											"    return {response: pm.response.json()}",
+											"    var accountingData = pm.response.json().data.accounting_data;",
+											"    return {response: { data: { accounting_data: accountingData } }};",
 											"}",
 											"",
 											"pm.visualizer.set(template, constructVisualizerPayload());"
@@ -4427,19 +4418,21 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": "{{url}}/api/receivables-report"
 					},
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Arus Kas",
 					"id": "9499e345-2c04-4bb4-a94a-25244029dec7",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": "{{url}}/api/cashflow-report"
 					},
 					"response": []
 				}
