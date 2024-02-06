@@ -4430,6 +4430,18 @@
 						"header": []
 					},
 					"response": []
+				},
+				{
+					"name": "New Request",
+					"id": "9499e345-2c04-4bb4-a94a-25244029dec7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			],
 			"id": "dc4664a7-5af0-4d14-89f7-1502ab3438c1",
