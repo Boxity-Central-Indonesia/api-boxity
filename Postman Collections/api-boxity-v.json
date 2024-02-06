@@ -4407,8 +4407,21 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Hutang",
 					"id": "aa95bc09-3414-46f6-b578-f5cef46e72e5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/payables-report"
+					},
+					"response": []
+				},
+				{
+					"name": "Piutang",
+					"id": "69c8699e-f106-4269-8f35-e303a17640b7",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
