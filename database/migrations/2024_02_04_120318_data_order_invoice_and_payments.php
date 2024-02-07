@@ -21,9 +21,9 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('vendor_id')->references('id')->on('vendors');
-            $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('warehouse_id')->references('id')->on('warehouses');
         });
+
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id');
