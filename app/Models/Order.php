@@ -11,27 +11,25 @@ class Order extends Model
     protected $fillable = [
         'vendor_id',
         'warehouse_id',
-        'product_id',
         'status',
         'details',
-        'price_per_unit',
         'total_price',
-        'quantity',
         'taxes',
         'shipping_cost',
         'order_status',
         'order_type'
     ];
-
+    protected $appends = ['kode_order'];
+    public function getKodeOrderAttribute()
+    {
+        return 'ORD/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+    }
     // Hubungan ke Vendor
     public function vendor()
     {
         return $this->belongsTo(Vendor::class);
     }
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
+
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class);
@@ -49,5 +47,26 @@ class Order extends Model
     public function vendorTransaction()
     {
         return $this->hasOne(VendorTransaction::class);
+    }
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'order_products')
+            ->withPivot('quantity', 'price_per_unit', 'total_price')
+            ->withTimestamps();
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($order) {
+            if ($order->products->isNotEmpty()) {
+                $totalPrice = $order->products->reduce(function ($carry, $product) {
+                    return $carry + ($product->pivot->quantity * $product->pivot->price_per_unit);
+                }, 0);
+
+                $order->total_price = $totalPrice + ($order->taxes ?? 0) + ($order->shipping_cost ?? 0);
+            }
+        });
     }
 }

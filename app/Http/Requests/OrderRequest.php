@@ -18,13 +18,14 @@ class OrderRequest extends FormRequest
             'warehouse_id' => 'required|exists:warehouses,id',
             'status' => 'required|in:pending,completed,cancelled',
             'details' => 'nullable|string',
-            'price_per_unit' => 'required|numeric',
-            'total_price' => 'required|numeric',
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|numeric',
             'order_type' => 'required|string',
             'taxes' => 'nullable|numeric',
             'shipping_cost' => 'nullable|numeric',
+            'products' => 'required|array',
+            'products.*.product_id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|numeric|min:1',
+            'products.*.price_per_unit' => 'required|numeric',
+
         ];
 
         if ($this->isMethod('patch') || $this->isMethod('put')) {
@@ -50,12 +51,7 @@ class OrderRequest extends FormRequest
             'status.in' => 'Invalid order status. Valid statuses are: pending, completed, cancelled.',
             'order_type.required' => 'Order type is required.',
             'order_type.in' => 'Invalid order type. Valid types are: Direct Order, and Production',
-            'price_per_unit.required' => 'Price per unit is required.',
             'total_price.required' => 'Total price is required.',
-            'product_id.required' => 'A product ID is required.',
-            'product_id.exists' => 'The selected product ID does not exist.',
-            'quantity.required' => 'Quantity is required.',
-            // Add custom messages for other fields as necessary
         ];
     }
 }

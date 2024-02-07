@@ -14,12 +14,9 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('vendor_id');
-            $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('warehouse_id');
             $table->enum('status', ['pending', 'completed', 'cancelled']);
             $table->text('details')->nullable();
-            $table->integer('quantity')->nullable();
-            $table->decimal('price_per_unit', 10, 2);
             $table->decimal('total_price', 10, 2);
             $table->timestamps();
 

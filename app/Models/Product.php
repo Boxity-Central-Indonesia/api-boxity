@@ -12,28 +12,9 @@ class Product extends Model
     use HasFactory, HasApiTokens;
 
     protected $fillable = [
-        'name',
-        'code',
-        'description',
-        'price',
-        'type',
-        'subtype',
-        'size',
-        'color',
-        'brand',
-        'model',
-        'sku',
-        'stock',
-        'image',
-        'video',
-        'raw_material',
-        'unit_of_measure',
-        'warehouse_id',
-        'category_id',
-        'weight',
-        'animal_type',
-        'age',
-        'health_status'
+        'name', 'code', 'description', 'price', 'category_id', 'warehouse_id',
+        'type', 'animal_type', 'age', 'weight', 'health_status', 'stock',
+        'unit_of_measure', 'raw_material',
     ];
     public static function boot()
     {
