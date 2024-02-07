@@ -85,7 +85,7 @@ class InvoiceController extends Controller
             DB::commit();
 
             return response()->json([
-                'status' => 200,
+                'status' => 201,
                 'data' => $invoice,
                 'message' => 'Invoice created successfully.',
             ]);
@@ -224,7 +224,7 @@ class InvoiceController extends Controller
             DB::commit();
 
             return response()->json([
-                'status' => 200,
+                'status' => 201,
                 'data' => $invoice,
                 'message' => 'Invoice updated successfully.',
             ]);

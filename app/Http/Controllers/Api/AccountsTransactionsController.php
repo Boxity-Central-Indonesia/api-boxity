@@ -54,7 +54,7 @@ class AccountsTransactionsController extends Controller
         $validated = $request->validated();
         $transaction->update($validated);
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $transaction,
             'message' => 'Accounts transaction updated successfully.',
         ]);

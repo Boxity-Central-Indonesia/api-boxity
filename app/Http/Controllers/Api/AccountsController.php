@@ -64,7 +64,7 @@ class AccountsController extends Controller
         $validated = $request->validated();
         $account->update($validated);
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $account,
             'message' => 'Account updated successfully.',
         ]);
