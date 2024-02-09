@@ -10,7 +10,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        $profiles = profiles::where('user_id', Auth::id())->get();
+        $profiles = profiles::with('user')->where('user_id', Auth::id())->get();
         return response()->json([
             'status' => 200,
             'data' => $profiles,
