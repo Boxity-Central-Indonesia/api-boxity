@@ -206,7 +206,7 @@
 										},
 										{
 											"key": "user_id",
-											"value": "1",
+											"value": "{{userID}}",
 											"type": "text"
 										}
 									]
