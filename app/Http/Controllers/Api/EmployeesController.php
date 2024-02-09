@@ -20,6 +20,7 @@ class EmployeesController extends Controller
         $employees = Employee::with('company')->get();
 
         return response()->json([
+            'status' => 200,
             'data' => $employees,
             'message' => 'Employees retrieved successfully.',
         ]);

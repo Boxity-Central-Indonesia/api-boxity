@@ -22,7 +22,7 @@ class LeadController extends Controller
     {
         $lead = Lead::create($request->all());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $lead,
             'message' => 'Lead created successfully.',
         ]);
@@ -48,7 +48,7 @@ class LeadController extends Controller
         $lead = Lead::findOrFail($id);
         $lead->update($request->all());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $lead,
             'message' => 'Lead updated successfully.',
         ]);
