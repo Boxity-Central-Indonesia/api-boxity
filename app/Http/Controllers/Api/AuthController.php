@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
+use App\Models\profiles;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\OtpNotification;
 use Illuminate\Support\Facades\Validator;
@@ -159,17 +160,6 @@ class AuthController extends Controller
         }
     }
 
-    public function profile(Request $request)
-    {
-        try {
-            return response()->json(new UserResource($request->user()));
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Something went wrong',
-                'error' => $th->getMessage()
-            ], 500);
-        }
-    }
 
     public function updateProfile(Request $request)
     {
