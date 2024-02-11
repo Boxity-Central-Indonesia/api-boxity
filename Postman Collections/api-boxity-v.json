@@ -102,7 +102,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/api/profile"
+						"url": "{{url}}/api/profiles"
 					},
 					"response": []
 				},
