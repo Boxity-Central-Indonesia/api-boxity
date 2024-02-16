@@ -69,7 +69,7 @@ class VendorTransactionsController extends Controller
         $transaction = VendorTransaction::findOrFail($id);
         $transaction->update($validated);
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $transaction,
             'message' => 'Vendor transaction updated successfully.',
         ]);

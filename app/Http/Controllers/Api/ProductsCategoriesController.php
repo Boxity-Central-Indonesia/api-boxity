@@ -40,7 +40,7 @@ class ProductsCategoriesController extends Controller
         $category = ProductsCategory::findOrFail($id);
         $category->update($request->all());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $category,
             'message' => 'Category updated successfully.',
         ]);

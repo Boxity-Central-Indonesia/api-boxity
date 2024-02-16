@@ -40,7 +40,7 @@ class ProductsController extends Controller
         $product = Product::findOrFail($id);
         $product->update($request->all());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $product,
             'message' => 'Product updated successfully.',
         ]);

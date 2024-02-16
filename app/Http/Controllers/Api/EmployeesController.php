@@ -42,7 +42,7 @@ class EmployeesController extends Controller
         $employee->update($request->validated());
 
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $employee,
             'message' => 'Employee updated successfully.',
         ]);

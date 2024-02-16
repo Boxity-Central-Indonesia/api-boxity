@@ -53,7 +53,7 @@ class ProductsMovementsController extends Controller
         $movement = ProductsMovement::findOrFail($id);
         $movement->update($request->all());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $movement,
             'message' => 'Product movement updated successfully.',
         ]);

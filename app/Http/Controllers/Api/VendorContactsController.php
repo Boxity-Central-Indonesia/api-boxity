@@ -103,7 +103,7 @@ class VendorContactsController extends Controller
         $vendorContact = VendorContact::findOrFail($id);
         $vendorContact->update($validated, $customMessages);
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $vendorContact,
             'message' => 'Vendor contact updated successfully.',
         ]);

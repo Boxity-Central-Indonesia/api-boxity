@@ -51,7 +51,7 @@ class ProductsPricesController extends Controller
         $price = ProductsPrice::findOrFail($id);
         $price->update($request->all());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $price,
             'message' => 'Product price updated successfully.',
         ]);

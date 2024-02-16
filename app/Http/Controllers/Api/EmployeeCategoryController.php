@@ -47,7 +47,7 @@ class EmployeeCategoryController extends Controller
         $category = EmployeeCategory::findOrFail($id);
         $category->update($request->all());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $category,
             'message' => 'Employee category updated successfully.',
         ]);
