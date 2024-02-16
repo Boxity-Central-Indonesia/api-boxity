@@ -49,7 +49,7 @@ class PackagingController extends Controller
             // Additional logic here if needed
             DB::commit();
             return response()->json([
-                'status' => 200,
+                'status' => 201,
                 'data' => $packaging,
                 'message' => 'Packaging record updated successfully.',
             ]);
