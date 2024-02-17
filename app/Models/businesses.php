@@ -15,6 +15,6 @@ class businesses extends Model
     // Relasi ke Profile
     public function profile()
     {
-        return $this->belongsTo(profiles::class);
+        return $this->belongsTo(profiles::class, 'profile_id');
     }
 }

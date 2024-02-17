@@ -56,6 +56,8 @@ class CompaniesController extends Controller
      */
     public function show(Company $company)
     {
+        $company->load('departments', 'branches');
+
         return response()->json([
             'status' => 200,
             'data' => $company,
