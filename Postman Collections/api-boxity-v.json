@@ -3375,7 +3375,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"vendor_id\": {{customerID}},\n    \"gudang_id\": {{warehouseID}},\n    \"status\": \"pending\",\n    \"detail\": \"Pesanan untuk project X\",\n    \"jenis_order\": \"Direct Order\",\n    \"produk\": [\n        {\n            \"produk_id\": 1,\n            \"jumlah\": 10,\n            \"harga_satuan\": 10000\n        },\n        {\n            \"produk_id\": 2,\n            \"jumlah\": 5,\n            \"harga_satuan\": 15000\n        }\n    ]\n}"
+									"raw": "{\n    \"vendor_id\": {{customerID}},\n    \"warehouse_id\": {{warehouseID}},\n    \"status\": \"pending\",\n    \"details\": \"Pesanan untuk project X\",\n    \"order_type\": \"Direct Order\",\n    \"products\": [\n        {\n            \"product_id\": 1,\n            \"quantity\": 10,\n            \"price_per_unit\": 10000\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 5,\n            \"price_per_unit\": 15000\n        }\n    ]\n}"
 								},
 								"url": "{{url}}/api/orders"
 							},
