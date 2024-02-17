@@ -53,26 +53,12 @@ class OrderController extends Controller
         ]);
     }
 
-    protected function updateAccountBalance($accountId, $amount, $type)
-    {
-        $account = Account::find($accountId);
-        if (!$account) {
-            throw new \Exception("Account not found.");
-        }
-
-        if ($type === 'credit') {
-            $account->balance += $amount;
-        } else if ($type === 'debit') {
-            $account->balance -= $amount;
-        }
-
-        $account->save();
-    }
-
     // Membuat order baru
     public function store(OrderRequest $request)
     {
+        Log::info("Incoming order data:", $request->all());
         DB::beginTransaction();
+
         try {
             $validatedData = $request->validated();
             $order = new Order($validatedData);
@@ -102,7 +88,7 @@ class OrderController extends Controller
                     'product_id' => $product['product_id'],
                     'unit_price' => $product['price_per_unit'],
                     'total_price' => $productTotalPrice,
-                    'quantity' => $product['quantity'], // Pastikan Anda menambahkan kolom ini ke tabel Anda
+                    'quantity' => $product['quantity'],
                     'taxes' => null, // Isi sesuai kebutuhan
                     'shipping_cost' => null, // Isi sesuai kebutuhan
                     'order_id' => $order->id,
@@ -125,10 +111,25 @@ class OrderController extends Controller
             return response()->json(['status' => 200, 'data' => $order, 'message' => 'Order created successfully.']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['status' => 500, 'message' => 'Failed to create order. Error: ' . $e->getMessage()]);
+            return response()->json(['status' => 500, 'message' => 'Gagal membuat order. Kesalahan: ' . $e->getMessage()], 500);
         }
     }
 
+    protected function updateAccountBalance($accountId, $amount, $type)
+    {
+        $account = Account::find($accountId);
+        if (!$account) {
+            throw new \Exception("Account not found.");
+        }
+
+        if ($type === 'credit') {
+            $account->balance += $amount;
+        } else if ($type === 'debit') {
+            $account->balance -= $amount;
+        }
+
+        $account->save();
+    }
 
     private function handleAccounting($validatedData, $vendor)
     {
@@ -136,35 +137,38 @@ class OrderController extends Controller
         $accountPayable = Account::where('name', 'Utang Usaha')->first();
         $inventoryAccount = Account::where('name', 'Persediaan')->first();
 
+        $journalEntry = [
+            'date' => now(),
+            'description' => 'Pembayaran Order ' . $validatedData['order_number'],
+        ];
+
         if ($vendor->transaction_type === 'outbound') {
-            if ($accountReceivable) {
-                $this->updateAccountBalance($accountReceivable->id, $validatedData['total_price'], 'debit');
-            }
-            if ($inventoryAccount) {
-                $this->updateAccountBalance($inventoryAccount->id, $validatedData['total_price'], 'credit');
-            }
+            // Penjualan (Outbound)
+            $journalEntry['debit_account_id'] = $accountReceivable->id;
+            $journalEntry['debit_amount'] = $validatedData['total_price'];
+            $journalEntry['credit_account_id'] = $inventoryAccount->id;
+            $journalEntry['credit_amount'] = $validatedData['total_price'];
         } else {
-            if ($accountPayable) {
-                $this->updateAccountBalance($accountPayable->id, $validatedData['total_price'], 'credit');
-            }
-            if ($inventoryAccount) {
-                $this->updateAccountBalance($inventoryAccount->id, $validatedData['total_price'], 'debit');
-            }
+            // Pembelian (Inbound)
+            $journalEntry['debit_account_id'] = $inventoryAccount->id;
+            $journalEntry['debit_amount'] = $validatedData['total_price'];
+            $journalEntry['credit_account_id'] = $accountPayable->id;
+            $journalEntry['credit_amount'] = $validatedData['total_price'];
         }
+
+        // Simpan jurnal
+        JournalEntry::create($journalEntry);
     }
 
     private function recordProductMovement($validatedData, $vendor)
     {
-        foreach ($validatedData['products'] as $productData) {
-            $product = Product::findOrFail($productData['product_id']);
-            $movementType = $vendor->transaction_type === 'outbound' ? 'sale' : 'purchase';
-
+        foreach ($validatedData['products'] as $product) {
             ProductsMovement::create([
-                'product_id' => $validatedData['product_id'],
+                'product_id' => $product['product_id'],
                 'warehouse_id' => $validatedData['warehouse_id'],
-                'movement_type' => $movementType,
-                'quantity' => $validatedData['quantity'],
-                'price' => $validatedData['price_per_unit'],
+                'movement_type' => $vendor->transaction_type === 'outbound' ? 'sale' : 'purchase',
+                'quantity' => $product['quantity'],
+                'price' => $product['price_per_unit'],
             ]);
             $product = Product::findOrFail($validatedData['product_id']);
 
