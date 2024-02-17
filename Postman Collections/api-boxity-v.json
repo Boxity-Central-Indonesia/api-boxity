@@ -3354,7 +3354,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"vendor_id\": {{customerID}},\n  \"warehouse_id\": {{warehouseID}},\n  \"order_type\": \"Direct Order\",\n  \"products\": [\n    {\"product_id\": 1, \"quantity\": 10, \"price_per_unit\": 2500},\n    {\"product_id\": 2, \"quantity\": 5, \"price_per_unit\": 2500}\n  ],\n  \"taxes\": 250,\n  \"shipping_cost\": 1000\n}"
+									"raw": "{\n    \"order_type\": \"Direct Order\",\n    \"vendor_id\": {{customerID}},\n    \"warehouse_id\": {{warehouseID}},\n    \"products\": [\n        {\n            \"product_id\": 1,\n            \"quantity\": 10,\n            \"price_per_unit\": 10000\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 5,\n            \"price_per_unit\": 20000\n        }\n    ],\n    \"taxes\": 1000,\n    \"shipping_cost\": 2000\n}\n"
 								},
 								"url": "{{url}}/api/orders"
 							},
