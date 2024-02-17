@@ -3339,6 +3339,18 @@
 					"item": [
 						{
 							"name": "Create order",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "271f461f-6a22-49dc-b023-1cd8d8336606",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"id": "ed102054-08d1-4086-9a13-0d168e40b3f5",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true,
