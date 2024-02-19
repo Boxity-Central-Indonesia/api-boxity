@@ -42,7 +42,7 @@ class CompaniesController extends Controller
         $company = Company::findOrFail($id);
         $company->update($request->validated());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $company,
             'message' => 'Company updated successfully.',
         ], 200);
