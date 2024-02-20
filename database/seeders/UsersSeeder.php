@@ -23,6 +23,7 @@ class UsersSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make('libra2110'), // Ganti dengan password yang sesuai
                 'image' => 'https://res.cloudinary.com/boxity-id/image/upload/v1703865472/male_avatar_uhy4qg.svg',
+                'role_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -34,6 +35,7 @@ class UsersSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make('12345678'), // Ganti dengan password yang sesuai
                 'image' => 'https://res.cloudinary.com/boxity-id/image/upload/v1703865472/male_avatar_uhy4qg.svg',
+                'role_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -45,6 +47,7 @@ class UsersSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make('12345678'), // Ganti dengan password yang sesuai
                 'image' => 'https://res.cloudinary.com/boxity-id/image/upload/v1703865472/male_avatar_uhy4qg.svg',
+                'role_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

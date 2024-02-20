@@ -34,7 +34,7 @@ use App\Http\Controllers\Api\VendorsController;
 use App\Http\Controllers\Api\VendorTransactionsController;
 use App\Http\Controllers\Api\WarehousesController;
 use App\Http\Controllers\Api\WarehouseLocationsController;
-use App\Models\WarehouseLocation;
+use App\Http\Controllers\Api\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -138,6 +138,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('processing-activities', ProcessingActivityController::class);
     Route::get('processing-activities/by-order/{order_id}', [ProcessingActivityController::class, 'getActivitiesByOrder']);
     Route::get('processing-activities/by-product/{product_id}', [ProcessingActivityController::class, 'getActivitiesByProduct']);
+
+    // Route untuk Role
+    Route::apiResource('roles', RoleController::class);
+
+    // Route tambahan untuk menambahkan dan menghapus permission dari role
+    Route::post('roles/{role}/permissions', [RoleController::class, 'addPermission']);
+    Route::delete('roles/{role}/permissions', [RoleController::class, 'removePermission']);
+    Route::apiResource('permissions', PermissionController::class);
 });
 Route::post('login', [AuthController::class, 'login']);
 
