@@ -91,14 +91,84 @@
 					"name": "Role",
 					"item": [
 						{
-							"name": "New Request",
+							"name": "Create roles",
+							"id": "39a6e0b8-827f-4bdb-b1c2-960cf2fe42e5",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Admin\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/roles"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all roles",
 							"id": "d336a034-0e0b-471d-a013-b0a74795d9b2",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/roles"
+							},
+							"response": []
+						},
+						{
+							"name": "Update roles by ID",
+							"id": "6db5bc37-cdbf-479f-a2d4-461f8fc329b6",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Super Admin\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/roles/{{roleID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete roles by ID",
+							"id": "b370f9bc-2a06-4091-8139-68b4811abf88",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/roles/{{roleID}}"
 							},
 							"response": []
 						}
@@ -107,7 +177,90 @@
 				},
 				{
 					"name": "Permissions",
-					"item": [],
+					"item": [
+						{
+							"name": "Create permissions",
+							"id": "0135ff97-00e9-4dfd-aaf3-d37c428a698b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Admin\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/permissions"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all permissions",
+							"id": "4fd64213-b0c0-4f4e-984b-dcbfccf808da",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/permissions"
+							},
+							"response": []
+						},
+						{
+							"name": "Update permissions by ID",
+							"id": "0e91d965-7520-4f9c-a996-6ba46891b3ae",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Super Admin\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/permissions/{{permissionsID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete permissions by ID",
+							"id": "de103945-5e68-4ce2-b05d-d7436d783d18",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/permissions/{{permissionsID}}"
+							},
+							"response": []
+						}
+					],
 					"id": "9790b96b-50b9-4c12-842e-f50b7eae5c86"
 				}
 			],
