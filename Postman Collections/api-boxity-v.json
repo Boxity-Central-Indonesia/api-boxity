@@ -85,6 +85,35 @@
 			"id": "8bae32d5-981f-4f9c-9deb-2e496c57b354"
 		},
 		{
+			"name": "Role & Permissions",
+			"item": [
+				{
+					"name": "Role",
+					"item": [
+						{
+							"name": "New Request",
+							"id": "d336a034-0e0b-471d-a013-b0a74795d9b2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
+					"id": "392b6d5b-52bb-4d6e-a902-d89b81f83cd7"
+				},
+				{
+					"name": "Permissions",
+					"item": [],
+					"id": "9790b96b-50b9-4c12-842e-f50b7eae5c86"
+				}
+			],
+			"id": "9124b4c5-d49a-4b13-bbdd-154e11b78d77"
+		},
+		{
 			"name": "User",
 			"item": [
 				{
