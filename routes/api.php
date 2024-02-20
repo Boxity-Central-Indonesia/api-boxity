@@ -35,6 +35,7 @@ use App\Http\Controllers\Api\VendorTransactionsController;
 use App\Http\Controllers\Api\WarehousesController;
 use App\Http\Controllers\Api\WarehouseLocationsController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\PermissionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
