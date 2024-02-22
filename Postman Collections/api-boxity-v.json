@@ -5002,7 +5002,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"post_id\": {{blogID}},\n  \"content\": \"Isi dari komentar\"\n}\n",
+											"raw": "{\n  \"posts_id\": {{blogID}},\n  \"content\": \"Isi dari komentar\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5010,6 +5010,67 @@
 											}
 										},
 										"url": "{{url}}/api/posts-comment"
+									},
+									"response": []
+								},
+								{
+									"name": "Get all comments",
+									"id": "4d2558ba-b859-4772-8008-838ee3850240",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/posts-comment"
+									},
+									"response": []
+								},
+								{
+									"name": "Get detail comment by ID",
+									"id": "223818de-9b7a-47e5-adf1-c25cc929dce5",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/posts-comment/{{commentBlogID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Update comment by ID",
+									"id": "fa55261a-07df-4415-9f0a-d168d8777737",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"content\": \"Isi dari komentar komentar warga net yang meresahkan\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/posts-comment/{{commentBlogID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete comment by ID",
+									"id": "1f78d058-b513-400f-b2c8-9b2f4fbada3a",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/posts-comment/{{commentBlogID}}"
 									},
 									"response": []
 								}
