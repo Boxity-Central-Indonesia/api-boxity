@@ -4808,8 +4808,116 @@
 							"name": "Category",
 							"item": [
 								{
-									"name": "New Request",
+									"name": "Create blog category",
 									"id": "88ca44ed-7175-4ff0-a192-f7fec7bf5747",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{bearer_token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Nama Kategori\"\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/posts-category"
+									},
+									"response": []
+								},
+								{
+									"name": "Get all category blog",
+									"id": "0a65f625-0c45-4e62-84a9-6e6f7723e058",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/posts-category"
+									},
+									"response": []
+								},
+								{
+									"name": "Update category by ID",
+									"id": "91f66f2f-0397-4bff-a4d2-9675d8cfe04c",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"News\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/posts-category/{{categoryBlogID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Get detail category by ID",
+									"id": "ba2f9ff5-c10b-46ef-8f15-169699f657a2",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/posts-category/{{categoryBlogID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete by ID",
+									"id": "ac40cb13-a527-486e-b977-cf3931c72014",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/posts-category/{{categoryBlogID}}"
+									},
+									"response": []
+								}
+							],
+							"id": "4bbe99ee-adec-4a41-a485-b7dda8cf446b"
+						},
+						{
+							"name": "Blog",
+							"item": [
+								{
+									"name": "Create post",
+									"id": "5fc1fa9f-3edd-4982-96b4-c1c623360d2b",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": "{{url}}/api/posts"
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"id": "e60d321a-677a-42eb-9068-ee6678410b50",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -4820,11 +4928,6 @@
 									"response": []
 								}
 							],
-							"id": "4bbe99ee-adec-4a41-a485-b7dda8cf446b"
-						},
-						{
-							"name": "Blog",
-							"item": [],
 							"id": "c1d38f16-7b23-4398-be57-3b39bed54b81"
 						},
 						{
