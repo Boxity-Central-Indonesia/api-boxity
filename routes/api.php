@@ -36,6 +36,9 @@ use App\Http\Controllers\Api\WarehousesController;
 use App\Http\Controllers\Api\WarehouseLocationsController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\PostCategoryController;
+use App\Http\Controllers\Api\PostCommentsController;
+use App\Http\Controllers\Api\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -147,6 +150,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('roles/{role}/permissions', [RoleController::class, 'addPermission']);
     Route::delete('roles/{role}/permissions', [RoleController::class, 'removePermission']);
     Route::apiResource('permissions', PermissionController::class);
+    Route::apiResource('posts', PostController::class);
+    Route::apiResource('posts-comment', PostCommentsController::class);
+    Route::apiResource('posts-category', PostCategoryController::class);
 });
 Route::post('login', [AuthController::class, 'login']);
 
