@@ -3557,7 +3557,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"vendor_id\": {{customerID}},\n    \"warehouse_id\": {{warehouseID}},\n    \"status\": \"pending\",\n    \"details\": \"Pesanan untuk project X\",\n    \"order_type\": \"Direct Order\",\n    \"products\": [\n        {\n            \"product_id\": 1,\n            \"quantity\": 10,\n            \"price_per_unit\": 10000\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 5,\n            \"price_per_unit\": 15000\n        }\n    ]\n}"
+									"raw": "{\n    \"vendor_id\": {{customerID}},\n    \"warehouse_id\": {{warehouseID}},\n    \"status\": \"pending\",\n    \"details\": \"Pesanan untuk project X\",\n    \"order_type\": \"Direct Order\",\n    \"products\": [\n        {\n            \"product_id\": {{productID}},\n            \"quantity\": 10,\n            \"price_per_unit\": 10000\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 5,\n            \"price_per_unit\": 15000\n        }\n    ]\n}"
 								},
 								"url": "{{url}}/api/orders"
 							},
@@ -3730,22 +3730,22 @@
 										},
 										{
 											"key": "total_amount",
-											"value": "10000",
+											"value": "175000",
 											"type": "text"
 										},
 										{
 											"key": "balance_due",
-											"value": "10000",
+											"value": "175000",
 											"type": "text"
 										},
 										{
 											"key": "invoice_date",
-											"value": "2024-02-06",
+											"value": "2024-02-23",
 											"type": "text"
 										},
 										{
 											"key": "due_date",
-											"value": "2024-02-10",
+											"value": "2024-03-03",
 											"type": "text"
 										},
 										{
@@ -3852,7 +3852,7 @@
 										},
 										{
 											"key": "amount_paid",
-											"value": "5000",
+											"value": "100000",
 											"type": "text"
 										},
 										{
@@ -3862,7 +3862,7 @@
 										},
 										{
 											"key": "payment_date",
-											"value": "2024-02-06",
+											"value": "2024-02-23",
 											"type": "text"
 										}
 									]
