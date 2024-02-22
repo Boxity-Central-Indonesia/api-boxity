@@ -37,12 +37,12 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function store(InvoiceRequest $request)
+    public function store(Request $request)
     {
         DB::beginTransaction();
 
         try {
-            $validated = $request->validated();
+            $validated = $request->all();
             $invoice = Invoice::create($validated);
 
             // Mengambil order dan vendor terkait
@@ -59,7 +59,7 @@ class InvoiceController extends Controller
             // Menentukan account_id berdasarkan logika bisnis Anda
             $account_id = $this->determineAccountId($order, $transactionType); // Implementasikan fungsi ini
 
-            $description = "Invoice #{$invoice->id} created based on order #{$order->id}";
+            $description = "Invoice #{$invoice->id} created based on order #{$order->kode_order}";
             AccountsTransaction::create([
                 'account_id' => $account_id,
                 'date' => now(),

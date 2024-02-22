@@ -22,14 +22,17 @@ class ReportController extends Controller
 {
     public function salesReport()
     {
-        // Ambil data laporan penjualan
         $salesData = DB::table('orders')
+            ->join('order_products', 'orders.id', '=', 'order_products.order_id')
+            ->join('products', 'order_products.product_id', '=', 'products.id')
             ->join('vendors', 'orders.vendor_id', '=', 'vendors.id')
-            ->join('products', 'orders.product_id', '=', 'products.id')
             ->select(
                 'orders.*',
                 'vendors.name as vendor_name',
                 'products.name as product_name',
+                'order_products.quantity',
+                'order_products.price_per_unit',
+                DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
                 DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
             )
             ->where('vendors.transaction_type', 'outbound')
@@ -42,16 +45,20 @@ class ReportController extends Controller
         ]);
     }
 
+
     public function purchaseReport()
     {
-        // Ambil data laporan pembelian
         $purchaseData = DB::table('orders')
+            ->join('order_products', 'orders.id', '=', 'order_products.order_id')
+            ->join('products', 'order_products.product_id', '=', 'products.id')
             ->join('vendors', 'orders.vendor_id', '=', 'vendors.id')
-            ->join('products', 'orders.product_id', '=', 'products.id')
             ->select(
                 'orders.*',
                 'vendors.name as vendor_name',
                 'products.name as product_name',
+                'order_products.quantity',
+                'order_products.price_per_unit',
+                DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
                 DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
             )
             ->where('vendors.transaction_type', 'inbound')
@@ -63,6 +70,7 @@ class ReportController extends Controller
             'message' => 'Purchase report retrieved successfully.',
         ]);
     }
+
 
     public function revenueReport()
     {
@@ -302,7 +310,7 @@ class ReportController extends Controller
                     $invoice->sisa_tagihan = $invoice->balance_due;
                     $invoice->vendor_name = $invoice->order->vendor->name; // Nama pelanggan
                     // Format kode_order sesuai dengan kebutuhan
-                    $invoice->kode_order = 'ORD/' . $invoice->order->created_at->format('Y/m/') . str_pad($invoice->order->id, 4, '0', STR_PAD_LEFT);
+                    $invoice->kode_inv = 'INV/' . $invoice->order->created_at->format('Y/m/') . str_pad($invoice->order->id, 4, '0', STR_PAD_LEFT);
                 }
 
                 unset($invoice->order); // Hapus 'order' untuk menghindari data yang tidak perlu di respons

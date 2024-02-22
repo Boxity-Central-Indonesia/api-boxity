@@ -20,7 +20,9 @@ class Invoice extends Model
     protected $appends = ['kode_invoice'];
     public function getKodeInvoiceAttribute()
     {
-        return 'INV/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+        if (!is_null($this->created_at)) {
+            return 'INV/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+        }
     }
 
     // Hubungan ke Order

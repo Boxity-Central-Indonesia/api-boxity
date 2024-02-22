@@ -45,8 +45,9 @@ class ProcessingActivityController extends Controller
     }
     private function markOrderAsCompleted($order_id)
     {
-        $statusActivity = ProcessingActivity::find($order_id);
-        if ($statusActivity->status_activities !== 'Completed') {
+        $statusActivity = ProcessingActivity::where('order_id', $order_id)->first(); // Ubah ke pencarian berdasarkan order_id
+
+        if ($statusActivity && $statusActivity->status_activities !== 'Completed') { // Tambahkan pemeriksaan null di sini
             $lastActivityType = 'packaging_weighing'; // Misalkan aktivitas terakhir yang menandakan order selesai
 
             $lastActivityExists = ProcessingActivity::where('order_id', $order_id)
@@ -59,6 +60,7 @@ class ProcessingActivityController extends Controller
             }
         }
     }
+
 
     public function show($id)
     {

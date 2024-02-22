@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\OrderRequest;
 use App\Models\Account;
 use App\Models\AccountsTransaction;
+use App\Models\JournalEntry;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
@@ -54,34 +55,39 @@ class OrderController extends Controller
     }
 
     // Membuat order baru
-    public function store(OrderRequest $request)
+    public function store(Request $request)
     {
         Log::info("Incoming order data:", $request->all());
         DB::beginTransaction();
 
         try {
-            $validatedData = $request->validated();
-            $order = new Order($validatedData);
-
-            // Set status order berdasarkan tipe order
-            $order->order_status = $order->order_type == 'Direct Order' ? 'Completed' : 'In Production';
+            // Asumsikan data yang masuk sudah valid atau lakukan validasi manual sederhana
+            $validatedData = $request->all(); // Menggunakan data langsung tanpa validasi dari OrderRequest
+            $order = new Order([
+                'vendor_id' => $validatedData['vendor_id'],
+                'warehouse_id' => $validatedData['warehouse_id'],
+                'status' => $validatedData['status'],
+                'order_status' => $validatedData['order_type'] == 'Direct Order' ? 'Completed' : 'In Production',
+                'details' => $validatedData['details'] ?? null,
+                'order_type' => $validatedData['order_type'],
+                'taxes' => $validatedData['taxes'] ?? null,
+                'shipping_cost' => $validatedData['shipping_cost'] ?? null,
+            ]);
+            $order->total_price = 0;
             $order->save();
-
             $vendor = Vendor::find($validatedData['vendor_id']);
-            $totalOrderPrice = 0; // Variabel untuk menyimpan total harga order
+            $totalOrderPrice = 0;
 
             foreach ($validatedData['products'] as $product) {
                 $productTotalPrice = $product['quantity'] * $product['price_per_unit'];
-                $totalOrderPrice += $productTotalPrice; // Menambahkan ke total harga order
+                $totalOrderPrice += $productTotalPrice;
 
-                // Simpan ke tabel order_products
                 $order->products()->attach($product['product_id'], [
                     'quantity' => $product['quantity'],
                     'price_per_unit' => $product['price_per_unit'],
                     'total_price' => $productTotalPrice,
                 ]);
 
-                // Buat transaksi vendor untuk setiap produk
                 VendorTransaction::create([
                     'vendors_id' => $validatedData['vendor_id'],
                     'amount' => $productTotalPrice,
@@ -89,31 +95,28 @@ class OrderController extends Controller
                     'unit_price' => $product['price_per_unit'],
                     'total_price' => $productTotalPrice,
                     'quantity' => $product['quantity'],
-                    'taxes' => null, // Isi sesuai kebutuhan
-                    'shipping_cost' => null, // Isi sesuai kebutuhan
+                    'taxes' => null,
+                    'shipping_cost' => null,
                     'order_id' => $order->id,
                 ]);
             }
 
-            // Update total_price di order
             $order->total_price = $totalOrderPrice + ($validatedData['taxes'] ?? 0) + ($validatedData['shipping_cost'] ?? 0);
             $order->save();
 
-            // Logika akuntansi, penyesuaian mungkin diperlukan untuk menangani multiple products
-            $this->handleAccounting($validatedData, $vendor);
-
-            // Pencatatan pergerakan produk, penyesuaian mungkin diperlukan
+            // Proses logika akuntansi dan pencatatan lainnya
+            $this->handleAccounting($validatedData, $order, $vendor);
             $this->recordProductMovement($validatedData, $vendor);
-            // Tambahkan pembaruan harga produk di sini, penyesuaian mungkin diperlukan
             $this->updateProductPrices($validatedData, $vendor);
 
             DB::commit();
             return response()->json(['status' => 200, 'data' => $order, 'message' => 'Order created successfully.']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['status' => 500, 'message' => 'Gagal membuat order. Kesalahan: ' . $e->getMessage()], 500);
+            return response()->json(['status' => 500, 'message' => 'Gagal membuat order. Kesalahan: ' . $e->getMessage(), 'data' => [$validatedData, $order, $vendor]], 500);
         }
     }
+
 
     protected function updateAccountBalance($accountId, $amount, $type)
     {
@@ -131,7 +134,7 @@ class OrderController extends Controller
         $account->save();
     }
 
-    private function handleAccounting($validatedData, $vendor)
+    private function handleAccounting($validatedData, $order, $vendor)
     {
         $accountReceivable = Account::where('name', 'Piutang Usaha')->first();
         $accountPayable = Account::where('name', 'Utang Usaha')->first();
@@ -139,21 +142,21 @@ class OrderController extends Controller
 
         $journalEntry = [
             'date' => now(),
-            'description' => 'Pembayaran Order ' . $validatedData['order_number'],
+            'description' => 'Pembayaran Order ' . $order['kode_order'],
         ];
 
         if ($vendor->transaction_type === 'outbound') {
             // Penjualan (Outbound)
-            $journalEntry['debit_account_id'] = $accountReceivable->id;
-            $journalEntry['debit_amount'] = $validatedData['total_price'];
-            $journalEntry['credit_account_id'] = $inventoryAccount->id;
-            $journalEntry['credit_amount'] = $validatedData['total_price'];
+            $journalEntry['account_id'] = $accountReceivable->id;
+            $journalEntry['debit'] = $order['total_price'];
+            $journalEntry['account_id'] = $inventoryAccount->id;
+            $journalEntry['credit'] = $order['total_price'];
         } else {
             // Pembelian (Inbound)
-            $journalEntry['debit_account_id'] = $inventoryAccount->id;
-            $journalEntry['debit_amount'] = $validatedData['total_price'];
-            $journalEntry['credit_account_id'] = $accountPayable->id;
-            $journalEntry['credit_amount'] = $validatedData['total_price'];
+            $journalEntry['account_id'] = $inventoryAccount->id;
+            $journalEntry['debit'] = $order['total_price'];
+            $journalEntry['account_id'] = $accountPayable->id;
+            $journalEntry['credit'] = $order['total_price'];
         }
 
         // Simpan jurnal
@@ -162,24 +165,25 @@ class OrderController extends Controller
 
     private function recordProductMovement($validatedData, $vendor)
     {
-        foreach ($validatedData['products'] as $product) {
-            ProductsMovement::create([
-                'product_id' => $product['product_id'],
+        foreach ($validatedData['products'] as $productData) {
+            $productMovement = ProductsMovement::create([
+                'product_id' => $productData['product_id'],
                 'warehouse_id' => $validatedData['warehouse_id'],
                 'movement_type' => $vendor->transaction_type === 'outbound' ? 'sale' : 'purchase',
-                'quantity' => $product['quantity'],
-                'price' => $product['price_per_unit'],
+                'quantity' => $productData['quantity'],
+                'price' => $productData['price_per_unit'],
             ]);
-            $product = Product::findOrFail($validatedData['product_id']);
+
+            $productModel = Product::findOrFail($productData['product_id']);
 
             // Perbarui stok produk berdasarkan tipe transaksi
-            if ($movementType === 'sale') {
+            if ($vendor->transaction_type === 'sale') {
                 // Pastikan tidak mengurangi stok menjadi negatif
-                $newQuantity = max($product->stock - $productData['quantity'], 0);
-                $product->update(['stock' => $newQuantity]);
+                $newQuantity = max($productModel->stock - $productMovement['quantity'], 0);
+                $productModel->update(['stock' => $newQuantity]);
             } else {
                 // Menambah stok untuk pembelian
-                $product->update(['stock' => $product->stock + $productData['quantity']]);
+                $productModel->update(['stock' => $productModel->stock + $productMovement['quantity']]);
             }
         }
     }
@@ -191,50 +195,50 @@ class OrderController extends Controller
 
             if ($latestCost !== null) {
                 if ($vendor->transaction_type === 'inbound') {
-                    // Untuk transaksi inbound, perbarui buying_price
                     if ($productPrice) {
                         $productPrice->update(['buying_price' => $latestCost]);
                     } else {
-                        // Jika belum ada, buat entri baru dengan buying_price yang valid
                         ProductsPrice::create([
-                            'product_id' => $validatedData['product_id'],
+                            'product_id' => $productData['product_id'],
                             'buying_price' => $latestCost,
-                            'selling_price' => 0, // Inisialisasi atau perhitungan awal selling_price
+                            'selling_price' => 0,
                             'discount_price' => 0,
                         ]);
                     }
                 } else if ($vendor->transaction_type === 'outbound') {
-                    // Untuk transaksi outbound, perhitungkan dan perbarui selling_price
                     $newSellingPrice = $this->calculateNewSellingPrice($latestCost);
 
                     if ($productPrice) {
                         $productPrice->update(['selling_price' => $newSellingPrice]);
                     } else {
-                        // Jika belum ada, buat entri baru dengan selling_price yang valid
                         ProductsPrice::create([
-                            'product_id' => $validatedData['product_id'],
+                            'product_id' => $productData['product_id'],
                             'selling_price' => $newSellingPrice,
-                            'buying_price' => $latestCost, // Mungkin Anda ingin set ini juga, tergantung logika bisnis
+                            'buying_price' => $latestCost,
                             'discount_price' => 0,
                         ]);
                     }
                 }
             } else {
-                Log::error('Latest cost not found for product ID: ' . $validatedData['product_id'] . ' and transaction type: ' . $vendor->transaction_type);
+                Log::error('Latest cost not found for product ID: ' . $productData['product_id'] . ' and transaction type: ' . $vendor->transaction_type);
             }
         }
     }
+
     private function getLatestCost($productId, $transactionType)
     {
-        // Menggunakan Eloquent relationship untuk mendapatkan order terakhir berdasarkan tipe transaksi melalui vendor
         if ($transactionType === 'inbound') {
             $latestOrder = Order::whereHas('vendor', function ($query) {
                 $query->where('transaction_type', 'inbound');
-            })->where('product_id', $productId)->latest('created_at')->first();
+            })->whereHas('products', function ($query) use ($productId) { // Menambahkan use ($productId) di sini
+                $query->where('products.id', $productId);
+            })->latest('created_at')->first();
         } else { // asumsi 'outbound'
             $latestOrder = Order::whereHas('vendor', function ($query) {
                 $query->where('transaction_type', 'outbound');
-            })->where('product_id', $productId)->latest('created_at')->first();
+            })->whereHas('products', function ($query) use ($productId) { // Menambahkan use ($productId) di sini
+                $query->where('products.id', $productId);
+            })->latest('created_at')->first();
         }
 
         return $latestOrder ? $latestOrder->price_per_unit : null;
