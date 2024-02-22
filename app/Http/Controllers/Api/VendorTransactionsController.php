@@ -16,7 +16,14 @@ class VendorTransactionsController extends Controller
      */
     public function index()
     {
-        $transactions = VendorTransaction::with(['vendor', 'product', 'order'])->get();
+        $transactions = VendorTransaction::with(['vendor', 'product', 'order'])->get()->map(function ($transactions) {
+            $transactions->amount = (int) $transactions->amount;
+            $transactions->unit_price = (int) $transactions->unit_price;
+            $transactions->total_price = (int) $transactions->total_price;
+            $transactions->taxes = (int) $transactions->taxes;
+            $transactions->shipping_cost = (int) $transactions->shipping_cost;
+            return $transactions;
+        });;
         return response()->json([
             'status' => 200,
             'data' => $transactions,

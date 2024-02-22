@@ -17,7 +17,11 @@ class AccountsController extends Controller
      */
     public function index()
     {
-        $accounts = Account::all();
+        $accounts = Account::all()->map(function ($account) {
+            $account->balance = (int) $account->balance;
+            return $account;
+        });
+
         return response()->json(['status' => 200, 'data' => $accounts, 'message' => 'Accounts retrieved successfully.']);
     }
     public function getAccountingData()

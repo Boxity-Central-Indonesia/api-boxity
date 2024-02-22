@@ -19,7 +19,10 @@ class ProductsMovementsController extends Controller
      */
     public function index()
     {
-        $movements = ProductsMovement::with(['product', 'warehouse'])->get();
+        $movements = ProductsMovement::with(['product', 'warehouse'])->get()->map(function ($movements) {
+            $movements->price = (int) $movements->price;
+            return $movements;
+        });
         return response()->json([
             'status' => 200,
             'data' => $movements,

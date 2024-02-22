@@ -36,7 +36,13 @@ class ReportController extends Controller
                 DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
             )
             ->where('vendors.transaction_type', 'outbound')
-            ->get();
+            ->get()->map(function ($salesData) {
+                $salesData->total_price = (int) $salesData->total_price;
+                $salesData->taxes = (int) $salesData->taxes;
+                $salesData->shipping_cost = (int) $salesData->shipping_cost;
+                $salesData->price_per_unit = (int) $salesData->price_per_unit;
+                return $salesData;
+            });
 
         return response()->json([
             'status' => 200,
@@ -62,7 +68,13 @@ class ReportController extends Controller
                 DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
             )
             ->where('vendors.transaction_type', 'inbound')
-            ->get();
+            ->get()->map(function ($purchaseData) {
+                $purchaseData->total_price = (int) $purchaseData->total_price;
+                $purchaseData->taxes = (int) $purchaseData->taxes;
+                $purchaseData->shipping_cost = (int) $purchaseData->shipping_cost;
+                $purchaseData->price_per_unit = (int) $purchaseData->price_per_unit;
+                return $purchaseData;
+            });
 
         return response()->json([
             'status' => 200,
@@ -75,7 +87,10 @@ class ReportController extends Controller
     public function revenueReport()
     {
         // Ambil data dari tabel AccountTransactions sesuai dengan laporan pendapatan
-        $revenueData = AccountsTransaction::with('account')->where('type', 'Pendapatan')->orWhere('type', 'credit')->get();
+        $revenueData = AccountsTransaction::with('account')->where('type', 'Pendapatan')->orWhere('type', 'credit')->get()->map(function ($revenueData) {
+            $revenueData->amount = (int) $revenueData->amount;
+            return $revenueData;
+        });
 
         return response()->json([
             'status' => 200,
@@ -87,7 +102,10 @@ class ReportController extends Controller
     public function expensesReport()
     {
         // Ambil data dari tabel AccountTransactions sesuai dengan laporan pengeluaran
-        $expensesData = AccountsTransaction::with('account')->where('type', 'Pengeluaran')->orWhere('type', 'debit')->get();
+        $expensesData = AccountsTransaction::with('account')->where('type', 'Pengeluaran')->orWhere('type', 'debit')->get()->map(function ($expensesData) {
+            $expensesData->amount = (int) $expensesData->amount;
+            return $expensesData;
+        });
 
         return response()->json([
             'status' => 200,
@@ -99,7 +117,10 @@ class ReportController extends Controller
     public function inventoryReport()
     {
         // Ambil data dari tabel Product dan ProductMovement sesuai dengan laporan persediaan
-        $inventoryData = Product::with('movements')->get();
+        $inventoryData = Product::with('movements')->get()->map(function ($inventoryData) {
+            $inventoryData->price = (int) $inventoryData->price;
+            return $inventoryData;
+        });
 
         return response()->json([
             'status' => 200,
@@ -126,7 +147,14 @@ class ReportController extends Controller
             $query->select('id', 'created_at');
         }, 'product' => function ($query) {
             $query->select('id', 'name');
-        }])->get();
+        }])->get()->map(function ($transactions) {
+            $transactions->amount = (int) $transactions->amount;
+            $transactions->unit_price = (int) $transactions->unit_price;
+            $transactions->taxes = (int) $transactions->taxes;
+            $transactions->shipping_cost = (int) $transactions->shipping_cost;
+            $transactions->total_price = (int) $transactions->total_price;
+            return $transactions;
+        });
 
         // Tampilkan hanya data yang diperlukan
         $filteredTransactions = $transactions->map(function ($transaction) {

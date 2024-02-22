@@ -17,7 +17,10 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::with(['warehouse', 'category'])->get();
+        $products = Product::with(['warehouse', 'category'])->get()->map(function ($product) {
+            $product->price = (int) $product->price;
+            return $product;
+        });
         return response()->json([
             'status' => 200,
             'data' => $products,
