@@ -4809,7 +4809,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "cbb44e80-dcd9-4efb-8b77-fdcba5a753a8",
+				"id": "f4ab82ec-6d6e-4239-96f4-92c621956a0c",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4819,7 +4819,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "9f6a71b8-f50c-42d7-92ef-e6ec28359e89",
+				"id": "c6c41452-589b-48ed-a7ce-5320f955495f",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4828,10 +4828,6 @@
 		}
 	],
 	"variable": [
-		{
-			"key": "url",
-			"value": "localhost:8000"
-		},
 		{
 			"key": "userID",
 			"value": "1"
