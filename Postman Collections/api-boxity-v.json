@@ -4911,19 +4911,77 @@
 									"request": {
 										"method": "POST",
 										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"user_id\": {{userID}},\n  \"category_id\": {{categoryBlogID}},\n  \"title\": \"Judul Post\",\n  \"body\": \"Isi dari post\",\n  \"cover\": \"url_gambar.jpg\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
 										"url": "{{url}}/api/posts"
 									},
 									"response": []
 								},
 								{
-									"name": "New Request",
+									"name": "Get detail blog by ID",
 									"id": "e60d321a-677a-42eb-9068-ee6678410b50",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
 										"method": "GET",
-										"header": []
+										"header": [],
+										"url": "{{url}}/api/posts/{{blogID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Get all Blog",
+									"id": "de8a14ac-a8be-4036-b18e-5196206039d7",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/posts"
+									},
+									"response": []
+								},
+								{
+									"name": "Update blog by ID",
+									"id": "49ae950e-ca7c-471e-9d44-2de5f68bf2b8",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"user_id\": {{userID}},\n  \"category_id\": {{categoryBlogID}},\n  \"title\": \"Judul Post II\",\n  \"body\": \"Isi dari post II\",\n  \"cover\": \"url_gambar.jpg\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/posts/{{blogID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete blog by ID",
+									"id": "02f515a3-5626-4df4-8163-52b245982ca8",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/posts/{{blogID}}"
 									},
 									"response": []
 								}
@@ -4932,7 +4990,30 @@
 						},
 						{
 							"name": "Comments",
-							"item": [],
+							"item": [
+								{
+									"name": "Create comment by ID",
+									"id": "406ad6b1-4ffb-4c70-be98-157cc0d34d1f",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"post_id\": {{blogID}},\n  \"content\": \"Isi dari komentar\"\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/posts-comment"
+									},
+									"response": []
+								}
+							],
 							"id": "3cd7ebcb-a933-459d-bb9e-7e861c80accf"
 						}
 					],
