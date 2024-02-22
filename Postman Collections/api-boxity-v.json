@@ -4797,6 +4797,46 @@
 			],
 			"id": "dc4664a7-5af0-4d14-89f7-1502ab3438c1",
 			"description": "Modul Laporan/Reports adalah bagian dari sistem yang memungkinkan pengguna untuk mengakses informasi terkait dengan berbagai aspek bisnis atau operasional. Modul ini digunakan untuk menghasilkan laporan atau ringkasan data yang dapat membantu dalam pengambilan keputusan, pemantauan kinerja, dan analisis bisnis. Dalam konteks deskripsi Postman, berikut adalah penjelasan singkat tentang modul Laporan/Reports:\n\n### Laporan Penjualan (Sales Report)\n\n**Deskripsi**: Modul Laporan Penjualan digunakan untuk menghasilkan laporan terkait dengan transaksi penjualan produk atau layanan. Laporan ini mencakup informasi seperti pesanan, faktur, dan pembayaran yang berkaitan dengan penjualan. Ini membantu dalam melacak pendapatan dan kinerja penjualan.\n\n### Laporan Pendapatan (Revenue Report)\n\n**Deskripsi**: Modul Laporan Pendapatan digunakan untuk menghasilkan laporan pendapatan perusahaan. Ini mencakup semua transaksi pendapatan yang telah tercatat. Laporan ini membantu dalam pemantauan pendapatan bersih perusahaan.\n\n### Laporan Pengeluaran (Expenses Report)\n\n**Deskripsi**: Modul Laporan Pengeluaran digunakan untuk menghasilkan laporan yang berkaitan dengan pengeluaran perusahaan. Ini mencakup semua transaksi pengeluaran yang telah tercatat. Laporan ini membantu dalam mengelola dan memantau biaya operasional.\n\n### Laporan Persediaan (Inventory Report)\n\n**Deskripsi**: Modul Laporan Persediaan digunakan untuk menghasilkan laporan terkait dengan persediaan produk atau barang. Laporan ini mencakup informasi tentang produk yang tersedia, harga, dan pergerakan persediaan. Ini membantu dalam mengelola persediaan dan mengoptimalkan stok produk.\n\n### Laporan Prospek (Leads Report)\n\n**Deskripsi**: Modul Laporan Prospek digunakan untuk menghasilkan laporan terkait dengan data prospek atau calon pelanggan. Laporan ini mencakup informasi tentang calon pelanggan potensial yang dapat dihubungi atau diikuti lebih lanjut. Ini membantu dalam mengelola peluang bisnis.\n\n### **Laporan Vendor**\n\nLaporan vendor adalah sebuah ringkasan data yang memberikan informasi penting tentang vendor atau pemasok tertentu dalam konteks bisnis atau organisasi. Laporan ini dapat digunakan untuk memahami interaksi dan transaksi antara bisnis atau organisasi dengan vendor, serta untuk mengambil keputusan yang lebih baik terkait dengan manajemen rantai pasokan dan keuangan."
+		},
+		{
+			"name": "General App",
+			"item": [
+				{
+					"name": "Blog Management",
+					"item": [
+						{
+							"name": "Category",
+							"item": [
+								{
+									"name": "New Request",
+									"id": "88ca44ed-7175-4ff0-a192-f7fec7bf5747",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								}
+							],
+							"id": "4bbe99ee-adec-4a41-a485-b7dda8cf446b"
+						},
+						{
+							"name": "Blog",
+							"item": [],
+							"id": "c1d38f16-7b23-4398-be57-3b39bed54b81"
+						},
+						{
+							"name": "Comments",
+							"item": [],
+							"id": "3cd7ebcb-a933-459d-bb9e-7e861c80accf"
+						}
+					],
+					"id": "e5da7a2d-4423-4e1e-8d2d-7436907d9d7f"
+				}
+			],
+			"id": "c1ae8786-8318-45bd-92ad-82df1abb2aac"
 		}
 	],
 	"auth": {
