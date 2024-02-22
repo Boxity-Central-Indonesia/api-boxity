@@ -5094,7 +5094,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "f4ab82ec-6d6e-4239-96f4-92c621956a0c",
+				"id": "8cf07d88-2026-4064-9aa6-f4da8dd89074",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -5104,55 +5104,12 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "c6c41452-589b-48ed-a7ce-5320f955495f",
+				"id": "974d5b37-3318-4813-97c2-fb2c1a09b746",
 				"type": "text/javascript",
 				"exec": [
 					""
 				]
 			}
-		}
-	],
-	"variable": [
-		{
-			"key": "userID",
-			"value": "1"
-		},
-		{
-			"key": "companyID",
-			"value": "1"
-		},
-		{
-			"key": "departmentID",
-			"value": "1"
-		},
-		{
-			"key": "employeeCategoriesID",
-			"value": "1"
-		},
-		{
-			"key": "employeeID",
-			"value": "1"
-		},
-		{
-			"key": "productID",
-			"value": "1"
-		},
-		{
-			"key": "branchID",
-			"value": "1",
-			"type": "string"
-		},
-		{
-			"key": "profilesID",
-			"value": "1"
-		},
-		{
-			"key": "businessID",
-			"value": "1"
-		},
-		{
-			"key": "warehouseLocationID",
-			"value": "1"
 		}
 	]
 }
