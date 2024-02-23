@@ -1014,7 +1014,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Cabang Medan UMSU\",\n    \"address\": \"Jalan jalan\",\n    \"phone_number\": \"0092828282\",\n    \"email\": \"company-bra@company.id\",\n    \"company_id\": {{companyID}}\n}"
+									"raw": "{\n    \"name\": \"Cabang Medan UMSU\",\n    \"address\": \"Jalan jalan\",\n    \"phone_number\": \"0092828282\",\n    \"email\": \"company-umsu@company.id\",\n    \"company_id\": {{companyID}}\n}"
 								},
 								"url": "{{url}}/api/companies/{{companyID}}/branches/{{branchID}}"
 							},
