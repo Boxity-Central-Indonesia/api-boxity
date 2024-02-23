@@ -15,6 +15,9 @@ class WarehouseLocation extends Model
         'warehouse_id',
         'number',
         'capacity',
+        'length',
+        'width',
+        'height'
     ];
     public static function boot()
     {
