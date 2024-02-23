@@ -1474,7 +1474,7 @@
 							"name": "Warehouses Location",
 							"item": [
 								{
-									"name": "Create Warehouses",
+									"name": "Create Location",
 									"id": "6abe1616-9049-4be1-91fa-dc5cede64041",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
