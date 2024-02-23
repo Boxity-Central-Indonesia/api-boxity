@@ -19,7 +19,10 @@ class AccountsTransactionsController extends Controller
      */
     public function index()
     {
-        $transactions = AccountsTransaction::with('account')->get();
+        $transactions = AccountsTransaction::with('account')->get()->map(function ($transactions) {
+            $transactions->amount = (int) $transactions->amount;
+            return $transactions;
+        });
         return response()->json([
             'status' => 200,
             'data' => $transactions,

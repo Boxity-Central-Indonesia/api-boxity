@@ -18,7 +18,10 @@ class AccountsBalancesController extends Controller
      */
     public function index()
     {
-        $balances = AccountsBalance::with('account')->get();
+        $balances = AccountsBalance::with('account')->get()->map(function ($balances) {
+            $balances->balance = (int) $balances->balance;
+            return $balances;
+        });
         return response()->json([
             'status' => 200,
             'data' => $balances,
