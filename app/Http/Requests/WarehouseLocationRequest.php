@@ -19,6 +19,9 @@ class WarehouseLocationRequest extends FormRequest
             'warehouse_id' => 'required|exists:warehouses,id',
             'number' => 'required|string',
             'capacity' => 'required|numeric',
+            'length' => 'nullable|numeric',
+            'width' => 'nullable|numeric',
+            'height' => 'nullable|numeric',
         ];
     }
 
