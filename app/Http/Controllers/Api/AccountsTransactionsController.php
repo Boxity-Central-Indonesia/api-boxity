@@ -21,6 +21,7 @@ class AccountsTransactionsController extends Controller
     {
         $transactions = AccountsTransaction::with('account')->get()->map(function ($transactions) {
             $transactions->amount = (int) $transactions->amount;
+            $transactions->account->balance = (int) $transactions->account->balance;
             return $transactions;
         });
         return response()->json([
