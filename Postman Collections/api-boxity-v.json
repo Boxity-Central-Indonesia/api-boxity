@@ -1493,7 +1493,7 @@
 											"formdata": [
 												{
 													"key": "warehouse_id",
-													"value": "1",
+													"value": "{{warehouseID}}",
 													"type": "text"
 												},
 												{
@@ -1504,6 +1504,21 @@
 												{
 													"key": "capacity",
 													"value": "10000",
+													"type": "text"
+												},
+												{
+													"key": "length",
+													"value": "100",
+													"type": "text"
+												},
+												{
+													"key": "width",
+													"value": "50",
+													"type": "text"
+												},
+												{
+													"key": "height",
+													"value": "35",
 													"type": "text"
 												}
 											]
