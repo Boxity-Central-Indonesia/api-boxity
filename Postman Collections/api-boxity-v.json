@@ -4502,6 +4502,24 @@
 			"name": "Laporan",
 			"item": [
 				{
+					"name": "Download",
+					"item": [
+						{
+							"name": "Inventory Report",
+							"id": "5c83a1de-ac9f-4500-bcba-0ca16abf5a93",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
+					"id": "bc354480-2c42-4c2e-837b-55fefee491f3"
+				},
+				{
 					"name": "Penjualan",
 					"id": "9c874eee-6ff9-40ef-b468-3575093d04d8",
 					"protocolProfileBehavior": {
