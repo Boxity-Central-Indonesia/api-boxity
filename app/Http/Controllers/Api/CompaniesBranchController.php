@@ -44,7 +44,7 @@ class CompaniesBranchController extends Controller
         $data = $request->validated();
         $branchModel->update($data);
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $branchModel,
             'message' => 'Branch updated successfully.',
         ]);

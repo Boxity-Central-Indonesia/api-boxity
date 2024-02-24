@@ -44,7 +44,7 @@ class CompaniesDepartmentController extends Controller
         $department = CompaniesDepartment::findOrFail($department);
         $department->update($request->validated());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $department,
             'message' => 'Department updated successfully.',
         ]);
