@@ -4512,7 +4512,8 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/download/inventory-report"
 							},
 							"response": []
 						}
