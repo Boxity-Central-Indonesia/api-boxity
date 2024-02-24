@@ -134,6 +134,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/production-report', [ReportController::class, 'productionReport']);
     Route::get('/production-report/{order_id}', [ReportController::class, 'productionReportDetails']);
 
+    // Download Reports
+    Route::prefix('download')->group(function () {
+        Route::get('/inventory-report', [ReportController::class, 'downloadInventoryReportPdf']);
+    });
+
     // Proses produksi
     Route::apiResource('packaging', PackagingController::class);
     Route::apiResource('packages', PackageController::class);

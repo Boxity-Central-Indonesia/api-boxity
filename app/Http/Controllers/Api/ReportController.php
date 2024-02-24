@@ -15,6 +15,8 @@ use App\Models\Lead;
 use App\Models\ManufacturerSlaughtering;
 use App\Models\Vendor;
 use App\Models\VendorTransaction;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -132,7 +134,34 @@ class ReportController extends Controller
             'message' => 'Inventory report retrieved successfully.',
         ]);
     }
+    public function downloadInventoryReportPdf()
+    {
+        // Panggil fungsi inventoryReport untuk mendapatkan data persediaan
+        $inventoryData = Product::with('movements')
+            ->where('stock', '>', 0)
+            ->get()
+            ->map(function ($item) {
+                $item->price = (int) $item->price;
+                $item->total_price = (int) ($item->price * $item->stock);
+                return $item;
+            });
 
+        // Validasi jika data persediaan tidak ditemukan
+        if ($inventoryData->isEmpty()) {
+            return response()->json(['message' => 'No inventory data found.', 'status' => 404], 404);
+        }
+        $pdf = PDF::loadView('pdf.inventory_report', compact('inventoryData'));
+        // Generate nama file dengan menambahkan tanggal
+        $fileName = 'inventory_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+        // Simpan file PDF di server dengan nama yang baru
+        $pdfPath = storage_path('app/' . $fileName);
+        $pdf->save($pdfPath);
+
+        // Mengunduh file PDF
+        // return response()->download($pdfPath, $fileName)->deleteFileAfterSend(true);
+        return response()->download($pdfPath, $fileName);
+    }
     public function leadsReport()
     {
         // Ambil data dari tabel Lead sesuai dengan laporan prospek
