@@ -117,10 +117,13 @@ class ReportController extends Controller
     public function inventoryReport()
     {
         // Ambil data dari tabel Product dan ProductMovement sesuai dengan laporan persediaan
-        $inventoryData = Product::with('movements')->get()->map(function ($inventoryData) {
-            $inventoryData->price = (int) $inventoryData->price;
-            return $inventoryData;
-        });
+        $inventoryData = Product::with('movements')
+            ->get()
+            ->map(function ($item) {
+                $item->price = (int) $item->price;
+                $item->total_price = (int) ($item->price * $item->stock);
+                return $item;
+            });
 
         return response()->json([
             'status' => 200,
