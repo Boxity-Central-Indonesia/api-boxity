@@ -118,6 +118,7 @@ class ReportController extends Controller
     {
         // Ambil data dari tabel Product dan ProductMovement sesuai dengan laporan persediaan
         $inventoryData = Product::with('movements')
+            ->where('stock', '>', 0)
             ->get()
             ->map(function ($item) {
                 $item->price = (int) $item->price;
