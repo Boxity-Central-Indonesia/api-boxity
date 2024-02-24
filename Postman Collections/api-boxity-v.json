@@ -4573,6 +4573,18 @@
 				},
 				{
 					"name": "Persediaan Barang",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ee66147b-3ab4-4db8-8295-7103f5385b21",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"id": "0f502093-88f6-41db-8241-5d950f288fb5",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
