@@ -26,13 +26,11 @@ class OrderController extends Controller
         return response()->json([
             'status' => 200,
             'data' => $orders->map(function ($order) {
-                // Menyesuaikan struktur data order untuk inklusi detail produk
                 return [
                     'id' => $order->id,
                     'kode_order' => $order->kode_order,
                     'vendor' => $order->vendor,
                     'products' => $order->products->map(function ($product) {
-                        // Kustomisasi detail produk jika diperlukan
                         return [
                             'id' => $product->id,
                             'name' => $product->name,
@@ -48,11 +46,13 @@ class OrderController extends Controller
                     'order_type' => $order->order_type,
                     'taxes' => $order->taxes,
                     'shipping_cost' => $order->shipping_cost,
+                    'created_at' => $order->created_at, // Tambahkan created_at jika diperlukan
                 ];
             }),
             'message' => 'Orders retrieved successfully.',
         ]);
     }
+
 
     // Membuat order baru
     public function store(Request $request)
@@ -254,36 +254,33 @@ class OrderController extends Controller
     // Menampilkan satu order
     public function show($id)
     {
-        $orders = Order::with(['vendor', 'products', 'warehouse', 'invoices'])->find($id);
+        $order = Order::with(['vendor', 'products', 'warehouse', 'invoices'])->find($id);
+
         if ($order) {
             return response()->json([
                 'status' => 200,
-                'data' => $orders->map(function ($order) {
-                    // Menyesuaikan struktur data order untuk inklusi detail produk
-                    return [
-                        'id' => $order->id,
-                        'kode_order' => $order->kode_order,
-                        'vendor' => $order->vendor,
-                        'products' => $order->products->map(function ($product) {
-                            // Kustomisasi detail produk jika diperlukan
-                            return [
-                                'id' => $product->id,
-                                'name' => $product->name,
-                                'quantity' => $product->pivot->quantity,
-                                'price_per_unit' => $product->pivot->price_per_unit,
-                                'total_price' => $product->pivot->total_price,
-                            ];
-                        }),
-                        'warehouse' => $order->warehouse,
-                        'invoices' => $order->invoices,
-                        'total_price' => $order->total_price,
-                        'order_status' => $order->order_status,
-                        'order_type' => $order->order_type,
-                        'taxes' => $order->taxes,
-                        'shipping_cost' => $order->shipping_cost,
-                    ];
-                }),
-                'message' => 'Orders retrieved successfully.',
+                'data' => [
+                    'id' => $order->id,
+                    'kode_order' => $order->kode_order,
+                    'vendor' => $order->vendor,
+                    'products' => $order->products->map(function ($product) {
+                        return [
+                            'id' => $product->id,
+                            'name' => $product->name,
+                            'quantity' => $product->pivot->quantity,
+                            'price_per_unit' => $product->pivot->price_per_unit,
+                            'total_price' => $product->pivot->total_price,
+                        ];
+                    }),
+                    'warehouse' => $order->warehouse,
+                    'invoices' => $order->invoices,
+                    'total_price' => $order->total_price,
+                    'order_status' => $order->order_status,
+                    'order_type' => $order->order_type,
+                    'taxes' => $order->taxes,
+                    'shipping_cost' => $order->shipping_cost,
+                ],
+                'message' => 'Order retrieved successfully.',
             ]);
         } else {
             return response()->json([
@@ -292,6 +289,7 @@ class OrderController extends Controller
             ]);
         }
     }
+
     public function getOrderDetails()
     {
         $orderDetails = DB::table('orders')
@@ -446,4 +444,53 @@ class OrderController extends Controller
             DB::commit();
             return response()->json([
                 'status' => 200,
-                'dat
+                'data' => $order,
+                'message' => 'Order updated successfully.',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to update order. Error: ' . $e->getMessage(),
+            ]);
+        }
+    }
+
+
+
+    // Menghapus order
+    public function destroy($id)
+    {
+        $order = Order::find($id);
+        if ($order) {
+            $order->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Order deleted successfully.',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Order not found.',
+            ]);
+        }
+    }
+
+    public function processingActivities($orderId)
+    {
+        $order = Order::with(['processingActivities', 'processingActivities.product'])->find($orderId);
+
+        if (!$order) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Order not found.',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $order->processingActivities,
+            'message' => 'Processing activities for order retrieved successfully.',
+        ]);
+    }
+}

@@ -22,8 +22,14 @@ class Order extends Model
     protected $appends = ['kode_order'];
     public function getKodeOrderAttribute()
     {
-        return 'ORD/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+        if ($this->created_at) {
+            return 'ORD/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+        }
+
+        // Default value jika created_at null
+        return 'ORD/unknown_date/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
     }
+
     // Hubungan ke Vendor
     public function vendor()
     {
