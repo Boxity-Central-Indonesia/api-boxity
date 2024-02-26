@@ -17,6 +17,11 @@ class VendorsController extends Controller
     public function index()
     {
         $vendors = Vendor::all();
+        // Mengubah nilai transaction_type
+        $vendors = $vendors->map(function ($vendor) {
+            $vendor->transaction_type = ($vendor->transaction_type === 'inbound') ? 'supplier' : 'customer';
+            return $vendor;
+        });
         return response()->json([
             'status' => 200,
             'data' => $vendors,
