@@ -16,7 +16,10 @@ class WarehousesController extends Controller
      */
     public function index()
     {
-        $warehouses = Warehouse::all();
+        $warehouses = Warehouse::get()->map(function ($warehouses) {
+            $warehouses->capacity = (int) $warehouses->capacity;
+            return $warehouses;
+        });
 
         return response()->json([
             'status' => 200,
