@@ -35,8 +35,8 @@ class OrderController extends Controller
                             'id' => $product->id,
                             'name' => $product->name,
                             'quantity' => $product->pivot->quantity,
-                            'price_per_unit' => $product->pivot->price_per_unit,
-                            'total_price' => $product->pivot->total_price,
+                            'price_per_unit' => (int)$product->pivot->price_per_unit,
+                            'total_price' => (int)$product->pivot->total_price,
                         ];
                     }),
                     'warehouse' => $order->warehouse,
