@@ -6,6 +6,7 @@ body {
 .align-right {
     text-align: right;
 }
+
 .align-center {
     text-align: center;
 }
@@ -20,28 +21,32 @@ table {
     margin-top: 20px;
 }
 
-th,
-td {
+th, td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 12px; /* Increased padding for better readability */
     text-align: left;
 }
 
 th {
     background-color: #f2f2f2;
 }
+
+th, td {
+    font-size: 16px; /* Increased font size for better readability */
+}
+
 #footer {
     position: fixed;
     bottom: 20px;
     width: 100%;
     text-align: center;
-    font-size: 12px;
 }
 
 #footer .left {
     float: left;
 }
 
-#footer .center {
+#footer .center, #footer .left {
     display: inline-block;
+    font-size: 12px !important;
 }

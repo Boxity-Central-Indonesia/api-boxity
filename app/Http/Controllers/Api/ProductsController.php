@@ -17,7 +17,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::with(['warehouse', 'category'])->get()->map(function ($product) {
+        $products = Product::with(['warehouse', 'category', 'prices'])->get()->map(function ($product) {
             $product->price = (int) $product->price;
             return $product;
         });

@@ -91,6 +91,7 @@ class ReportController extends Controller
         // Ambil data dari tabel AccountTransactions sesuai dengan laporan pendapatan
         $revenueData = AccountsTransaction::with('account')->where('type', 'Pendapatan')->orWhere('type', 'credit')->get()->map(function ($revenueData) {
             $revenueData->amount = (int) $revenueData->amount;
+            $revenueData->account->balance = (int) $revenueData->account->balance;
             return $revenueData;
         });
 
@@ -106,6 +107,7 @@ class ReportController extends Controller
         // Ambil data dari tabel AccountTransactions sesuai dengan laporan pengeluaran
         $expensesData = AccountsTransaction::with('account')->where('type', 'Pengeluaran')->orWhere('type', 'debit')->get()->map(function ($expensesData) {
             $expensesData->amount = (int) $expensesData->amount;
+            $expensesData->account->balance = (int) $expensesData->account->balance;
             return $expensesData;
         });
 
@@ -137,30 +139,37 @@ class ReportController extends Controller
     public function downloadInventoryReportPdf()
     {
         // Panggil fungsi inventoryReport untuk mendapatkan data persediaan
-        $inventoryData = Product::with('movements')
-            ->where('stock', '>', 0)
-            ->get()
-            ->map(function ($item) {
-                $item->price = (int) $item->price;
-                $item->total_price = (int) ($item->price * $item->stock);
-                return $item;
-            });
+        $inventoryData = Product::with('movements','category','warehouse')
+        ->where('stock', '>', 0)
+        ->get()
+        ->map(function ($item) {
+            $item->price = (int) $item->price;
+            $item->total_price = (int) ($item->price * $item->stock);
+            return $item;
+        });
 
-        // Validasi jika data persediaan tidak ditemukan
-        if ($inventoryData->isEmpty()) {
-            return response()->json(['message' => 'No inventory data found.', 'status' => 404], 404);
-        }
-        $pdf = PDF::loadView('pdf.inventory_report', compact('inventoryData'));
-        // Generate nama file dengan menambahkan tanggal
-        $fileName = 'inventory_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+    // Validasi jika data persediaan tidak ditemukan
+    if ($inventoryData->isEmpty()) {
+        return response()->json(['message' => 'No inventory data found.', 'status' => 404], 404);
+    }
 
-        // Simpan file PDF di server dengan nama yang baru
-        $pdfPath = storage_path('app/' . $fileName);
-        $pdf->save($pdfPath);
+    $pdf = PDF::loadView('pdf.inventory_report', compact('inventoryData'));
 
-        // Mengunduh file PDF
-        // return response()->download($pdfPath, $fileName)->deleteFileAfterSend(true);
-        return response()->download($pdfPath, $fileName);
+    // Generate nama file dengan menambahkan tanggal
+    $fileName = 'inventory_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+    // Simpan file PDF di storage dengan nama yang baru
+    $pdf->save(public_path('pdf/' . $fileName));
+
+    // Mendapatkan URL untuk di-download
+    $pdfUrl = url('pdf/' . $fileName);
+
+    // Mengirim response dengan URL file yang dapat di-download
+    return response()->json([
+        'message' => 'PDF generated successfully.',
+        'data' => $pdfUrl,
+        'status' => 200,
+    ]);
     }
     public function leadsReport()
     {

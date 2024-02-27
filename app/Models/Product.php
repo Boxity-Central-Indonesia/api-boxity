@@ -26,6 +26,11 @@ class Product extends Model
             $model->user_updated = Auth::id();
         });
     }
+    public function getDescriptionAttribute($description)
+    {
+        // Limit the description to 150 characters
+        return \Str::limit($description, 30, '...');
+    }
     public function category()
     {
         return $this->belongsTo(ProductsCategory::class);

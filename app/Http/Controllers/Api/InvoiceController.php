@@ -29,7 +29,12 @@ class InvoiceController extends Controller
     }
     public function index()
     {
-        $invoices = Invoice::with('order', 'payments')->get();
+        $invoices = Invoice::with('order', 'payments')->get()->map(function ($invoice) {
+            $invoice->total_amount = (int) $invoice->total_amount;
+            $invoice->paid_amount = (int) $invoice->paid_amount;
+            $invoice->balance_due = (int) $invoice->balance_due;
+            return $invoice;
+        });
         return response()->json([
             'status' => 200,
             'data' => $invoices,
