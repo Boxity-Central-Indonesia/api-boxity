@@ -251,11 +251,29 @@ class OrderController extends Controller
         return $latestOrder ? $latestOrder->price_per_unit : null;
     }
 
-    private function calculateNewSellingPrice($cost)
-    {
-        $markupPercentage = 20; // Misalkan markup 20%
-        return $cost * (1 + $markupPercentage / 100);
+    private function calculateNewSellingPrice($latestCost, $productId, $vendorId)
+{
+    // Get past selling prices from related orders with the same product and vendor's transaction_type as 'outbound'
+    $pastSellingPrices = Order::whereHas('vendor', function ($query) {
+            $query->where('transaction_type', 'outbound');
+        })
+        ->whereHas('products', function ($query) use ($productId) {
+            $query->where('product_id', $productId);
+        })
+        ->where('vendor_id', $vendorId)
+        ->pluck('total_price')
+        ->toArray();
+
+    // If there are past selling prices, calculate the average
+    if (!empty($pastSellingPrices)) {
+        $averageSellingPrice = array_sum($pastSellingPrices) / count($pastSellingPrices);
+    } else {
+        // If no past selling prices, use a default calculation or set to the latest cost
+        $averageSellingPrice = $latestCost;
     }
+
+    return $averageSellingPrice;
+}
 
 
     // Menampilkan satu order
