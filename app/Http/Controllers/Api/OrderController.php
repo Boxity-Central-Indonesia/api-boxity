@@ -189,12 +189,11 @@ class OrderController extends Controller
     }
     private function updateProductPrices($validatedData, $vendor)
     {
-        foreach ($validatedData['products'] as $productData) {
-            $productPrice = ProductsPrice::where('product_id', $productData['product_id'])->first();
-            $latestCost = $this->getLatestCost($productData['product_id'], $vendor->transaction_type);
+        try {
+            foreach ($validatedData['products'] as $productData) {
+                $productPrice = ProductsPrice::where('product_id', $productData['product_id'])->first();
+                $latestCost = $this->getLatestCost($productData['product_id'], $vendor->transaction_type);
 
-            // Jika productPrices tidak ditemukan maka create productPrices
-            if ($productPrice) {
                 if ($latestCost !== null) {
                     if ($vendor->transaction_type === 'inbound') {
                         if ($productPrice) {
@@ -209,7 +208,7 @@ class OrderController extends Controller
                         }
                     } else if ($vendor->transaction_type === 'outbound') {
                         $newSellingPrice = $this->calculateNewSellingPrice($latestCost);
-    
+
                         if ($productPrice) {
                             $productPrice->update(['selling_price' => $newSellingPrice]);
                         } else {
@@ -224,16 +223,14 @@ class OrderController extends Controller
                 } else {
                     Log::error('Latest cost not found for product ID: ' . $productData['product_id'] . ' and transaction type: ' . $vendor->transaction_type);
                 }
-            } else {
-                ProductsPrice::create([
-                    'product_id' => $productData['product_id'],
-                    'buying_price' => $latestCost,
-                    'selling_price' => $newSellingPrice,
-                    'discount_price' => 0,
-                ]);
             }
+        } catch (\Exception $e) {
+            Log::error('Error updating product prices: ' . $e->getMessage());
+            // Optionally, you can rethrow the exception if you want it to bubble up.
+            // throw $e;
         }
     }
+
 
     private function getLatestCost($productId, $transactionType)
     {
