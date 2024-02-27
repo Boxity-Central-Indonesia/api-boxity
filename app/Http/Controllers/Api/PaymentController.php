@@ -15,7 +15,10 @@ class PaymentController extends Controller
 {
     public function index()
     {
-        $payments = Payment::with('invoice')->get();
+        $payments = Payment::with('invoice')->get()->map(function ($payments) {
+            $payments->amount_paid = (int) $payments->amount_paid;
+            return $payments;
+        });
         return response()->json([
             'status' => 200,
             'data' => $payments,

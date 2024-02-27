@@ -35,17 +35,17 @@ class OrderController extends Controller
                             'id' => $product->id,
                             'name' => $product->name,
                             'quantity' => $product->pivot->quantity,
-                            'price_per_unit' => $product->pivot->price_per_unit,
-                            'total_price' => $product->pivot->total_price,
+                            'price_per_unit' => (int)$product->pivot->price_per_unit,
+                            'total_price' => (int)$product->pivot->total_price,
                         ];
                     }),
                     'warehouse' => $order->warehouse,
                     'invoices' => $order->invoices,
-                    'total_price' => $order->total_price,
+                    'total_price' => (int)$order->total_price,
                     'order_status' => $order->order_status,
                     'order_type' => $order->order_type,
-                    'taxes' => $order->taxes,
-                    'shipping_cost' => $order->shipping_cost,
+                    'taxes' => (int)$order->taxes,
+                    'shipping_cost' => (int)$order->shipping_cost,
                     'created_at' => $order->created_at, // Tambahkan created_at jika diperlukan
                 ];
             }),
@@ -189,41 +189,48 @@ class OrderController extends Controller
     }
     private function updateProductPrices($validatedData, $vendor)
     {
-        foreach ($validatedData['products'] as $productData) {
-            $productPrice = ProductsPrice::where('product_id', $productData['product_id'])->first();
-            $latestCost = $this->getLatestCost($productData['product_id'], $vendor->transaction_type);
+        try {
+            foreach ($validatedData['products'] as $productData) {
+                $productPrice = ProductsPrice::where('product_id', $productData['product_id'])->first();
+                $latestCost = $this->getLatestCost($productData['product_id'], $vendor->transaction_type);
 
-            if ($latestCost !== null) {
-                if ($vendor->transaction_type === 'inbound') {
-                    if ($productPrice) {
-                        $productPrice->update(['buying_price' => $latestCost]);
-                    } else {
-                        ProductsPrice::create([
-                            'product_id' => $productData['product_id'],
-                            'buying_price' => $latestCost,
-                            'selling_price' => 0,
-                            'discount_price' => 0,
-                        ]);
-                    }
-                } else if ($vendor->transaction_type === 'outbound') {
-                    $newSellingPrice = $this->calculateNewSellingPrice($latestCost);
+                if ($latestCost !== null) {
+                    if ($vendor->transaction_type === 'inbound') {
+                        if ($productPrice) {
+                            $productPrice->update(['buying_price' => $latestCost]);
+                        } else {
+                            ProductsPrice::create([
+                                'product_id' => $productData['product_id'],
+                                'buying_price' => $latestCost,
+                                'selling_price' => 0,
+                                'discount_price' => 0,
+                            ]);
+                        }
+                    } else if ($vendor->transaction_type === 'outbound') {
+                        $newSellingPrice = $this->calculateNewSellingPrice($latestCost, $productData['product_id'], $vendor->id);
 
-                    if ($productPrice) {
-                        $productPrice->update(['selling_price' => $newSellingPrice]);
-                    } else {
-                        ProductsPrice::create([
-                            'product_id' => $productData['product_id'],
-                            'selling_price' => $newSellingPrice,
-                            'buying_price' => $latestCost,
-                            'discount_price' => 0,
-                        ]);
+                        if ($productPrice) {
+                            $productPrice->update(['selling_price' => $newSellingPrice]);
+                        } else {
+                            ProductsPrice::create([
+                                'product_id' => $productData['product_id'],
+                                'selling_price' => $newSellingPrice,
+                                'buying_price' => $latestCost,
+                                'discount_price' => 0,
+                            ]);
+                        }
                     }
+                } else {
+                    Log::error('Latest cost not found for product ID: ' . $productData['product_id'] . ' and transaction type: ' . $vendor->transaction_type);
                 }
-            } else {
-                Log::error('Latest cost not found for product ID: ' . $productData['product_id'] . ' and transaction type: ' . $vendor->transaction_type);
             }
+        } catch (\Exception $e) {
+            Log::error('Error updating product prices: ' . $e->getMessage());
+            // Optionally, you can rethrow the exception if you want it to bubble up.
+            // throw $e;
         }
     }
+
 
     private function getLatestCost($productId, $transactionType)
     {
@@ -244,10 +251,28 @@ class OrderController extends Controller
         return $latestOrder ? $latestOrder->price_per_unit : null;
     }
 
-    private function calculateNewSellingPrice($cost)
+    private function calculateNewSellingPrice($latestCost, $productId, $vendorId)
     {
-        $markupPercentage = 20; // Misalkan markup 20%
-        return $cost * (1 + $markupPercentage / 100);
+        // Get past selling prices from related orders with the same product and vendor's transaction_type as 'outbound'
+        $pastSellingPrices = Order::whereHas('vendor', function ($query) {
+            $query->where('transaction_type', 'outbound');
+        })
+            ->whereHas('products', function ($query) use ($productId) {
+                $query->where('product_id', $productId);
+            })
+            ->where('vendor_id', $vendorId)
+            ->pluck('total_price')
+            ->toArray();
+
+        // If there are past selling prices, calculate the average
+        if (!empty($pastSellingPrices)) {
+            $averageSellingPrice = array_sum($pastSellingPrices) / count($pastSellingPrices);
+        } else {
+            // If no past selling prices, use a default calculation or set to the latest cost
+            $averageSellingPrice = $latestCost;
+        }
+
+        return $averageSellingPrice;
     }
 
 
