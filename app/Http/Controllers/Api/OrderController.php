@@ -207,7 +207,7 @@ class OrderController extends Controller
                             ]);
                         }
                     } else if ($vendor->transaction_type === 'outbound') {
-                        $newSellingPrice = $this->calculateNewSellingPrice($latestCost);
+                        $newSellingPrice = $this->calculateNewSellingPrice($latestCost, $productData['product_id'], $vendor->id);
 
                         if ($productPrice) {
                             $productPrice->update(['selling_price' => $newSellingPrice]);
