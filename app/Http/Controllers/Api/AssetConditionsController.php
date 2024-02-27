@@ -50,7 +50,7 @@ class AssetConditionsController extends Controller
         $condition = AssetCondition::findOrFail($id);
         $condition->update($request->validated());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $condition,
             'message' => 'Asset condition updated successfully.',
         ]);

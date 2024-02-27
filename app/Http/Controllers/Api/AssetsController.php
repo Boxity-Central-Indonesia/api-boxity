@@ -50,7 +50,7 @@ class AssetsController extends Controller
         $asset = Asset::findOrFail($id);
         $asset->update($request->validated());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $asset,
             'message' => 'Asset updated successfully.',
         ]);

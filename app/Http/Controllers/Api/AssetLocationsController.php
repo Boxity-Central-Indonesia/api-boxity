@@ -50,7 +50,7 @@ class AssetLocationsController extends Controller
         $location = AssetLocation::findOrFail($id);
         $location->update($request->validated());
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $location,
             'message' => 'Asset location updated successfully.',
         ]);
