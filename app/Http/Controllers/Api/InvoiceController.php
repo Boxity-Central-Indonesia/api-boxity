@@ -29,12 +29,7 @@ class InvoiceController extends Controller
     }
     public function index()
     {
-        $invoices = Invoice::with('order', 'payments')->get()>map(function ($invoice) {
-            $invoice->total_amount = (int) $invoice->total_amount;
-            $invoice->paid_amount = (int) $invoice->paid_amount;
-            $invoice->balance_due = (int) $invoice->balance_due;
-            return $invoice;
-        });
+        $invoices = Invoice::with('order', 'payments')->get();
         return response()->json([
             'status' => 200,
             'data' => $invoices,
@@ -248,4 +243,16 @@ class InvoiceController extends Controller
 
         if (!$invoice) {
             return response()->json([
-                's
+                'status' => 404,
+                'message' => 'Invoice not found.',
+            ]);
+        }
+
+        $invoice->delete();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Invoice deleted successfully.',
+        ]);
+    }
+}
