@@ -41,11 +41,11 @@ class OrderController extends Controller
                     }),
                     'warehouse' => $order->warehouse,
                     'invoices' => $order->invoices,
-                    'total_price' => $order->total_price,
+                    'total_price' => (int)$order->total_price,
                     'order_status' => $order->order_status,
                     'order_type' => $order->order_type,
-                    'taxes' => $order->taxes,
-                    'shipping_cost' => $order->shipping_cost,
+                    'taxes' => (int)$order->taxes,
+                    'shipping_cost' => (int)$order->shipping_cost,
                     'created_at' => $order->created_at, // Tambahkan created_at jika diperlukan
                 ];
             }),
@@ -252,28 +252,28 @@ class OrderController extends Controller
     }
 
     private function calculateNewSellingPrice($latestCost, $productId, $vendorId)
-{
-    // Get past selling prices from related orders with the same product and vendor's transaction_type as 'outbound'
-    $pastSellingPrices = Order::whereHas('vendor', function ($query) {
+    {
+        // Get past selling prices from related orders with the same product and vendor's transaction_type as 'outbound'
+        $pastSellingPrices = Order::whereHas('vendor', function ($query) {
             $query->where('transaction_type', 'outbound');
         })
-        ->whereHas('products', function ($query) use ($productId) {
-            $query->where('product_id', $productId);
-        })
-        ->where('vendor_id', $vendorId)
-        ->pluck('total_price')
-        ->toArray();
+            ->whereHas('products', function ($query) use ($productId) {
+                $query->where('product_id', $productId);
+            })
+            ->where('vendor_id', $vendorId)
+            ->pluck('total_price')
+            ->toArray();
 
-    // If there are past selling prices, calculate the average
-    if (!empty($pastSellingPrices)) {
-        $averageSellingPrice = array_sum($pastSellingPrices) / count($pastSellingPrices);
-    } else {
-        // If no past selling prices, use a default calculation or set to the latest cost
-        $averageSellingPrice = $latestCost;
+        // If there are past selling prices, calculate the average
+        if (!empty($pastSellingPrices)) {
+            $averageSellingPrice = array_sum($pastSellingPrices) / count($pastSellingPrices);
+        } else {
+            // If no past selling prices, use a default calculation or set to the latest cost
+            $averageSellingPrice = $latestCost;
+        }
+
+        return $averageSellingPrice;
     }
-
-    return $averageSellingPrice;
-}
 
 
     // Menampilkan satu order
