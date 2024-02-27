@@ -193,34 +193,44 @@ class OrderController extends Controller
             $productPrice = ProductsPrice::where('product_id', $productData['product_id'])->first();
             $latestCost = $this->getLatestCost($productData['product_id'], $vendor->transaction_type);
 
-            if ($latestCost !== null) {
-                if ($vendor->transaction_type === 'inbound') {
-                    if ($productPrice) {
-                        $productPrice->update(['buying_price' => $latestCost]);
-                    } else {
-                        ProductsPrice::create([
-                            'product_id' => $productData['product_id'],
-                            'buying_price' => $latestCost,
-                            'selling_price' => 0,
-                            'discount_price' => 0,
-                        ]);
+            // Jika productPrices tidak ditemukan maka create productPrices
+            if ($productPrice) {
+                if ($latestCost !== null) {
+                    if ($vendor->transaction_type === 'inbound') {
+                        if ($productPrice) {
+                            $productPrice->update(['buying_price' => $latestCost]);
+                        } else {
+                            ProductsPrice::create([
+                                'product_id' => $productData['product_id'],
+                                'buying_price' => $latestCost,
+                                'selling_price' => 0,
+                                'discount_price' => 0,
+                            ]);
+                        }
+                    } else if ($vendor->transaction_type === 'outbound') {
+                        $newSellingPrice = $this->calculateNewSellingPrice($latestCost);
+    
+                        if ($productPrice) {
+                            $productPrice->update(['selling_price' => $newSellingPrice]);
+                        } else {
+                            ProductsPrice::create([
+                                'product_id' => $productData['product_id'],
+                                'selling_price' => $newSellingPrice,
+                                'buying_price' => $latestCost,
+                                'discount_price' => 0,
+                            ]);
+                        }
                     }
-                } else if ($vendor->transaction_type === 'outbound') {
-                    $newSellingPrice = $this->calculateNewSellingPrice($latestCost);
-
-                    if ($productPrice) {
-                        $productPrice->update(['selling_price' => $newSellingPrice]);
-                    } else {
-                        ProductsPrice::create([
-                            'product_id' => $productData['product_id'],
-                            'selling_price' => $newSellingPrice,
-                            'buying_price' => $latestCost,
-                            'discount_price' => 0,
-                        ]);
-                    }
+                } else {
+                    Log::error('Latest cost not found for product ID: ' . $productData['product_id'] . ' and transaction type: ' . $vendor->transaction_type);
                 }
             } else {
-                Log::error('Latest cost not found for product ID: ' . $productData['product_id'] . ' and transaction type: ' . $vendor->transaction_type);
+                ProductsPrice::create([
+                    'product_id' => $productData['product_id'],
+                    'buying_price' => $latestCost,
+                    'selling_price' => $newSellingPrice,
+                    'discount_price' => 0,
+                ]);
             }
         }
     }
