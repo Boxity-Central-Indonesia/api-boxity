@@ -17,7 +17,11 @@ class AssetsController extends Controller
      */
     public function index()
     {
-        $assets = Asset::with(['location', 'condition', 'depreciations'])->get();
+        $assets = Asset::with(['location', 'condition', 'depreciations'])->get()->map(function ($asset) {
+            $asset->acquisition_cost = (int) $asset->acquisition_cost;
+            $asset->book_value = (int) $asset->book_value;
+            return $asset;
+        });
         return response()->json([
             'status' => 200,
             'data' => $assets,
