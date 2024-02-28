@@ -104,7 +104,7 @@ class PaymentController extends Controller
             $order->save();
 
             return response()->json([
-                'status' => 200,
+                'status' => 201,
                 'data' => $payment,
                 'message' => 'Payment added successfully.',
             ]);
@@ -205,7 +205,7 @@ class PaymentController extends Controller
             DB::commit();
 
             return response()->json([
-                'status' => 200,
+                'status' => 201,
                 'data' => $payment,
                 'message' => 'Payment updated successfully.',
             ]);
