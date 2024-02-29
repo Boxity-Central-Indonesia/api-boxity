@@ -5305,14 +5305,72 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Get detail delivery item by ID",
 							"id": "f7813067-a4d0-4558-8f76-da03189d5d6c",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items/{{deliveryItemID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Add item based on delivery ID",
+							"id": "e166eef2-a227-415c-ac9d-fc05bd51bfe0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_id\": {{orderID}},\n  \"product_id\": 5\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items"
+							},
+							"response": []
+						},
+						{
+							"name": "Update item delivery by deliveryitemID",
+							"id": "8e6c4a51-76d2-446a-a6ad-0d47277683b2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_id\": {{orderID}},\n  \"product_id\": 6\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items/{{deliveryItemID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete delivery item by itemID based on deliveryID",
+							"id": "86b9729b-1f42-4ee6-925f-ae79d6abc133",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items/{{deliveryItemID}}"
 							},
 							"response": []
 						}
