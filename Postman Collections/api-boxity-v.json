@@ -3964,14 +3964,63 @@
 							"name": "Goods Receipt Item",
 							"item": [
 								{
-									"name": "New Request",
+									"name": "Get item by goods Receipt ID",
 									"id": "8ea7dbbc-d408-4ee8-97f1-ebbb3a6090a0",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
 									"request": {
 										"method": "GET",
-										"header": []
+										"header": [],
+										"url": "{{url}}/api/goods-receipts/{{goodReceiptID}}/items"
+									},
+									"response": []
+								},
+								{
+									"name": "Get Single Goods Receipt Item",
+									"id": "2c87346d-5695-4cb5-a952-663c332cabc4",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": "{{url}}/api/goods-receipts/{{goodReceiptID}}}/items/{{productID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Update item by good Receipt Item ID",
+									"id": "0804c5be-6516-4545-85e9-ee57ad0a05a0",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"product_id\": 1,\n  \"quantity_ordered\": 15,\n  \"quantity_received\": 10,\n  \"quantity_due\": 5\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{url}}/api/goods-receipts/{{goodReceiptID}}}/items/{{goodReceiptItemID}}"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete good receipt item by id",
+									"id": "ac0345c7-1b42-4b4e-9f3e-06f0b1244c6e",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": "{{url}}/api/goods-receipts/{{goodReceiptID}}}/items/{{goodReceiptItemID}}"
 									},
 									"response": []
 								}
