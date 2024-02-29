@@ -1376,7 +1376,7 @@
 											"formdata": [
 												{
 													"key": "name",
-													"value": "Warehouses Medan Barat 2",
+													"value": "Warehouses Medan Barat Testing notifikasi",
 													"type": "text"
 												},
 												{
@@ -4118,6 +4118,184 @@
 			"description": "**Order (Pesanan):**  \nOrder adalah entitas yang merepresentasikan permintaan dari pelanggan atau pihak lain untuk membeli produk atau jasa dari perusahaan atau vendor tertentu. Dalam konteks sistem akuntansi, Order biasanya memiliki beberapa atribut kunci, termasuk:\n\n- **Vendor:** Merupakan pihak yang akan memproses pesanan. Vendor ini biasanya menyediakan produk atau jasa yang dipesan oleh pelanggan.\n- **Warehouse (Gudang):** Gudang ini adalah lokasi fisik di mana produk akan disimpan sebelum dikirim atau diambil oleh pelanggan. Setiap Order harus terkait dengan satu Warehouse.\n- **Status:** Status pesanan mengindikasikan tahap pesanan, seperti \"pending\" (menunggu), \"completed\" (selesai), atau \"cancelled\" (dibatalkan). Ini membantu dalam melacak proses pesanan.\n- **Details (Detail):** Ini adalah catatan atau keterangan tambahan tentang pesanan, seperti kondisi barang atau permintaan khusus pelanggan.\n- **Price per Unit (Harga per Unit):** Harga satu unit dari produk atau jasa yang dipesan.\n- **Total Price (Total Harga):** Total biaya pesanan, yang dihitung berdasarkan jumlah dan harga per unit.\n    \n\n**Invoice (Faktur):**  \nInvoice adalah dokumen keuangan yang dibuat oleh perusahaan atau vendor kepada pelanggan sebagai permintaan pembayaran atas pesanan yang telah dilakukan. Invoice memiliki beberapa atribut penting, termasuk:\n\n- **Order:** Setiap Invoice harus terkait dengan satu Order. Ini menghubungkan Invoice dengan pesanan yang mendasarinya.\n- **Total Amount (Jumlah Total):** Total biaya yang harus dibayarkan oleh pelanggan sesuai dengan pesanan mereka.\n- **Paid Amount (Jumlah yang Sudah Dibayarkan):** Jumlah uang yang telah dibayarkan oleh pelanggan terhadap Invoice ini.\n- **Balance Due (Sisa Saldo):** Sisa jumlah yang harus dibayarkan oleh pelanggan setelah mengurangkan jumlah yang sudah dibayarkan.\n- **Invoice Date (Tanggal Faktur):** Tanggal saat Invoice ini dibuat.\n- **Due Date (Tanggal Jatuh Tempo):** Tanggal di mana pembayaran harus diterima oleh perusahaan atau vendor.\n- **Status:** Status Faktur menunjukkan apakah Invoice ini belum dibayar (\"unpaid\"), sebagian dibayar (\"partial\"), atau sudah lunas (\"paid\").\n    \n\n**Payment (Pembayaran):**  \nPayment adalah entitas yang merepresentasikan transaksi keuangan yang digunakan pelanggan untuk membayar Invoice. Beberapa atribut utama Payment mencakup:\n\n- **Order:** Setiap Payment terkait dengan satu Order, menghubungkan transaksi ini kembali ke pesanan yang berkaitan.\n- **Invoice:** Payment ini juga harus terkait dengan satu Invoice, yang mengindikasikan bahwa pembayaran ini digunakan untuk melunasi Invoice tertentu.\n- **Payment Amount (Jumlah Pembayaran):** Jumlah uang yang dibayarkan oleh pelanggan untuk melunasi Invoice.\n- **Payment Method (Metode Pembayaran):** Cara atau metode yang digunakan oleh pelanggan untuk membayar, seperti \"cash,\" \"credit,\" atau metode lainnya.\n- **Payment Date (Tanggal Pembayaran):** Tanggal ketika pembayaran ini diterima atau dicatat dalam sistem.\n- **Kode Pembayaran (Payment Code):** Kode unik atau referensi yang digunakan untuk mengidentifikasi Payment ini.\n    \n\n**Hubungan dengan Jurnal Keuangan:**\n\n1. **Pembuatan Invoice:** Saat Invoice dibuat, transaksi dicatat sebagai:\n    \n    - Debit Piutang Usaha (meningkatkan piutang perusahaan)\n        \n    - Kredit Pendapatan Penjualan (mengakui pendapatan yang akan datang)\n        \n2. **Penerimaan Pembayaran:** Ketika pembayaran diterima, pencatatan dalam jurnal keuangan adalah:\n    \n    - Debit Kas (meningkatkan saldo kas)\n        \n    - Kredit Piutang Usaha (mengurangi piutang pelanggan)\n        \n3. **Pesanan (Order):** Pencatatan untuk Order mungkin tidak terjadi dalam jurnal keuangan hingga Invoice dibuat dan pembayaran diterima. Ini karena Order adalah permintaan awal dan belum terjadi transaksi keuangan yang signifikan."
 		},
 		{
+			"name": "Delivery notes (Surat Jalan)",
+			"item": [
+				{
+					"name": "Delivery Items",
+					"item": [
+						{
+							"name": "Get item based on delivery ID",
+							"id": "78d74025-7e21-4431-bdb0-ff809ea51a28",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items"
+							},
+							"response": []
+						},
+						{
+							"name": "Get detail delivery item by ID",
+							"id": "f7813067-a4d0-4558-8f76-da03189d5d6c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items/{{deliveryItemID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Add item based on delivery ID",
+							"id": "e166eef2-a227-415c-ac9d-fc05bd51bfe0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_id\": {{orderID}},\n  \"product_id\": 5\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items"
+							},
+							"response": []
+						},
+						{
+							"name": "Update item delivery by deliveryitemID",
+							"id": "8e6c4a51-76d2-446a-a6ad-0d47277683b2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_id\": {{orderID}},\n  \"product_id\": 6\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items/{{deliveryItemID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete delivery item by itemID based on deliveryID",
+							"id": "86b9729b-1f42-4ee6-925f-ae79d6abc133",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items/{{deliveryItemID}}"
+							},
+							"response": []
+						}
+					],
+					"id": "00048c9a-0bb4-4e4e-8fb1-7d0e74437c63"
+				},
+				{
+					"name": "Get all delivery notes",
+					"id": "aba2099c-6416-4926-8429-131a21b5ff29",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/delivery-notes"
+					},
+					"response": []
+				},
+				{
+					"name": "Create delivery notes",
+					"id": "00a7cb0d-17e9-44e2-a950-8d680961d5b3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"number\": \"DN001\",\n  \"date\": \"2024-03-01\",\n  \"warehouse_id\": {{warehouseID}},\n  \"vendor_id\": {{customerID}},\n  \"details\": \"Sample delivery note details\",\n  \"deliveryNoteItems\": [\n    {\n      \"order_id\": {{orderID}},\n      \"product_id\": {{productID}}\n    },\n    {\n      \"order_id\": {{orderID}},\n      \"product_id\": 2\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/delivery-notes"
+					},
+					"response": []
+				},
+				{
+					"name": "Get details by delivery notes ID",
+					"id": "a0f9614d-2de5-43bf-82ae-9822e7bb432b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update by ID",
+					"id": "ff51fd1f-5355-428c-b1a7-de7df0339b97",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"number\": \"DN002\",\n  \"date\": \"2024-03-02\",\n  \"warehouse_id\": {{warehouseID}},\n  \"vendor_id\": {{customerID}},\n  \"details\": \"Updated delivery note details\",\n  \"deliveryNoteItems\": [\n    {\n      \"order_id\": {{orderID}},\n      \"product_id\": 3\n    },\n    {\n      \"order_id\": {{orderID}},\n      \"product_id\": 4\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete by ID",
+					"id": "c42f0b7e-db30-4321-9c97-6fbb6f4f1268",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}"
+					},
+					"response": []
+				}
+			],
+			"id": "dcda520f-43be-459f-98ca-f6194ddbed87"
+		},
+		{
 			"name": "Leads prospek",
 			"item": [
 				{
@@ -5284,184 +5462,6 @@
 				}
 			],
 			"id": "c1ae8786-8318-45bd-92ad-82df1abb2aac"
-		},
-		{
-			"name": "Delivery notes (Surat Jalan)",
-			"item": [
-				{
-					"name": "Delivery Items",
-					"item": [
-						{
-							"name": "Get item based on delivery ID",
-							"id": "78d74025-7e21-4431-bdb0-ff809ea51a28",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items"
-							},
-							"response": []
-						},
-						{
-							"name": "Get detail delivery item by ID",
-							"id": "f7813067-a4d0-4558-8f76-da03189d5d6c",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items/{{deliveryItemID}}"
-							},
-							"response": []
-						},
-						{
-							"name": "Add item based on delivery ID",
-							"id": "e166eef2-a227-415c-ac9d-fc05bd51bfe0",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"order_id\": {{orderID}},\n  \"product_id\": 5\n}\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items"
-							},
-							"response": []
-						},
-						{
-							"name": "Update item delivery by deliveryitemID",
-							"id": "8e6c4a51-76d2-446a-a6ad-0d47277683b2",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"order_id\": {{orderID}},\n  \"product_id\": 6\n}\n",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items/{{deliveryItemID}}"
-							},
-							"response": []
-						},
-						{
-							"name": "Delete delivery item by itemID based on deliveryID",
-							"id": "86b9729b-1f42-4ee6-925f-ae79d6abc133",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items/{{deliveryItemID}}"
-							},
-							"response": []
-						}
-					],
-					"id": "00048c9a-0bb4-4e4e-8fb1-7d0e74437c63"
-				},
-				{
-					"name": "Get all delivery notes",
-					"id": "aba2099c-6416-4926-8429-131a21b5ff29",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{url}}/api/delivery-notes"
-					},
-					"response": []
-				},
-				{
-					"name": "Create delivery notes",
-					"id": "00a7cb0d-17e9-44e2-a950-8d680961d5b3",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"number\": \"DN001\",\n  \"date\": \"2024-03-01\",\n  \"warehouse_id\": {{warehouseID}},\n  \"vendor_id\": {{customerID}},\n  \"details\": \"Sample delivery note details\",\n  \"deliveryNoteItems\": [\n    {\n      \"order_id\": {{orderID}},\n      \"product_id\": {{productID}}\n    },\n    {\n      \"order_id\": {{orderID}},\n      \"product_id\": 2\n    }\n  ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{url}}/api/delivery-notes"
-					},
-					"response": []
-				},
-				{
-					"name": "Get details by delivery notes ID",
-					"id": "a0f9614d-2de5-43bf-82ae-9822e7bb432b",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}"
-					},
-					"response": []
-				},
-				{
-					"name": "Update by ID",
-					"id": "ff51fd1f-5355-428c-b1a7-de7df0339b97",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"number\": \"DN002\",\n  \"date\": \"2024-03-02\",\n  \"warehouse_id\": {{warehouseID}},\n  \"vendor_id\": {{customerID}},\n  \"details\": \"Updated delivery note details\",\n  \"deliveryNoteItems\": [\n    {\n      \"order_id\": {{orderID}},\n      \"product_id\": 3\n    },\n    {\n      \"order_id\": {{orderID}},\n      \"product_id\": 4\n    }\n  ]\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}"
-					},
-					"response": []
-				},
-				{
-					"name": "Delete by ID",
-					"id": "c42f0b7e-db30-4321-9c97-6fbb6f4f1268",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}"
-					},
-					"response": []
-				}
-			],
-			"id": "dcda520f-43be-459f-98ca-f6194ddbed87"
 		}
 	],
 	"auth": {
