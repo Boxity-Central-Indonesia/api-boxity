@@ -14,7 +14,14 @@ class GoodsReceipt extends Model
         'status',
         'details',
     ];
-
+    protected $appends = ['kodeGoodsReceipt'];
+// Atribut Kode Goods Receipt
+public function getKodeGoodsReceiptAttribute()
+{
+    if (!is_null($this->created_at)) {
+        return 'GR/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+    }
+}
     // Relasi ke tabel Order dan Warehouse
     public function order()
     {
@@ -32,11 +39,5 @@ class GoodsReceipt extends Model
         return $this->hasMany(GoodsReceiptItem::class);
     }
 
-    // Atribut Kode Goods Receipt
-    public function getKodeGoodsReceiptAttribute()
-    {
-        if (!is_null($this->created_at)) {
-            return 'SJ/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
-        }
-    }
+
 }
