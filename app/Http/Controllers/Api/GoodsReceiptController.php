@@ -47,10 +47,15 @@ class GoodsReceiptController extends Controller
     public function store(Request $request)
 {
     $request->validate([
-        'order_id' => 'required',
-        'warehouse_id' => 'required',
-        'details' => 'nullable',
-        // Add other validation rules as needed
+        'order_id' => 'required|exists:orders,id',
+        'warehouse_id' => 'required|exists:warehouses,id',
+        'details' => 'nullable|string',
+    ], [
+        'order_id.required' => 'The order ID is required.',
+        'order_id.exists' => 'The selected order ID is invalid.',
+        'warehouse_id.required' => 'The warehouse ID is required.',
+        'warehouse_id.exists' => 'The selected warehouse ID is invalid.',
+        'details.string' => 'The details must be a string.',
     ]);
 
     DB::beginTransaction();
@@ -93,10 +98,15 @@ class GoodsReceiptController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'order_id' => 'required',
-            'warehouse_id' => 'required',
-            'details' => 'nullable',
-            // Add other validation rules as needed
+            'order_id' => 'required|exists:orders,id',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'details' => 'nullable|string',
+        ], [
+            'order_id.required' => 'The order ID is required.',
+            'order_id.exists' => 'The selected order ID is invalid.',
+            'warehouse_id.required' => 'The warehouse ID is required.',
+            'warehouse_id.exists' => 'The selected warehouse ID is invalid.',
+            'details.string' => 'The details must be a string.',
         ]);
 
         $goodsReceipt = GoodsReceipt::find($id);

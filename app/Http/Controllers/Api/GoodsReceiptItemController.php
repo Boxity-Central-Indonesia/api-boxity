@@ -65,7 +65,7 @@ class GoodsReceiptItemController extends Controller
     {
         $request->validate([
             'product_id' => 'required',
-            'quantity_ordered' => 'required',
+        'quantity_ordered' => 'required',
             // Add other validation rules as needed
         ]);
 

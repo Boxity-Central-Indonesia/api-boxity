@@ -41,6 +41,8 @@ use App\Http\Controllers\Api\PostCommentsController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\GoodsReceiptController;
 use App\Http\Controllers\Api\GoodsReceiptItemController;
+use App\Http\Controllers\Api\DeliveryNoteController;
+use App\Http\Controllers\Api\DeliveryNoteItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -116,12 +118,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/orders/{orderId}/processing-activities', [OrderController::class, 'processingActivities'])->name('orders.processingActivities');
 
     Route::apiResource('goods-receipt', GoodsReceiptController::class);
+    Route::apiResource('delivery-notes', DeliveryNoteController::class);
     Route::group(['prefix' => 'goods-receipts/{goodsReceiptId}/items'], function () {
         Route::get('/', [GoodsReceiptItemController::class, 'index']);
         Route::get('/{itemId}', [GoodsReceiptItemController::class, 'show']);
         Route::post('/', [GoodsReceiptItemController::class, 'store']);
         Route::put('/{itemId}', [GoodsReceiptItemController::class, 'update']);
         Route::delete('/{itemId}', [GoodsReceiptItemController::class, 'destroy']);
+    });
+    Route::group(['prefix' => 'delivery-notes/{deliveryNoteId}/items'], function () {
+        Route::get('/', [DeliveryNoteItemController::class, 'index']);
+        Route::get('/{id}', [DeliveryNoteItemController::class, 'show']);
+        Route::post('/', [DeliveryNoteItemController::class, 'store']);
+        Route::put('/{id}', [DeliveryNoteItemController::class, 'update']);
+        Route::delete('/{id}', [DeliveryNoteItemController::class, 'destroy']);
     });
 
 
