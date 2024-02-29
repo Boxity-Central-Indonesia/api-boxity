@@ -26,4 +26,8 @@ class GoodsReceiptItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    protected $casts = [
+        'created_at' => 'datetime:d M, Y',
+        'updated_at' => 'datetime:d M, Y',
+    ];
 }

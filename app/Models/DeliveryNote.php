@@ -32,4 +32,8 @@ class DeliveryNote extends Model
     {
         return $this->hasMany(DeliveryNoteItem::class);
     }
+    protected $casts = [
+        'created_at' => 'datetime:d M, Y',
+        'updated_at' => 'datetime:d M, Y',
+    ];
 }
