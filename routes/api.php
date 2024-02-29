@@ -39,6 +39,8 @@ use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\PostCategoryController;
 use App\Http\Controllers\Api\PostCommentsController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\GoodsReceiptController;
+use App\Http\Controllers\Api\GoodsReceiptItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -112,6 +114,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('payments', PaymentController::class);
     Route::apiResource('orders', OrderController::class);
     Route::get('/orders/{orderId}/processing-activities', [OrderController::class, 'processingActivities'])->name('orders.processingActivities');
+
+    Route::apiResource('goods-receipt', GoodsReceiptController::class);
+    Route::group(['prefix' => 'goods-receipts/{goodsReceiptId}/items'], function () {
+        Route::get('/', [GoodsReceiptItemController::class, 'index']);
+        Route::get('/{itemId}', [GoodsReceiptItemController::class, 'show']);
+        Route::post('/', [GoodsReceiptItemController::class, 'store']);
+        Route::put('/{itemId}', [GoodsReceiptItemController::class, 'update']);
+        Route::delete('/{itemId}', [GoodsReceiptItemController::class, 'destroy']);
+    });
 
 
     // Leads

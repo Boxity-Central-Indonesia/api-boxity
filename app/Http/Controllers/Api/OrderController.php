@@ -135,33 +135,50 @@ class OrderController extends Controller
     }
 
     private function handleAccounting($validatedData, $order, $vendor)
-    {
-        $accountReceivable = Account::where('name', 'Piutang Usaha')->first();
-        $accountPayable = Account::where('name', 'Utang Usaha')->first();
-        $inventoryAccount = Account::where('name', 'Persediaan')->first();
+{
+    $accountReceivable = Account::where('name', 'Piutang Usaha')->first();
+    $accountPayable = Account::where('name', 'Utang Usaha')->first();
+    $inventoryAccount = Account::where('name', 'Persediaan')->first();
 
-        $journalEntry = [
+    $journalEntries = [];
+
+    if ($vendor->transaction_type === 'outbound') {
+        // Penjualan (Outbound)
+        $journalEntries[] = [
             'date' => now(),
-            'description' => 'Pembayaran Order ' . $order['kode_order'],
+            'description' => 'Penjualan Order ' . $order->kode_order,
+            'account_id' => $accountReceivable->id,
+            'debit' => $order->total_price,
         ];
 
-        if ($vendor->transaction_type === 'outbound') {
-            // Penjualan (Outbound)
-            $journalEntry['account_id'] = $accountReceivable->id;
-            $journalEntry['debit'] = $order['total_price'];
-            $journalEntry['account_id'] = $inventoryAccount->id;
-            $journalEntry['credit'] = $order['total_price'];
-        } else {
-            // Pembelian (Inbound)
-            $journalEntry['account_id'] = $inventoryAccount->id;
-            $journalEntry['debit'] = $order['total_price'];
-            $journalEntry['account_id'] = $accountPayable->id;
-            $journalEntry['credit'] = $order['total_price'];
-        }
+        $journalEntries[] = [
+            'date' => now(),
+            'description' => 'Pengurangan Persediaan',
+            'account_id' => $inventoryAccount->id,
+            'credit' => $order->total_price,
+        ];
+    } else {
+        // Pembelian (Inbound)
+        $journalEntries[] = [
+            'date' => now(),
+            'description' => 'Pembelian Order ' . $order->kode_order,
+            'account_id' => $inventoryAccount->id,
+            'debit' => $order->total_price,
+        ];
 
-        // Simpan jurnal
-        JournalEntry::create($journalEntry);
+        $journalEntries[] = [
+            'date' => now(),
+            'description' => 'Utang Usaha',
+            'account_id' => $accountPayable->id,
+            'credit' => $order->total_price,
+        ];
     }
+
+    // Simpan jurnal entries
+    foreach ($journalEntries as $entry) {
+        JournalEntry::create($entry);
+    }
+}
 
     private function recordProductMovement($validatedData, $vendor)
     {
