@@ -6,6 +6,7 @@ use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
+use App\Events\formCreated;
 
 class WarehousesController extends Controller
 {
@@ -62,7 +63,7 @@ class WarehousesController extends Controller
         }
 
         $warehouse = Warehouse::create($request->all());
-
+        broadcast(new formCreated('Warehouse created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $warehouse,
