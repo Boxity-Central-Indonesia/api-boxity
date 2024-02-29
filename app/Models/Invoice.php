@@ -36,4 +36,8 @@ class Invoice extends Model
     {
         return $this->hasMany(Payment::class);
     }
+    protected $casts = [
+        'created_at' => 'datetime:d M, Y',
+        'updated_at' => 'datetime:d M, Y',
+    ];
 }
