@@ -5289,6 +5289,37 @@
 			"name": "Delivery notes (Surat Jalan)",
 			"item": [
 				{
+					"name": "Delivery Items",
+					"item": [
+						{
+							"name": "Get item based on delivery ID",
+							"id": "78d74025-7e21-4431-bdb0-ff809ea51a28",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}/items"
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "f7813067-a4d0-4558-8f76-da03189d5d6c",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
+					"id": "00048c9a-0bb4-4e4e-8fb1-7d0e74437c63"
+				},
+				{
 					"name": "Get all delivery notes",
 					"id": "aba2099c-6416-4926-8429-131a21b5ff29",
 					"protocolProfileBehavior": {
@@ -5302,14 +5333,72 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Create delivery notes",
 					"id": "00a7cb0d-17e9-44e2-a950-8d680961d5b3",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"number\": \"DN001\",\n  \"date\": \"2024-03-01\",\n  \"warehouse_id\": {{warehouseID}},\n  \"vendor_id\": {{customerID}},\n  \"details\": \"Sample delivery note details\",\n  \"deliveryNoteItems\": [\n    {\n      \"order_id\": {{orderID}},\n      \"product_id\": {{productID}}\n    },\n    {\n      \"order_id\": {{orderID}},\n      \"product_id\": 2\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/delivery-notes"
+					},
+					"response": []
+				},
+				{
+					"name": "Get details by delivery notes ID",
+					"id": "a0f9614d-2de5-43bf-82ae-9822e7bb432b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update by ID",
+					"id": "ff51fd1f-5355-428c-b1a7-de7df0339b97",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"number\": \"DN002\",\n  \"date\": \"2024-03-02\",\n  \"warehouse_id\": {{warehouseID}},\n  \"vendor_id\": {{customerID}},\n  \"details\": \"Updated delivery note details\",\n  \"deliveryNoteItems\": [\n    {\n      \"order_id\": {{orderID}},\n      \"product_id\": 3\n    },\n    {\n      \"order_id\": {{orderID}},\n      \"product_id\": 4\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete by ID",
+					"id": "c42f0b7e-db30-4321-9c97-6fbb6f4f1268",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{url}}/api/delivery-notes/{{deliveryNoteID}}"
 					},
 					"response": []
 				}
