@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Company;
+use App\Events\formCreated;
 
 class CompaniesDepartmentController extends Controller
 {

@@ -8,6 +8,7 @@ use App\Models\ProcessingActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use App\Events\formCreated;
 
 class ProcessingActivityController extends Controller
 {

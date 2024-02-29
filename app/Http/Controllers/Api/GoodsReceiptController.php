@@ -8,7 +8,7 @@ use App\Models\GoodsReceiptItem;
 use App\Models\ProductsMovement;
 use App\Models\OrderProduct;
 use Illuminate\Support\Facades\DB;
-
+use App\Events\formCreated;
 
 class GoodsReceiptController extends Controller
 {

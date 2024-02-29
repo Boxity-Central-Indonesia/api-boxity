@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\EmployeeCategoryRequest;
 use App\Models\EmployeeCategory;
 use Illuminate\Http\Request;
-
+use App\Events\formCreated;
 class EmployeeCategoryController extends Controller
 {
     public function index()

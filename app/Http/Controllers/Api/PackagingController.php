@@ -6,6 +6,7 @@ use App\Http\Requests\PackagingRequest;
 use App\Models\Packaging;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Events\formCreated;
 
 class PackagingController extends Controller
 {

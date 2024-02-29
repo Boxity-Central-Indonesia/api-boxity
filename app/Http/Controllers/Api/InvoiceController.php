@@ -10,6 +10,7 @@ use App\Models\Invoice;
 use App\Models\Order; // Pastikan Anda memiliki model ini
 use App\Models\ProductsPrice;
 use Illuminate\Support\Facades\DB;
+use App\Events\formCreated;
 
 class InvoiceController extends Controller
 {

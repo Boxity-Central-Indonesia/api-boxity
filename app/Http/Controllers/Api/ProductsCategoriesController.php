@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use App\Models\ProductsCategory;
+use App\Events\formCreated;
 
 class ProductsCategoriesController extends Controller
 {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\LeadRequest;
 use Illuminate\Http\Request;
 use App\Models\Lead;
+use App\Events\formCreated;
 
 class LeadController extends Controller
 {

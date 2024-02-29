@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\profiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Events\formCreated;
 
 class ProfileController extends Controller
 {

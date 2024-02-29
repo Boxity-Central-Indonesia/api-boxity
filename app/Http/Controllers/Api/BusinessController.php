@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\businesses;
 use App\Models\profiles;
 use Illuminate\Support\Facades\Auth;
-
+use App\Events\formCreated;
 
 class BusinessController extends Controller
 {

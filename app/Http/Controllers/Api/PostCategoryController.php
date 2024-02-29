@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\PostsCategories;
+use App\Events\formCreated;
 
 class PostCategoryController extends Controller
 {

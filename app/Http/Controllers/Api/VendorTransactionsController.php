@@ -6,6 +6,7 @@ use App\Models\VendorTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
+use App\Events\formCreated;
 
 class VendorTransactionsController extends Controller
 {
