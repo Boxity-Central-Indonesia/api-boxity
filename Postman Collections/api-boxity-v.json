@@ -3529,7 +3529,7 @@
 			"id": "6e9db782-3f58-49bb-aefe-8b77d8674183"
 		},
 		{
-			"name": "Order, Invoices, and Payments",
+			"name": "Order, Invoices, Payments, and Goods Receipt",
 			"item": [
 				{
 					"name": "Orders",
@@ -3956,6 +3956,24 @@
 					],
 					"id": "68406140-2aaf-4f0d-b064-cece8be5a2cb",
 					"description": "**Payment (Pembayaran):**  \nKetika pelanggan melakukan pembayaran untuk Invoice, Payment dicatat dalam jurnal keuangan sebagai tindakan nyata pembayaran. Pencatatan ini mengurangkan piutang perusahaan dan meningkatkan saldo kas. Dalam jurnal keuangan, penerimaan pembayaran biasanya dicatat sebagai \"Debit Kas\" (meningkatkan saldo kas) dan \"Kredit Piutang Usaha\" (mengurangi piutang pelanggan)."
+				},
+				{
+					"name": "Good Receipt",
+					"item": [
+						{
+							"name": "New Request",
+							"id": "f02c1988-92c5-4007-a171-23250b850336",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					],
+					"id": "85f82473-db0d-43b3-aaad-76269293d954"
 				}
 			],
 			"id": "b64efe01-14b3-4776-896c-7761daec439d",
