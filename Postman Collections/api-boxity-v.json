@@ -5284,6 +5284,37 @@
 				}
 			],
 			"id": "c1ae8786-8318-45bd-92ad-82df1abb2aac"
+		},
+		{
+			"name": "Delivery notes (Surat Jalan)",
+			"item": [
+				{
+					"name": "Get all delivery notes",
+					"id": "aba2099c-6416-4926-8429-131a21b5ff29",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/delivery-notes"
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"id": "00a7cb0d-17e9-44e2-a950-8d680961d5b3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"id": "dcda520f-43be-459f-98ca-f6194ddbed87"
 		}
 	],
 	"auth": {
