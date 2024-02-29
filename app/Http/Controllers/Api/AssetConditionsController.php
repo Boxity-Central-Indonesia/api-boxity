@@ -30,6 +30,7 @@ class AssetConditionsController extends Controller
     {
         $condition = AssetCondition::create($request->validated());
         broadcast(new formCreated('New Asset condition created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $condition,
@@ -51,7 +52,8 @@ class AssetConditionsController extends Controller
     {
         $condition = AssetCondition::findOrFail($id);
         $condition->update($request->validated());
-        broadcast(new formCreated('New Asset condition created successfully.'));
+        broadcast(new formCreated('Asset condition updated successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $condition,

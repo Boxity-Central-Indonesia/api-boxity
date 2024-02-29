@@ -39,6 +39,7 @@ class ProcessingActivityController extends Controller
         // Cek dan tandai order sebagai completed jika memenuhi kriteria
         $this->markOrderAsCompleted($validated['order_id']);
         broadcast(new formCreated('New Processing activity created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $activity,
@@ -83,8 +84,10 @@ class ProcessingActivityController extends Controller
 
         // Pastikan untuk menghapus referensi ke 'carcass_id' dalam pembaruan
         $activity->update($validated);
+        broadcast(new formCreated('Processing activity updated successfully.'));
+        
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $activity,
             'message' => 'Processing activity updated successfully.',
         ]);

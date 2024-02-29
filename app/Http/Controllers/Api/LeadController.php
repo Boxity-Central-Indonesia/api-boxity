@@ -23,6 +23,7 @@ class LeadController extends Controller
     {
         $lead = Lead::create($request->all());
         broadcast(new formCreated('New Lead created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $lead,
@@ -49,7 +50,8 @@ class LeadController extends Controller
     {
         $lead = Lead::findOrFail($id);
         $lead->update($request->all());
-        broadcast(new formCreated('New Lead created successfully.'));
+        broadcast(new formCreated('Lead updated successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $lead,

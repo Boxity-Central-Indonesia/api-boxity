@@ -23,6 +23,7 @@ class ProfileController extends Controller
         $request->merge(['user_id' => Auth::id()]); // Menambahkan user_id ke request
         $profile = profiles::create($request->all());
         broadcast(new formCreated('New Profile created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $profile,
@@ -54,8 +55,10 @@ class ProfileController extends Controller
             ], 404);
         }
         $profile->update($request->all());
+        broadcast(new formCreated('Profile updated successfully.'));
+        
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $profile,
         ]);
     }

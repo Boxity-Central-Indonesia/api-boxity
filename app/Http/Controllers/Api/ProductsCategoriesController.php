@@ -30,6 +30,7 @@ class ProductsCategoriesController extends Controller
     {
         $category = ProductsCategory::create($request->all());
         broadcast(new formCreated('New Category created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $category,
@@ -41,7 +42,8 @@ class ProductsCategoriesController extends Controller
     {
         $category = ProductsCategory::findOrFail($id);
         $category->update($request->all());
-        broadcast(new formCreated('New Category created successfully.'));
+        broadcast(new formCreated('Category updated successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $category,

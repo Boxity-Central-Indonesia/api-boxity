@@ -28,6 +28,7 @@ class PermissionController extends Controller
             'name' => $request->name,
         ]);
 broadcast(new formCreated('New Permission created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $permission,
@@ -54,8 +55,10 @@ broadcast(new formCreated('New Permission created successfully.'));
             'name' => $request->name,
         ]);
 
+        broadcast(new formCreated('Permission updated successfully.'));
+        
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $permission,
             'message' => 'Permission updated successfully.',
         ], 200);

@@ -49,6 +49,8 @@ class AccountsController extends Controller
     {
         $validated = $request->validated();
         $account = Account::create($validated);
+        broadcast(new formCreated('New Account created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $account,
@@ -67,6 +69,8 @@ class AccountsController extends Controller
         $account = Account::findOrFail($id);
         $validated = $request->validated();
         $account->update($validated);
+        broadcast(new formCreated('Account updated successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $account,

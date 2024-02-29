@@ -30,6 +30,7 @@ class EmployeesController extends Controller
     {
         $employee = Employee::create($request->validated());
 broadcast(new formCreated('New Employee created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $employee,
@@ -41,7 +42,8 @@ broadcast(new formCreated('New Employee created successfully.'));
     {
         $employee = Employee::findOrFail($employee);
         $employee->update($request->validated());
-broadcast(new formCreated('New Employee created successfully.'));
+broadcast(new formCreated('Employee updated successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $employee,

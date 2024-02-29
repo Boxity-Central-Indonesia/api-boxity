@@ -43,6 +43,7 @@ class BusinessController extends Controller
 
         $business = businesses::create($data + ['profile_id' => $profileId]);
         broadcast(new formCreated('New Business created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $business,
@@ -77,8 +78,10 @@ class BusinessController extends Controller
         }
 
         $business->update($data);
+        broadcast(new formCreated('Business updated successfully.'));
+        
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $business,
         ]);
     }

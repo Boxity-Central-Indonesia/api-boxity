@@ -47,6 +47,7 @@ class PackageProductController extends Controller
 
         $packageProduct = PackageProduct::create($request->validated());
 broadcast(new formCreated('New Package product created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $packageProduct,
@@ -68,6 +69,8 @@ broadcast(new formCreated('New Package product created successfully.'));
 
         $packageProduct->update($request->validated());
 
+        broadcast(new formCreated('Package product updated successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $packageProduct,

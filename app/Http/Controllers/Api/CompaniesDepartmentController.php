@@ -34,6 +34,7 @@ class CompaniesDepartmentController extends Controller
     {
         $department = CompaniesDepartment::create($request->validated());
         broadcast(new formCreated('New Department created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $department,
@@ -45,7 +46,8 @@ class CompaniesDepartmentController extends Controller
     {
         $department = CompaniesDepartment::findOrFail($department);
         $department->update($request->validated());
-        broadcast(new formCreated('New Department created successfully.'));
+        broadcast(new formCreated('Department updated successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $department,

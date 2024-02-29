@@ -32,6 +32,7 @@ class AssetDepreciationsController extends Controller
     {
         $depreciation = AssetDepreciation::create($request->validated());
         broadcast(new formCreated('New Asset depreciation created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $depreciation,
@@ -53,8 +54,10 @@ class AssetDepreciationsController extends Controller
     {
         $depreciation = AssetDepreciation::findOrFail($id);
         $depreciation->update($request->validated());
+        broadcast(new formCreated('Asset depreciation updated successfully.'));
+        
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $depreciation,
             'message' => 'Asset depreciation updated successfully.',
         ]);

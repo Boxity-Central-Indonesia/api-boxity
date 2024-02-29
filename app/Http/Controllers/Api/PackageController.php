@@ -59,6 +59,7 @@ class PackageController extends Controller
                 // Sesuaikan dengan kolom yang ada di tabel products
             ]);
         }broadcast(new formCreated('New Package created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $package,
@@ -87,8 +88,9 @@ class PackageController extends Controller
             ]);
         }
         broadcast(new formCreated('Package updated successfully.'));
+        
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $package,
             'message' => 'Package updated successfully.'
         ]);

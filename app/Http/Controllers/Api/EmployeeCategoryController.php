@@ -25,6 +25,7 @@ class EmployeeCategoryController extends Controller
             'description' => $request->description,
         ]);
         broadcast(new formCreated('New Employee category created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $category,
@@ -47,7 +48,8 @@ class EmployeeCategoryController extends Controller
 
         $category = EmployeeCategory::findOrFail($id);
         $category->update($request->all());
-        broadcast(new formCreated('New Employee category created successfully.'));
+        broadcast(new formCreated('Employee category updated successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $category,

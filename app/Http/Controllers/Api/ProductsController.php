@@ -33,6 +33,7 @@ class ProductsController extends Controller
     {
         $product = Product::create($request->all());
         broadcast(new formCreated('New Product created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $product,
@@ -44,7 +45,8 @@ class ProductsController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->update($request->all());
-        broadcast(new formCreated('New Product created successfully.'));
+        broadcast(new formCreated('Product updated successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $product,

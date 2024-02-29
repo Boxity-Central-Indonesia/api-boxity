@@ -30,6 +30,7 @@ class RoleController extends Controller
             'name' => $request->name,
         ]);
 broadcast(new formCreated('New Role created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $role,
@@ -56,8 +57,10 @@ broadcast(new formCreated('New Role created successfully.'));
             'name' => $request->name,
         ]);
 
+        broadcast(new formCreated('Role updated successfully.'));
+        
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $role,
             'message' => 'Role updated successfully.',
         ], 200);

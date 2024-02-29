@@ -34,6 +34,7 @@ class AssetsController extends Controller
     {
         $asset = Asset::create($request->validated());
         broadcast(new formCreated('New Asset created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $asset,
@@ -55,7 +56,8 @@ class AssetsController extends Controller
     {
         $asset = Asset::findOrFail($id);
         $asset->update($request->validated());
-        broadcast(new formCreated('New Asset created successfully.'));
+        broadcast(new formCreated('Asset updated successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $asset,

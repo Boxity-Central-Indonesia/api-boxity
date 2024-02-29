@@ -64,6 +64,7 @@ class WarehousesController extends Controller
 
         $warehouse = Warehouse::create($request->all());
         broadcast(new formCreated('Warehouse created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $warehouse,
@@ -121,7 +122,8 @@ class WarehousesController extends Controller
         }
 
         $warehouse->update($request->all());
-broadcast(new formCreated('New Warehouse created successfully.'));
+broadcast(new formCreated('Warehouse updated successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $warehouse,

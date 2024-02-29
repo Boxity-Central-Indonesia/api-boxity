@@ -37,6 +37,7 @@ class AccountsTransactionsController extends Controller
         $validated = $request->validated();
         $transaction = AccountsTransaction::create($validated);
         broadcast(new formCreated('New Accounts transactions created successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $transaction,
@@ -59,7 +60,8 @@ class AccountsTransactionsController extends Controller
         $transaction = AccountsTransaction::findOrFail($id);
         $validated = $request->validated();
         $transaction->update($validated);
-        broadcast(new formCreated('New Accounts transactions created successfully.'));
+        broadcast(new formCreated('Accounts transaction updated successfully.'));
+        
         return response()->json([
             'status' => 201,
             'data' => $transaction,
