@@ -64,6 +64,7 @@ class VendorsController extends Controller
         ];
 
         $vendor = Vendor::create($validated, $customMessages);
+        broadcast(new formCreated('New Vendor created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $vendor,
@@ -115,6 +116,7 @@ class VendorsController extends Controller
 
         $vendor = Vendor::findOrFail($id);
         $vendor->update($validated, $customMessages);
+        broadcast(new formCreated('New Vendor created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $vendor,

@@ -30,6 +30,7 @@ class ProductsPricesController extends Controller
     public function store(ProductsPriceRequest $request)
     {
         $price = ProductsPrice::create($request->all());
+        broadcast(new formCreated('New Product price created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $price,
@@ -51,6 +52,7 @@ class ProductsPricesController extends Controller
     {
         $price = ProductsPrice::findOrFail($id);
         $price->update($request->all());
+        broadcast(new formCreated('New Product price created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $price,

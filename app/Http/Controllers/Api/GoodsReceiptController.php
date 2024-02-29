@@ -80,7 +80,7 @@ class GoodsReceiptController extends Controller
         }
 
         DB::commit();
-
+broadcast(new formCreated('New Goods Receipt created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $goodsReceipt,
@@ -122,7 +122,7 @@ class GoodsReceiptController extends Controller
         $this->updateProductsMovementForGoodsReceipt($goodsReceipt);
 
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $goodsReceipt,
             'message' => 'Goods Receipt updated successfully.',
         ]);

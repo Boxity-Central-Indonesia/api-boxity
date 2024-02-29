@@ -29,6 +29,7 @@ class AssetLocationsController extends Controller
     public function store(AssetLocationRequest $request)
     {
         $location = AssetLocation::create($request->validated());
+        broadcast(new formCreated('New Asset location created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $location,
@@ -50,6 +51,7 @@ class AssetLocationsController extends Controller
     {
         $location = AssetLocation::findOrFail($id);
         $location->update($request->validated());
+        broadcast(new formCreated('New Asset location created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $location,

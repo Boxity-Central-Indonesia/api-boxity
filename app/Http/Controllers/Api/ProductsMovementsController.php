@@ -35,6 +35,7 @@ class ProductsMovementsController extends Controller
     {
 
         $movement = ProductsMovement::create($request->all());
+        broadcast(new formCreated('New Product movement created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $movement,
@@ -56,6 +57,7 @@ class ProductsMovementsController extends Controller
     {
         $movement = ProductsMovement::findOrFail($id);
         $movement->update($request->all());
+        broadcast(new formCreated('New Product movement created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $movement,

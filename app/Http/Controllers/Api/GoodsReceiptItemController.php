@@ -77,7 +77,7 @@ class GoodsReceiptItemController extends Controller
             'quantity_received' => $request->input('quantity_received', 0),
             'quantity_due' => $request->input('quantity_ordered') - $request->input('quantity_received', 0),
         ]);
-
+broadcast(new formCreated('New Goods Receipt Item created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $goodsReceiptItem,
@@ -110,7 +110,7 @@ class GoodsReceiptItemController extends Controller
         ]);
 
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $goodsReceiptItem,
             'message' => 'Goods Receipt Item updated successfully.',
         ]);

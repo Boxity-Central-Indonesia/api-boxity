@@ -32,6 +32,7 @@ class CompaniesBranchController extends Controller
     {
         $data = $request->validated();
         $branch = CompaniesBranch::create($data);
+        broadcast(new formCreated('New Branch created created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $branch,
@@ -44,6 +45,7 @@ class CompaniesBranchController extends Controller
         $branchModel = CompaniesBranch::findOrFail($branch);
         $data = $request->validated();
         $branchModel->update($data);
+        broadcast(new formCreated('New Branch created created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $branchModel,

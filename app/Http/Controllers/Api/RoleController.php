@@ -29,7 +29,7 @@ class RoleController extends Controller
         $role = Role::create([
             'name' => $request->name,
         ]);
-
+broadcast(new formCreated('New Role created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $role,

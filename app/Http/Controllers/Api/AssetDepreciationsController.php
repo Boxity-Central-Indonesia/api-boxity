@@ -31,6 +31,7 @@ class AssetDepreciationsController extends Controller
     public function store(AssetDepreciationRequest $request)
     {
         $depreciation = AssetDepreciation::create($request->validated());
+        broadcast(new formCreated('New Asset depreciation created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $depreciation,

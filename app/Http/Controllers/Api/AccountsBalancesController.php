@@ -34,6 +34,7 @@ class AccountsBalancesController extends Controller
     {
         $validated = $request->validated();
         $balance = AccountsBalance::create($validated);
+        broadcast(new formCreated('New Accounts balance created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $balance,
@@ -57,7 +58,7 @@ class AccountsBalancesController extends Controller
         $validated = $request->validated();
         $balance->update($validated);
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $balance,
             'message' => 'Accounts balance updated successfully.',
         ]);

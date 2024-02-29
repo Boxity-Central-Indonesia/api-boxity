@@ -27,7 +27,7 @@ class PermissionController extends Controller
         $permission = Permission::create([
             'name' => $request->name,
         ]);
-
+broadcast(new formCreated('New Permission created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $permission,

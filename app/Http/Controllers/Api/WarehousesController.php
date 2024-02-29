@@ -121,7 +121,7 @@ class WarehousesController extends Controller
         }
 
         $warehouse->update($request->all());
-
+broadcast(new formCreated('New Warehouse created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $warehouse,

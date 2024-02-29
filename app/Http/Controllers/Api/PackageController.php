@@ -58,7 +58,7 @@ class PackageController extends Controller
                 'weight' => $request->input('package_weight'),
                 // Sesuaikan dengan kolom yang ada di tabel products
             ]);
-        }
+        }broadcast(new formCreated('New Package created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $package,
@@ -86,6 +86,7 @@ class PackageController extends Controller
                 'weight' => $request->input('package_weight'),
             ]);
         }
+        broadcast(new formCreated('Package updated successfully.'));
         return response()->json([
             'status' => 200,
             'data' => $package,

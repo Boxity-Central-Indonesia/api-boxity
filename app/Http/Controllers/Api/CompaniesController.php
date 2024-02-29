@@ -31,6 +31,7 @@ class CompaniesController extends Controller
     public function store(CompanyRequest $request)
     {
         $company = Company::create($request->validated());
+        broadcast(new formCreated('New Company created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $company,
@@ -42,6 +43,7 @@ class CompaniesController extends Controller
     {
         $company = Company::findOrFail($id);
         $company->update($request->validated());
+        broadcast(new formCreated('New Company created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $company,

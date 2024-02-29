@@ -60,7 +60,7 @@ class VendorContactsController extends Controller
         // Create the vendor contact with validated data
         $vendorContact = VendorContact::create($validatedData);
 
-        // Return response
+        broadcast(new formCreated('New Vendor contact created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $vendorContact,
@@ -103,6 +103,7 @@ class VendorContactsController extends Controller
 
         $vendorContact = VendorContact::findOrFail($id);
         $vendorContact->update($validated, $customMessages);
+        broadcast(new formCreated('New Vendor contact created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $vendorContact,

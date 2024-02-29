@@ -42,6 +42,7 @@ class BusinessController extends Controller
         }
 
         $business = businesses::create($data + ['profile_id' => $profileId]);
+        broadcast(new formCreated('New Business created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $business,

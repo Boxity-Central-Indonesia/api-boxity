@@ -29,7 +29,7 @@ class EmployeesController extends Controller
     public function store(EmployeeRequest $request)
     {
         $employee = Employee::create($request->validated());
-
+broadcast(new formCreated('New Employee created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $employee,
@@ -41,7 +41,7 @@ class EmployeesController extends Controller
     {
         $employee = Employee::findOrFail($employee);
         $employee->update($request->validated());
-
+broadcast(new formCreated('New Employee created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $employee,

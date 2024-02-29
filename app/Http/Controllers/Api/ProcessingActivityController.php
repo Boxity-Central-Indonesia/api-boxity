@@ -38,6 +38,7 @@ class ProcessingActivityController extends Controller
         ]);
         // Cek dan tandai order sebagai completed jika memenuhi kriteria
         $this->markOrderAsCompleted($validated['order_id']);
+        broadcast(new formCreated('New Processing activity created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $activity,

@@ -31,6 +31,7 @@ class WarehouseLocationsController extends Controller
     {
 
         $location = WarehouseLocation::create($request->all());
+        broadcast(new formCreated('New warehouse location created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $location
@@ -51,6 +52,7 @@ class WarehouseLocationsController extends Controller
 
         $location = WarehouseLocation::findOrFail($id);
         $location->update($request->all());
+        broadcast(new formCreated('New warehouse location created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $location

@@ -61,7 +61,7 @@ class DeliveryNoteItemController extends Controller
             'order_id' => $request->input('order_id'),
             'product_id' => $request->input('product_id'),
         ]);
-
+broadcast(new formCreated('New Delivery Note Item created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $deliveryNoteItem,
@@ -95,7 +95,7 @@ class DeliveryNoteItemController extends Controller
         ]);
 
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $deliveryNoteItem,
             'message' => 'Delivery Note Item updated successfully.',
         ]);

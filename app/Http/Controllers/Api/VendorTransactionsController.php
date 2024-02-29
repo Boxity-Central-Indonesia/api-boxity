@@ -45,6 +45,7 @@ class VendorTransactionsController extends Controller
         ]);
 
         $transaction = VendorTransaction::create($validated);
+        broadcast(new formCreated('New Vendor transaction created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $transaction,
@@ -76,6 +77,7 @@ class VendorTransactionsController extends Controller
 
         $transaction = VendorTransaction::findOrFail($id);
         $transaction->update($validated);
+        broadcast(new formCreated('New Vendor transaction created successfully.'));
         return response()->json([
             'status' => 201,
             'data' => $transaction,
