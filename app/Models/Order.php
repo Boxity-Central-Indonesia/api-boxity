@@ -75,4 +75,8 @@ class Order extends Model
             }
         });
     }
+    protected $casts = [
+        'created_at' => 'datetime:d M, Y',
+        'updated_at' => 'datetime:d M, Y',
+    ];
 }

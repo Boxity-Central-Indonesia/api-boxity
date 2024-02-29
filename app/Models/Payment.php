@@ -25,4 +25,8 @@ class Payment extends Model
     {
         return $this->belongsTo(Invoice::class);
     }
+    protected $casts = [
+        'created_at' => 'datetime:d M, Y',
+        'updated_at' => 'datetime:d M, Y',
+    ];
 }
