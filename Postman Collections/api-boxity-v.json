@@ -3961,8 +3961,56 @@
 					"name": "Good Receipt",
 					"item": [
 						{
-							"name": "New Request",
+							"name": "Create goods receipt",
 							"id": "f02c1988-92c5-4007-a171-23250b850336",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_id\": {{orderID}},\n  \"warehouse_id\": {{warehouseID}},\n  \"details\": \"Received goods from order\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/goods-receipt"
+							},
+							"response": []
+						},
+						{
+							"name": "Get all goods receipt",
+							"id": "d03d144e-041f-4370-8e2a-1f5fa8967cfe",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/goods-receipt"
+							},
+							"response": []
+						},
+						{
+							"name": "Get detail goods receipt by ID",
+							"id": "0df59c11-a8cf-43cb-8c38-8eec85e973be",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/goods-receipt/{{goodReceiptID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "34a06163-9f98-43e9-a17a-660e75bbcb8f",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
