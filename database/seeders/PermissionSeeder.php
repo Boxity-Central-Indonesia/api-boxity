@@ -68,9 +68,31 @@ class PermissionSeeder extends Seeder
 
             // Transactions
             ['name' => 'view_transactions'],
-            ['name' => 'create_transactions'],
-            ['name' => 'update_transactions'],
-            ['name' => 'delete_transactions'],
+
+            ['name' => 'view_orders'],
+            ['name' => 'create_orders'],
+            ['name' => 'update_orders'],
+            ['name' => 'delete_orders'],
+
+            ['name' => 'view_invoices'],
+            ['name' => 'create_invoices'],
+            ['name' => 'update_invoices'],
+            ['name' => 'delete_invoices'],
+
+            ['name' => 'view_payments'],
+            ['name' => 'create_payments'],
+            ['name' => 'update_payments'],
+            ['name' => 'delete_payments'],
+
+            ['name' => 'view_goods_receipts'],
+            ['name' => 'create_goods_receipts'],
+            ['name' => 'update_goods_receipts'],
+            ['name' => 'delete_goods_receipts'],
+
+            ['name' => 'view_delivery_notes'],
+            ['name' => 'create_delivery_notes'],
+            ['name' => 'update_delivery_notes'],
+            ['name' => 'delete_delivery_notes'],
 
             // Manufacturer
             ['name' => 'view_manufacturers'],
