@@ -3961,6 +3961,24 @@
 					"name": "Good Receipt",
 					"item": [
 						{
+							"name": "Goods Receipt Item",
+							"item": [
+								{
+									"name": "New Request",
+									"id": "8ea7dbbc-d408-4ee8-97f1-ebbb3a6090a0",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								}
+							],
+							"id": "849a60c5-4704-4d5e-b56e-656b7c10bea8"
+						},
+						{
 							"name": "Create goods receipt",
 							"id": "f02c1988-92c5-4007-a171-23250b850336",
 							"protocolProfileBehavior": {
@@ -4009,14 +4027,37 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Update by ID",
 							"id": "34a06163-9f98-43e9-a17a-660e75bbcb8f",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"order_id\": {{orderID}},\n  \"warehouse_id\": {{warehouseID}},\n  \"details\": \"Received goods from order\",\n  \"status\": \"Pending\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/goods-receipt/{{goodReceiptID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete by ID",
+							"id": "11270552-77ea-47e3-88e1-62e79a023d61",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/goods-receipt/{{goodReceiptID}}"
 							},
 							"response": []
 						}
