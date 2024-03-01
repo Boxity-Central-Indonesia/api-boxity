@@ -4051,6 +4051,54 @@
 						},
 						{
 							"name": "Get all goods receipt",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a1302797-e97e-44a5-bc49-bf9f0811d3b4",
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>ID</th>",
+											"        <th>Order ID</th>",
+											"        <th>Warehouse ID</th>",
+											"        <th>Status</th>",
+											"        <th>Details</th>",
+											"        <th>Created At</th>",
+											"    </tr>",
+											"    ",
+											"    {{#each response.data}}",
+											"        <tr>",
+											"            <td>{{id}}</td>",
+											"            <td>{{order_id}}</td>",
+											"            <td>{{warehouse_id}}</td>",
+											"            <td>{{status}}</td>",
+											"            <td>{{details}}</td>",
+											"            <td>{{created_at}}</td>",
+											"        </tr>",
+											"    {{/each}}",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    return { response: pm.response.json() }",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"id": "d03d144e-041f-4370-8e2a-1f5fa8967cfe",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
