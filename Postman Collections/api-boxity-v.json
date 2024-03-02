@@ -4208,7 +4208,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"order_id\": {{orderID}},\n  \"product_id\": 5\n}\n",
+									"raw": "{\n  \"order_id\": {{orderID}},\n  \"product_id\": 3\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
