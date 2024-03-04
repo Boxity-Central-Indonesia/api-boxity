@@ -514,34 +514,12 @@ public function editProductInOrder(Request $request, $orderId, $productId)
         $orderDataToUpdate = request()->except(['products']);
         $order->update($orderDataToUpdate);
 
-        $vendor = Vendor::find($order->vendor_id);
-        $totalOrderPrice = 0;
-
-        // Hapus relasi produk-order sebelumnya
-        $order->products()->detach();
-
-        // Tambahkan produk-produk baru dari request validasi
-        foreach (request('products') as $product) {
-            $productTotalPrice = $product['quantity'] * $product['price_per_unit'];
-            $totalOrderPrice += $productTotalPrice;
-
-            // Simpan ke tabel order_products
-            $order->products()->attach($product['product_id'], [
-                'quantity' => $product['quantity'],
-                'price_per_unit' => $product['price_per_unit'],
-                'total_price' => $productTotalPrice,
-            ]);
-        }
-
-        // Update total_price di order
-        $order->total_price = $totalOrderPrice;
+        // Perbarui total_price di order (jika perlu)
+        $order->total_price = request('total_price') ?? $order->total_price;
         $order->save();
 
         // Hitung perubahan harga
         $priceChange = request('total_price') ?? $order->total_price - $order->total_price;
-
-        // Perbarui order
-        $order->update(request()->all());
 
         // Dapatkan vendor terkait
         $vendor = Vendor::find($order->vendor_id);
@@ -569,8 +547,8 @@ public function editProductInOrder(Request $request, $orderId, $productId)
             ['order_id' => $order->id],
             [
                 'vendors_id' => $vendor->id,
-                'amount' => $totalOrderPrice,
-                'total_price' => $totalOrderPrice,
+                'amount' => $order->total_price,
+                'total_price' => $order->total_price,
                 'taxes' => request('taxes') ?? null,
                 'shipping_cost' => request('shipping_cost') ?? null,
             ]
