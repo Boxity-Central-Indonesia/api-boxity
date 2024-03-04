@@ -118,6 +118,96 @@ class OrderController extends Controller
         }
     }
 
+    public function addProductToOrder(Request $request, $orderId)
+{
+    $order = Order::find($orderId);
+
+    if (!$order) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'Order not found.',
+        ]);
+    }
+
+    try {
+        // Asumsikan data produk yang masuk sudah valid atau lakukan validasi manual
+        $productData = $request->input('product');
+
+        // Tambahkan produk ke order
+        $productTotalPrice = $productData['quantity'] * $productData['price_per_unit'];
+        $order->products()->attach($productData['product_id'], [
+            'quantity' => $productData['quantity'],
+            'price_per_unit' => $productData['price_per_unit'],
+            'total_price' => $productTotalPrice,
+        ]);
+
+        // Update total_price di order
+        $order->total_price += $productTotalPrice;
+        $order->save();
+
+        return response()->json([
+            'status' => 200,
+            'data' => $order,
+            'message' => 'Product added to order successfully.',
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 500,
+            'message' => 'Failed to add product to order. Error: ' . $e->getMessage(),
+        ]);
+    }
+}
+public function editProductInOrder(Request $request, $orderId, $productId)
+{
+    $order = Order::find($orderId);
+
+    if (!$order) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'Order not found.',
+        ]);
+    }
+
+    try {
+        // Asumsikan data produk yang masuk sudah valid atau lakukan validasi manual
+        $productData = $request->input('product');
+
+        // Perbarui data produk dalam pesanan
+        $existingProduct = $order->products()->where('product_id', $productId)->first();
+
+        if ($existingProduct) {
+            // Update quantity dan price_per_unit
+            $existingProduct->pivot->update([
+                'quantity' => $productData['quantity'],
+                'price_per_unit' => $productData['price_per_unit'],
+                'total_price' => $productData['quantity'] * $productData['price_per_unit'],
+            ]);
+
+            // Perbarui total_price di pesanan
+            $order->total_price = $order->products()->sum(DB::raw('quantity * price_per_unit'));
+            $order->save();
+
+            return response()->json([
+                'status' => 200,
+                'data' => $order,
+                'message' => 'Product in order updated successfully.',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Product not found in order.',
+            ]);
+        }
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 500,
+            'message' => 'Failed to update product in order. Error: ' . $e->getMessage(),
+        ]);
+    }
+}
+
+
+
 
     protected function updateAccountBalance($accountId, $amount, $type)
     {

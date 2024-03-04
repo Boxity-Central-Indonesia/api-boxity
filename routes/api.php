@@ -116,6 +116,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('payments', PaymentController::class);
     Route::apiResource('orders', OrderController::class);
     Route::get('/orders/{orderId}/processing-activities', [OrderController::class, 'processingActivities'])->name('orders.processingActivities');
+    Route::post('/orders/{orderId}/add-product', [OrderController::class, 'addProductToOrder']);
+    Route::put('/orders/{orderId}/products/{productId}', [OrderController::class, 'editProductInOrder']);
 
     Route::apiResource('goods-receipt', GoodsReceiptController::class);
     Route::apiResource('delivery-notes', DeliveryNoteController::class);
