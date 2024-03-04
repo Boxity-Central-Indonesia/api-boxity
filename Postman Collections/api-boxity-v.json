@@ -3720,8 +3720,40 @@
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"product\": {\n        \"product_id\": 6,\n        \"quantity\": 5,\n        \"price_per_unit\": 10000\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/orders/{{orderID}}}/add-product"
+							},
+							"response": []
+						},
+						{
+							"name": "Edit product by productID based on order ID",
+							"id": "18d7100a-05dd-4786-8cd1-309155d8c757",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"product\": {\n        \"quantity\": 10,\n        \"price_per_unit\": 15500\n    }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/orders/{{orderID}}}/products/{{productID}}"
 							},
 							"response": []
 						}
