@@ -460,7 +460,7 @@ public function editProductInOrder(Request $request, $orderId, $productId)
     $pdf = PDF::loadView('pdf.order_detail', compact('formattedOrder'));
 
     // Generate nama file dengan menambahkan tanggal
-    $fileName = 'order_detail_' .$formattedOrder['kode_order']. Carbon::now()->format('Ymd_His') . '.pdf';
+    $fileName = 'order_detail_'. Carbon::now()->format('Ymd_His') . '.pdf';
 
 
     // Simpan file PDF di storage dengan nama yang baru
