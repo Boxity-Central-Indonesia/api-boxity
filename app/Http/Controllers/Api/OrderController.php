@@ -446,8 +446,8 @@ public function editProductInOrder(Request $request, $orderId, $productId)
                 'id' => $product->id,
                 'name' => $product->name,
                 'quantity' => $product->pivot->quantity,
-                'price_per_unit' => number_format($product->pivot->price_per_unit, 2),
-                'total_price' => number_format($product->pivot->total_price, 2),
+                'price_per_unit' => (int)$product->pivot->price_per_unit,
+                'total_price' => (int)$product->pivot->total_price,
             ];
         }),
         'warehouse' => $order->warehouse,
