@@ -423,6 +423,59 @@ public function editProductInOrder(Request $request, $orderId, $productId)
         }
     }
 
+    public function downloadOrderDetail($id)
+{
+    // Get order details
+    $order = Order::with(['vendor', 'products', 'warehouse', 'invoices'])
+        ->find($id);
+
+    // Validasi jika order tidak ditemukan
+    if (!$order) {
+        return response()->json(['message' => 'Order not found.', 'status' => 404], 404);
+    }
+
+    // Format order data
+    $formattedOrder = [
+        'id' => $order->id,
+        'kode_order' => $order->kode_order,
+        'vendor' => $order->vendor,
+        'products' => $order->products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'quantity' => $product->pivot->quantity,
+                'price_per_unit' => number_format($product->pivot->price_per_unit, 2),
+                'total_price' => number_format($product->pivot->total_price, 2),
+            ];
+        }),
+        'warehouse' => $order->warehouse,
+        'invoices' => $order->invoices,
+        'total_price' => (int)$order->total_price,
+        'order_status' => $order->order_status,
+        'order_type' => $order->order_type,
+        'taxes' => (int)$order->taxes,
+        'shipping_cost' => (int)$order->shipping_cost,
+    ];
+
+    $pdf = PDF::loadView('pdf.order_detail', compact('formattedOrder'));
+
+    // Generate nama file dengan menambahkan tanggal
+    $fileName = 'order_detail_' .$formattedOrder->kode_order. Carbon::now()->format('Ymd_His') . '.pdf';
+
+    // Simpan file PDF di storage dengan nama yang baru
+    $pdf->save(public_path('pdf/' . $fileName));
+
+    // Mendapatkan URL untuk di-download
+    $pdfUrl = url('pdf/' . $fileName);
+
+    // Mengirim response dengan URL file yang dapat di-download
+    return response()->json([
+        'message' => 'PDF generated successfully.',
+        'data' => $pdfUrl,
+        'status' => 200,
+    ]);
+}
+
     public function getOrderDetails()
     {
         $orderDetails = DB::table('orders')

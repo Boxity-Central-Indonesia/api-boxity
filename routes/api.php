@@ -160,6 +160,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Download Reports
     Route::prefix('download')->group(function () {
         Route::get('/inventory-report', [ReportController::class, 'downloadInventoryReportPdf']);
+        Route::get('/order-detail/{id}', [OrderController::class, 'downloadOrderDetail']);
     });
 
     // Proses produksi
