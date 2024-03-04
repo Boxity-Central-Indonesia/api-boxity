@@ -17,6 +17,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Events\formCreated;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class OrderController extends Controller
 {
@@ -460,7 +462,7 @@ public function editProductInOrder(Request $request, $orderId, $productId)
     $pdf = PDF::loadView('pdf.order_detail', compact('formattedOrder'));
 
     // Generate nama file dengan menambahkan tanggal
-    $fileName = 'order_detail_'. Carbon::now()->format('Ymd_His') . '.pdf';
+    $fileName = 'order_detail_'.$formattedOrder['id']."_". Carbon::now()->format('Ymd_His') . '.pdf';
 
 
     // Simpan file PDF di storage dengan nama yang baru

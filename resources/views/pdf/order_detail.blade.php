@@ -47,7 +47,7 @@
             <th>Invoices</th>
             <td>
                 @if (count($formattedOrder['invoices']) > 0)
-                    {{ implode(', ', array_column($formattedOrder['invoices'], 'kode_invoice')) }}
+                    {{ implode(', ', $formattedOrder['invoices']->pluck('kode_invoice')->toArray()) }}
                 @else
                     --
                 @endif
