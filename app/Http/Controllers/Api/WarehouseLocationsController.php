@@ -20,7 +20,10 @@ class WarehouseLocationsController extends Controller
      */
     public function index()
     {
-        $locations = WarehouseLocation::with('warehouse')->get();
+        $locations = WarehouseLocation::with('warehouse')->get()->map(function ($location) {
+            $location->capacity = (int) $location->capacity;
+            return $location;
+        });
         return response()->json([
             'status' => 200,
             'data' => $locations
@@ -32,7 +35,7 @@ class WarehouseLocationsController extends Controller
 
         $location = WarehouseLocation::create($request->all());
         broadcast(new formCreated('New warehouse location created successfully.'));
-        
+
         return response()->json([
             'status' => 201,
             'data' => $location
@@ -54,7 +57,7 @@ class WarehouseLocationsController extends Controller
         $location = WarehouseLocation::findOrFail($id);
         $location->update($request->all());
         broadcast(new formCreated('Warehouse location updated successfully.'));
-        
+
         return response()->json([
             'status' => 201,
             'data' => $location
