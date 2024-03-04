@@ -34,19 +34,7 @@ th {
 th, td {
     font-size: 16px; /* Increased font size for better readability */
 }
-
-#footer {
-    position: fixed;
-    bottom: 20px;
-    width: 100%;
-    text-align: center;
-}
-
-#footer .left {
-    float: left;
-}
-
-#footer .center, #footer .left {
-    display: inline-block;
-    font-size: 12px !important;
+hr {
+    border: 1px solid #000; /* Adjust the color and thickness as needed */
+    margin: 20px 0; /* Adjust the margin as needed */
 }

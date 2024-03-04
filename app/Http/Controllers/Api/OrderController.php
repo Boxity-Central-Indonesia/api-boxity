@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Events\formCreated;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -450,6 +451,8 @@ public function editProductInOrder(Request $request, $orderId, $productId)
                 'total_price' => (int)$product->pivot->total_price,
             ];
         }),
+        'details' => $order->details,
+        'created_at' => $order->created_at,
         'warehouse' => $order->warehouse,
         'invoices' => $order->invoices,
         'total_price' => (int)$order->total_price,
@@ -459,25 +462,32 @@ public function editProductInOrder(Request $request, $orderId, $productId)
         'shipping_cost' => (int)$order->shipping_cost,
     ];
 
-    $pdf = PDF::loadView('pdf.order_detail', compact('formattedOrder'));
-
     // Generate nama file dengan menambahkan tanggal
     $fileName = 'order_detail_'.$formattedOrder['id']."_". Carbon::now()->format('Ymd_His') . '.pdf';
 
+    // Mendapatkan URL untuk di-download
+    $pdfUrl = url('pdf/' . $fileName);
+    $now = Carbon::now();
+    $filenameQR = 'qrcode_' . $now->format('Ymd_His') . '.png';
+    $qrCodePath = public_path('qrcodes/' . $filenameQR);
+
+    // Generate QR Code
+    $qrCode = QrCode::size(100)->generate($pdfUrl);
+
+    // Save QR Code as an image
+Storage::disk('public')->put('qrcodes/' . $filenameQR, $qrCode);
+    $pdf = PDF::loadView('pdf.order_detail', compact('formattedOrder', 'pdfUrl', 'qrCodePath'));
 
     // Simpan file PDF di storage dengan nama yang baru
     $pdf->save(public_path('pdf/' . $fileName));
 
-    // Mendapatkan URL untuk di-download
-    $pdfUrl = url('pdf/' . $fileName);
-
-    // Mengirim response dengan URL file yang dapat di-download
     return response()->json([
         'message' => 'PDF generated successfully.',
         'data' => $pdfUrl,
         'status' => 200,
     ]);
 }
+
 
     public function getOrderDetails()
     {
