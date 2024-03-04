@@ -3608,7 +3608,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"quantity\": 9,\n  \"total_price\": 900,\n  \"taxes\": 0,\n  \"shipping_cost\": 0\n}\n",
+									"raw": "{\n    \"vendor_id\": {{customerID}},\n    \"warehouse_id\": {{warehouseID}},\n    \"status\": \"pending\",\n    \"details\": \"Pesanan untuk project Y\",\n    \"order_type\": \"Direct Order\",\n    \"products\": [\n        {\n            \"product_id\": {{productID}},\n            \"quantity\": 10,\n            \"price_per_unit\": 10000\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 5,\n            \"price_per_unit\": 15000\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
