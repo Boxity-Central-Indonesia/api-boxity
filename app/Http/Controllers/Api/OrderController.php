@@ -496,97 +496,77 @@ public function editProductInOrder(Request $request, $orderId, $productId)
         }
     }
     // Mengupdate order
-    public function update(OrderRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $order = Order::find($id);
-        if (!$order) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Order not found.',
-            ]);
+
+    if (!$order) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'Order not found.',
+        ]);
+    }
+
+    DB::beginTransaction();
+
+    try {
+        // Perbarui order dengan data yang tidak termasuk produk
+        $orderDataToUpdate = request()->except(['products']);
+        $order->update($orderDataToUpdate);
+
+        // Perbarui total_price di order (jika perlu)
+        $order->total_price = request('total_price') ?? $order->total_price;
+        $order->save();
+
+        // Hitung perubahan harga
+        $priceChange = request('total_price') ?? $order->total_price - $order->total_price;
+
+        // Dapatkan vendor terkait
+        $vendor = Vendor::find($order->vendor_id);
+
+        // Dapatkan akun yang sesuai berdasarkan jenis transaksi
+        $accountName = $vendor->transaction_type === 'outbound' ? 'Piutang Usaha' : 'Utang Usaha';
+        $account = Account::where('name', $accountName)->first();
+
+        if ($account) {
+            // Sesuaikan saldo akun
+            $this->updateAccountBalance($account->id, abs($priceChange), $priceChange > 0 ? 'debit' : 'credit');
         }
 
-        $validatedData = $request->validated();
+        // Jika transaksi adalah pembelian (inbound), sesuaikan juga 'Persediaan'
+        if ($vendor->transaction_type === 'inbound') {
+            $inventoryAccount = Account::where('name', 'Persediaan')->first();
 
-        DB::beginTransaction();
-        try {
-            // Perbarui order dengan data yang tidak termasuk produk
-            $orderDataToUpdate = collect($validatedData)->except(['products'])->toArray();
-            $order->update($orderDataToUpdate);
-
-            $vendor = Vendor::find($order->vendor_id);
-            $totalOrderPrice = 0;
-
-            // Hapus relasi produk-order sebelumnya
-            $order->products()->detach();
-            // Tambahkan produk-produk baru dari request validasi
-            foreach ($validatedData['products'] as $product) {
-                $productTotalPrice = $product['quantity'] * $product['price_per_unit'];
-                $totalOrderPrice += $productTotalPrice;
-
-                // Simpan ke tabel order_products
-                $order->products()->attach($product['product_id'], [
-                    'quantity' => $product['quantity'],
-                    'price_per_unit' => $product['price_per_unit'],
-                    'total_price' => $productTotalPrice,
-                ]);
+            if ($inventoryAccount) {
+                $this->updateAccountBalance($inventoryAccount->id, abs($priceChange), $priceChange > 0 ? 'debit' : 'credit');
             }
-
-            // Update total_price di order
-            $order->total_price = $totalOrderPrice;
-            $order->save();
-
-            // Hitung perubahan harga
-            $priceChange = $validatedData['total_price'] ?? $order->total_price - $order->total_price;
-
-            // Perbarui order
-            $order->update($validatedData);
-
-            // Dapatkan vendor terkait
-            $vendor = Vendor::find($order->vendor_id);
-
-            // Dapatkan akun yang sesuai berdasarkan jenis transaksi
-            $accountName = $vendor->transaction_type === 'outbound' ? 'Piutang Usaha' : 'Utang Usaha';
-            $account = Account::where('name', $accountName)->first();
-
-            if ($account) {
-                // Sesuaikan saldo akun
-                $this->updateAccountBalance($account->id, abs($priceChange), $priceChange > 0 ? 'debit' : 'credit');
-            }
-
-            // Jika transaksi adalah pembelian (inbound), sesuaikan juga 'Persediaan'
-            if ($vendor->transaction_type === 'inbound') {
-                $inventoryAccount = Account::where('name', 'Persediaan')->first();
-                if ($inventoryAccount) {
-                    $this->updateAccountBalance($inventoryAccount->id, abs($priceChange), $priceChange > 0 ? 'debit' : 'credit');
-                }
-            }
-
-            // Perbarui vendor_transaction yang sesuai
-            $vendorTransaction = VendorTransaction::updateOrCreate(
-                ['order_id' => $order->id], // Find by order_id or create new
-                [
-                    'vendors_id' => $vendor->id,
-                    'amount' => $totalOrderPrice,
-                    'total_price' => $totalOrderPrice,
-                    'taxes' => $validatedData['taxes'] ?? null,
-                    'shipping_cost' => $validatedData['shipping_cost'] ?? null,
-                ]
-            );
-
-            DB::commit();
-            return response()->json([
-                'status' => 201,
-                'data' => $order,
-                'message' => 'Order updated successfully.',
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => 500,
-                'message' => 'Failed to update order. Error: ' . $e->getMessage(),
-            ]);
         }
+
+        // Perbarui vendor_transaction yang sesuai
+        $vendorTransaction = VendorTransaction::updateOrCreate(
+            ['order_id' => $order->id],
+            [
+                'vendors_id' => $vendor->id,
+                'amount' => $order->total_price,
+                'total_price' => $order->total_price,
+                'taxes' => request('taxes') ?? null,
+                'shipping_cost' => request('shipping_cost') ?? null,
+            ]
+        );
+
+        DB::commit();
+        return response()->json([
+            'status' => 201,
+            'data' => $order,
+            'message' => 'Order updated successfully.',
+        ]);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'status' => 500,
+            'message' => 'Failed to update order. Error: ' . $e->getMessage(),
+        ]);
+    }
     }
 
 
