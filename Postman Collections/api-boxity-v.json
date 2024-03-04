@@ -3756,6 +3756,19 @@
 								"url": "{{url}}/api/orders/{{orderID}}}/products/{{productID}}"
 							},
 							"response": []
+						},
+						{
+							"name": "Download order detail",
+							"id": "3a6c3d4c-bb32-4b52-89b6-9ed2e95c6a22",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/download/order-detail/{{orderID}}"
+							},
+							"response": []
 						}
 					],
 					"id": "1efb45ac-b7de-4c4f-834a-db47ac6cb29f",
