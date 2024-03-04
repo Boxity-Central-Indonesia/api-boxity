@@ -1,13 +1,11 @@
+@if (!function_exists('formatRupiah'))
+    @include('app/helpers/helpers')
+@endif
 @extends('pdf.master')
-
 @section('title', 'Order Detail ' . $formattedOrder['kode_order'])
 
 @section('content')
     <table border="1" cellspacing="0" cellpadding="10" width="100%">
-        <tr>
-            <th>ID</th>
-            <td>{{ $formattedOrder['id'] }}</td>
-        </tr>
         <tr>
             <th>Kode Order</th>
             <td>{{ $formattedOrder['kode_order'] }}</td>
@@ -32,8 +30,8 @@
                             <td>{{ $product['id'] }}</td>
                             <td>{{ $product['name'] }}</td>
                             <td>{{ $product['quantity'] }}</td>
-                            <td>{{ $product['price_per_unit'] }}</td>
-                            <td>{{ $product['total_price'] }}</td>
+                            <td>{{ formatRupiah($product['price_per_unit']) }}</td>
+                            <td>{{ formatRupiah($product['total_price']) }}</td>
                         </tr>
                     @endforeach
                 </table>
@@ -55,7 +53,7 @@
         </tr>
         <tr>
             <th>Total Price</th>
-            <td>{{ $formattedOrder['total_price'] }}</td>
+            <td>{{ formatRupiah($formattedOrder['total_price']) }}</td>
         </tr>
         <tr>
             <th>Order Status</th>
@@ -67,11 +65,11 @@
         </tr>
         <tr>
             <th>Taxes</th>
-            <td>{{ $formattedOrder['taxes'] }}</td>
+            <td>{{ formatRupiah($formattedOrder['taxes']) }}</td>
         </tr>
         <tr>
             <th>Shipping Cost</th>
-            <td>{{ $formattedOrder['shipping_cost'] }}</td>
+            <td>{{ formatRupiah($formattedOrder['shipping_cost']) }}</td>
         </tr>
     </table>
 @endsection
