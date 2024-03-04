@@ -3712,6 +3712,18 @@
 								"url": "{{url}}/api/order-details/{{orderID}}"
 							},
 							"response": []
+						},
+						{
+							"name": "Add product to order ID",
+							"id": "b9b62eb0-97b1-4085-8e5c-26cf14d565a5",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "1efb45ac-b7de-4c4f-834a-db47ac6cb29f",
