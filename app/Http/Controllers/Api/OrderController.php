@@ -423,11 +423,11 @@ public function editProductInOrder(Request $request, $orderId, $productId)
         }
     }
 
-    public function downloadOrderDetail($id)
+    public function downloadOrderDetail($orderId)
 {
     // Get order details
     $order = Order::with(['vendor', 'products', 'warehouse', 'invoices'])
-        ->find($id);
+        ->find($orderId);
 
     // Validasi jika order tidak ditemukan
     if (!$order) {
