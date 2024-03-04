@@ -3766,7 +3766,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{url}}/api/download/order-detail/{{orderID}}"
+								"url": "{{url}}/api/download/orders/{{orderID}}"
 							},
 							"response": []
 						}
