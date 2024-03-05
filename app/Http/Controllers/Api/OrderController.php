@@ -149,7 +149,7 @@ class OrderController extends Controller
         $order->save();
 
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'data' => $order,
             'message' => 'Product added to order successfully.',
         ]);
