@@ -208,7 +208,37 @@ public function editProductInOrder(Request $request, $orderId, $productId)
         ]);
     }
 }
+public function removeProductFromOrder(Request $request, $orderId, $productId)
+    {
+        $order = Order::find($orderId);
 
+        if (!$order) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Order not found.',
+            ]);
+        }
+
+        try {
+            // Detach the product from the order
+            $order->products()->detach($productId);
+
+            // Recalculate total_price and save the order
+            $order->total_price = $order->calculateTotalPrice();
+            $order->save();
+
+            return response()->json([
+                'status' => 200,
+                'data' => $order,
+                'message' => 'Product removed from order successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to remove product from order. Error: ' . $e->getMessage(),
+            ]);
+        }
+    }
 
 
 
