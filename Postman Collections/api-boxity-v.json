@@ -3771,14 +3771,15 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Delete product by productID based on orderID",
 							"id": "55ca69f1-2aa0-4340-82a9-c1e9b09611c7",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "DELETE",
+								"header": [],
+								"url": "{{url}}/api/orders/{{orderID}}}/remove-product/{{productID}}"
 							},
 							"response": []
 						}
