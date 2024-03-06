@@ -31,9 +31,18 @@ class ProductsController extends Controller
 
     public function store(ProductRequest $request)
     {
-        $product = Product::create($request->all());
+        $data = $request->validated();
+
+        if ($request->hasFile('image_product')) {
+            $result = cloudinary()->upload($request->file('image_product')->getRealPath())->getSecurePath();
+            $data['image_product'] = $result;
+        } else {
+            $data['image_product'] = 'https://res.cloudinary.com/boxity-id/image/upload/v1709745192/39b09e1f-0446-4f78-bbf1-6d52d4e7e4df.png';
+        }
+
+        $product = Product::create($data);
         broadcast(new formCreated('New Product created successfully.'));
-        
+
         return response()->json([
             'status' => 201,
             'data' => $product,
@@ -44,9 +53,18 @@ class ProductsController extends Controller
     public function update(ProductRequest $request, $id)
     {
         $product = Product::findOrFail($id);
-        $product->update($request->all());
+        $data = $request->validated();
+
+        if ($request->hasFile('image_product')) {
+            $result = cloudinary()->upload($request->file('image_product')->getRealPath())->getSecurePath();
+            $data['image_product'] = $result;
+        } else {
+            $data['image_product'] = $product->image_product;
+        }
+
+        $product->update($data);
         broadcast(new formCreated('Product updated successfully.'));
-        
+
         return response()->json([
             'status' => 201,
             'data' => $product,

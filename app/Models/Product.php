@@ -14,7 +14,7 @@ class Product extends Model
     protected $fillable = [
         'name', 'code', 'description', 'price', 'category_id', 'warehouse_id',
         'type', 'animal_type', 'age', 'weight', 'health_status', 'stock',
-        'unit_of_measure', 'raw_material',
+        'unit_of_measure', 'raw_material','image_product',
     ];
     public static function boot()
     {
@@ -25,6 +25,10 @@ class Product extends Model
         self::updating(function ($model) {
             $model->user_updated = Auth::id();
         });
+    }
+    public function getImageProductAttribute($image_product)
+    {
+        return $image_product ? $image_product : 'https://res.cloudinary.com/boxity-id/image/upload/v1709745192/39b09e1f-0446-4f78-bbf1-6d52d4e7e4df.png';
     }
     public function getDescriptionAttribute($description)
     {
