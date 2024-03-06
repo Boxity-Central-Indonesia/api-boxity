@@ -37,7 +37,9 @@
                         Dicetak pada {{ Carbon\Carbon::now()->format('d F Y h:m:s') }}
                     </div>
                     <div class="col-12 text-left">
-                        &copy;{{ getCompanyName() }} | All rights reserved by PT. BOXITY CENTRAL INDONESIA.
+                        &copy;Copyright {{ Carbon\Carbon::now()->format('Y') }}{{ getCompanyName() }}. All rights
+                        reserved by <a href="https://boxity.id" target="_blank"><abbr
+                                title="PT. BOXITY CENTRAL INDONESIA">BoxityID</abbr></a>
                     </div>
                 </div>
             </div>
