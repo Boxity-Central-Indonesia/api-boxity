@@ -19,7 +19,12 @@ class ProductsPricesController extends Controller
      */
     public function index()
     {
-        $prices = ProductsPrice::with('product')->get();
+        $prices = ProductsPrice::with('product')->get()->map(function ($price) {
+            $price->selling_price = (int) $price->selling_price;
+            $price->buying_price = (int) $price->buying_price;
+            $price->discount_price = (int) $price->discount_price;
+            return $price;
+        });
         return response()->json([
             'status' => 200,
             'data' => $prices,
@@ -31,7 +36,7 @@ class ProductsPricesController extends Controller
     {
         $price = ProductsPrice::create($request->all());
         broadcast(new formCreated('New Product price created successfully.'));
-        
+
         return response()->json([
             'status' => 201,
             'data' => $price,
@@ -54,7 +59,7 @@ class ProductsPricesController extends Controller
         $price = ProductsPrice::findOrFail($id);
         $price->update($request->all());
         broadcast(new formCreated('Product price updated successfully.'));
-        
+
         return response()->json([
             'status' => 201,
             'data' => $price,
