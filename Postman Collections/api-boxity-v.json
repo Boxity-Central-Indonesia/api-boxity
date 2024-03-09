@@ -1757,7 +1757,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"name\": \"Ayam QR\",\n  \"code\": \"AU188\",\n  \"description\": \"Blabla\",\n  \"price\": 25000,\n  \"category_id\": {{productCategoryID}},\n  \"warehouse_id\": {{warehouseID}},\n  \"type\": \"Ternak\",\n  \"animal_type\": \"Ayam\",\n  \"age\": 35,\n  \"weight\": 2,\n  \"health_status\": \"Sehat\",\n  \"stock\": 100,\n  \"unit_of_measure\": \"kg\",\n  \"raw_material\": false\n}\n"
+											"raw": "{\n  \"name\": \"Ayam QRISEI\",\n  \"code\": \"AU190\",\n  \"description\": \"Blabla\",\n  \"price\": 25000,\n  \"category_id\": {{productCategoryID}},\n  \"warehouse_id\": {{warehouseID}},\n  \"type\": \"Ternak\",\n  \"animal_type\": \"Ayam\",\n  \"age\": 35,\n  \"weight\": 2,\n  \"health_status\": \"Sehat\",\n  \"stock\": 100,\n  \"unit_of_measure\": \"kg\",\n  \"raw_material\": false\n}\n"
 										},
 										"url": "{{url}}/api/products"
 									},
