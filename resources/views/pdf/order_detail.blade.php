@@ -2,8 +2,14 @@
     @include('app/helpers/helpers')
 @endif
 @extends('pdf.master')
-@section('title', 'Transaksi ' . ($formattedOrder['vendor']['transaction_type'] == 'outbound' ? 'Penjualan' :
-    'Pembelian') . ' ' . $formattedOrder['kode_order'])
+@if ($formattedOrder && $formattedOrder['vendor'])
+    @php
+        $transactionType = $formattedOrder['vendor']['transaction_type'];
+        $orderCode = $formattedOrder['kode_order'];
+        $title = 'Transaksi ' . ($transactionType == 'outbound' ? 'Penjualan' : 'Pembelian') . ' ' . $orderCode;
+    @endphp
+    @section('title', $title)
+@endif
 
 @section('content')
     <table border="1" cellspacing="0" cellpadding="10" width="100%">
