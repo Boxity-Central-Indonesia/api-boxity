@@ -2,16 +2,17 @@
     @include('app/helpers/helpers')
 @endif
 @extends('pdf.master')
-@section('title', 'Transaksi Pembelian ' . $formattedOrder['kode_order'])
+@section('title', 'Transaksi ' . ($formattedOrder['vendor']['transaction_type'] == 'outbound' ? 'Penjualan' :
+    'Pembelian') . ' ' . $formattedOrder['kode_order'])
 
 @section('content')
     <table border="1" cellspacing="0" cellpadding="10" width="100%">
         <tr>
-            <th>Kode Order</th>
+            <th>Kode Transaksi</th>
             <td>{{ $formattedOrder['kode_order'] }}</td>
         </tr>
         <tr>
-            <th>Vendor</th>
+            <th>{{ $formattedOrder['vendor']['transaction_type'] == 'outbound' ? 'Customer' : 'Supplier' }}</th>
             <td>{{ $formattedOrder['vendor']['name'] }}</td>
         </tr>
         <tr>
@@ -19,12 +20,12 @@
             <td>{{ $formattedOrder['details'] }}</td>
         </tr>
         <tr>
-            <th>Tanggal Transaksi Dibuat</th>
+            <th>Tanggal {{ $formattedOrder['vendor']['transaction_type'] == 'outbound' ? 'Penjualan' : 'Pembelian' }}</th>
             <td>{{ $formattedOrder['created_at'] }}</td>
         </tr>
 
         <tr>
-            <th>Gudang tujuan/asal</th>
+            <th>Gudang {{ $formattedOrder['vendor']['transaction_type'] == 'outbound' ? 'Tujuan' : 'Asal' }}</th>
             <td>{{ $formattedOrder['warehouse']['name'] }}</td>
         </tr>
         <tr>
@@ -47,7 +48,7 @@
                     <tr>
                         <th>Nama Produk</th>
                         <th>Quantity</th>
-                        <th style="text-align:right;">Harga Per Unit</th>
+                        <th style="text-align:right;">Harga Satuan</th>
                         <th style="text-align:right;">Total Harga</th>
                     </tr>
                     @foreach ($formattedOrder['products'] as $product)
