@@ -19,10 +19,10 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->account->name }}</td>
                     <td>{{ $item->date }}</td>
-                    <td>{{ $item->account->type }}</td>
-                    <td>{{ $item->type }}</td>
+                    <td class="capitalize">{{ $item->account->type }}</td>
+                    <td class="capitalize">{{ $item->type }}</td>
                     <td class="align-right">Rp. {{ number_format($item->amount, 0, ',', '.') }}</td>
-                    <td class="align-right">{{ number_format($item->account->balance, 0, ',', '.') }}
+                    <td class="align-right">Rp. {{ number_format($item->account->balance, 0, ',', '.') }}
                     </td>
                 </tr>
             @endforeach
