@@ -203,7 +203,7 @@ class ReportController extends Controller
     if (empty($purchaseData)) {
         return response()->json(['message' => 'No purchase report data found.', 'status' => 404], 404);
     }
-    $pdf = PDF::loadView('pdf.purchase_report', compact('purchaseData'));
+    $pdf = PDF::loadView('pdf.purchase_report', compact('purchaseData'))->setPaper('a4', 'landscape');
 
     // Generate nama file dengan menambahkan tanggal
     $fileName = 'purchase_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
