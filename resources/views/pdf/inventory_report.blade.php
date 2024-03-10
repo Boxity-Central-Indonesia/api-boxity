@@ -10,7 +10,7 @@
                 <th>Kategori Produk</th>
                 <th>Tipe Hewan</th>
                 <th class="align-right">Kuantitas</th>
-                <th class="align-right">Harga Rata-Rata</th>
+                <th class="align-right">Harga Satuan</th>
                 <th class="align-right">Total Harga</th>
             </tr>
         </thead>
