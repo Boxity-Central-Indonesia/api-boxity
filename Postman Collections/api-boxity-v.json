@@ -1757,7 +1757,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n  \"name\": \"Ayam QR\",\n  \"code\": \"AU188\",\n  \"description\": \"Blabla\",\n  \"price\": 25000,\n  \"category_id\": {{productCategoryID}},\n  \"warehouse_id\": {{warehouseID}},\n  \"type\": \"Ternak\",\n  \"animal_type\": \"Ayam\",\n  \"age\": 35,\n  \"weight\": 2,\n  \"health_status\": \"Sehat\",\n  \"stock\": 100,\n  \"unit_of_measure\": \"kg\",\n  \"raw_material\": false\n}\n"
+											"raw": "{\n  \"name\": \"Ayam QRISEI\",\n  \"code\": \"AU190\",\n  \"description\": \"Blabla\",\n  \"price\": 25000,\n  \"category_id\": {{productCategoryID}},\n  \"warehouse_id\": {{warehouseID}},\n  \"type\": \"Ternak\",\n  \"animal_type\": \"Ayam\",\n  \"age\": 35,\n  \"weight\": 2,\n  \"health_status\": \"Sehat\",\n  \"stock\": 100,\n  \"unit_of_measure\": \"kg\",\n  \"raw_material\": false\n}\n"
 										},
 										"url": "{{url}}/api/products"
 									},
@@ -4966,6 +4966,45 @@
 								"method": "GET",
 								"header": [],
 								"url": "{{url}}/api/download/inventory-report"
+							},
+							"response": []
+						},
+						{
+							"name": "Sales Report",
+							"id": "d8b81bbe-60b0-48da-a60c-3611e0e0728d",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/download/sales-report"
+							},
+							"response": []
+						},
+						{
+							"name": "Purchase Report",
+							"id": "b1bdf133-20d8-4ce0-bebb-1fde1543a190",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/download/purchase-report"
+							},
+							"response": []
+						},
+						{
+							"name": "Revenue Report",
+							"id": "8f159868-157f-475b-b467-e039a53235a3",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/download/revenue-report"
 							},
 							"response": []
 						}
