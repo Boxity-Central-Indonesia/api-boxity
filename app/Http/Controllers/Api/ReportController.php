@@ -203,7 +203,7 @@ class ReportController extends Controller
     if (empty($purchaseData)) {
         return response()->json(['message' => 'No purchase report data found.', 'status' => 404], 404);
     }
-    $pdf = PDF::loadView('pdf.purchase_report', compact('purchaseData'))->setPaper('a4', 'landscape');
+    $pdf = PDF::loadView('pdf.purchase_report', compact('purchaseData'));
 
     // Generate nama file dengan menambahkan tanggal
     $fileName = 'purchase_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
@@ -345,7 +345,7 @@ class ReportController extends Controller
         return response()->json(['message' => 'No inventory data found.', 'status' => 404], 404);
     }
 
-    $pdf = PDF::loadView('pdf.inventory_report', compact('inventoryData'));
+    $pdf = PDF::loadView('pdf.inventory_report', compact('inventoryData'))->setPaper('a4', 'landscape');
 
     // Generate nama file dengan menambahkan tanggal
     $fileName = 'inventory_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
