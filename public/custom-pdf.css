@@ -10,6 +10,9 @@ body {
 .align-center {
     text-align: center;
 }
+.align-left {
+    text-align: left;
+}
 
 h2 {
     color: #333;

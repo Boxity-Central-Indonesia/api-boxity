@@ -28,23 +28,34 @@ class ReportController extends Controller
             ->join('order_products', 'orders.id', '=', 'order_products.order_id')
             ->join('products', 'order_products.product_id', '=', 'products.id')
             ->join('vendors', 'orders.vendor_id', '=', 'vendors.id')
+            ->join('invoices', 'orders.id', '=', 'invoices.order_id')
             ->select(
                 'orders.*',
                 'vendors.name as vendor_name',
                 'products.name as product_name',
                 'order_products.quantity',
                 'order_products.price_per_unit',
+                'invoices.paid_amount',
+                'invoices.invoice_date',
+                DB::raw('invoices.status as invoice_status'),
                 DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
                 DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
             )
             ->where('vendors.transaction_type', 'outbound')
             ->get()->map(function ($salesData) {
                 $salesData->total_price = (int) $salesData->total_price;
+                $salesData->paid_amount = (int) $salesData->paid_amount;
                 $salesData->taxes = (int) $salesData->taxes;
                 $salesData->shipping_cost = (int) $salesData->shipping_cost;
                 $salesData->price_per_unit = (int) $salesData->price_per_unit;
                 return $salesData;
             });
+            $salesData = $salesData->groupBy('kode_order')->map(function ($orders) {
+                $mergedOrder = $orders->first();
+                $mergedOrder->total_price = $orders->sum('total_price');
+                $mergedOrder->quantity = $orders->sum('quantity');
+                return $mergedOrder;
+            })->values()->all();
 
         return response()->json([
             'status' => 200,
@@ -54,31 +65,41 @@ class ReportController extends Controller
     }
     public function downloadSalesReportPdf()
     {
-        // Panggil fungsi inventoryReport untuk mendapatkan data persediaan
         $salesData = DB::table('orders')
             ->join('order_products', 'orders.id', '=', 'order_products.order_id')
             ->join('products', 'order_products.product_id', '=', 'products.id')
             ->join('vendors', 'orders.vendor_id', '=', 'vendors.id')
+            ->join('invoices', 'orders.id', '=', 'invoices.order_id')
             ->select(
                 'orders.*',
                 'vendors.name as vendor_name',
                 'products.name as product_name',
                 'order_products.quantity',
                 'order_products.price_per_unit',
+                'invoices.paid_amount',
+                'invoices.invoice_date',
+                DB::raw('invoices.status as invoice_status'),
                 DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
                 DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
             )
             ->where('vendors.transaction_type', 'outbound')
             ->get()->map(function ($salesData) {
                 $salesData->total_price = (int) $salesData->total_price;
+                $salesData->paid_amount = (int) $salesData->paid_amount;
                 $salesData->taxes = (int) $salesData->taxes;
                 $salesData->shipping_cost = (int) $salesData->shipping_cost;
                 $salesData->price_per_unit = (int) $salesData->price_per_unit;
                 return $salesData;
             });
+            $salesData = $salesData->groupBy('kode_order')->map(function ($orders) {
+                $mergedOrder = $orders->first();
+                $mergedOrder->total_price = $orders->sum('total_price');
+                $mergedOrder->quantity = $orders->sum('quantity');
+                return $mergedOrder;
+            })->values()->all();
 
     // Validasi jika data persediaan tidak ditemukan
-    if ($salesData->isEmpty()) {
+    if (empty($salesData)) {
         return response()->json(['message' => 'No sales report data found.', 'status' => 404], 404);
     }
     $pdf = PDF::loadView('pdf.sales_report', compact('salesData'));
@@ -107,23 +128,34 @@ class ReportController extends Controller
             ->join('order_products', 'orders.id', '=', 'order_products.order_id')
             ->join('products', 'order_products.product_id', '=', 'products.id')
             ->join('vendors', 'orders.vendor_id', '=', 'vendors.id')
+            ->join('invoices', 'orders.id', '=', 'invoices.order_id')
             ->select(
                 'orders.*',
                 'vendors.name as vendor_name',
                 'products.name as product_name',
                 'order_products.quantity',
                 'order_products.price_per_unit',
+                'invoices.paid_amount',
+                'invoices.invoice_date',
+                DB::raw('invoices.status as invoice_status'),
                 DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
                 DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
             )
             ->where('vendors.transaction_type', 'inbound')
             ->get()->map(function ($purchaseData) {
                 $purchaseData->total_price = (int) $purchaseData->total_price;
+                $purchaseData->paid_amount = (int) $purchaseData->paid_amount;
                 $purchaseData->taxes = (int) $purchaseData->taxes;
                 $purchaseData->shipping_cost = (int) $purchaseData->shipping_cost;
                 $purchaseData->price_per_unit = (int) $purchaseData->price_per_unit;
                 return $purchaseData;
             });
+            $purchaseData = $purchaseData->groupBy('kode_order')->map(function ($orders) {
+                $mergedOrder = $orders->first();
+                $mergedOrder->total_price = $orders->sum('total_price');
+                $mergedOrder->quantity = $orders->sum('quantity');
+                return $mergedOrder;
+            })->values()->all();
 
         return response()->json([
             'status' => 200,
@@ -135,29 +167,40 @@ class ReportController extends Controller
     {
         // Panggil fungsi inventoryReport untuk mendapatkan data persediaan
         $purchaseData = DB::table('orders')
-            ->join('order_products', 'orders.id', '=', 'order_products.order_id')
-            ->join('products', 'order_products.product_id', '=', 'products.id')
-            ->join('vendors', 'orders.vendor_id', '=', 'vendors.id')
-            ->select(
-                'orders.*',
-                'vendors.name as vendor_name',
-                'products.name as product_name',
-                'order_products.quantity',
-                'order_products.price_per_unit',
-                DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
-                DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
-            )
-            ->where('vendors.transaction_type', 'inbound')
-            ->get()->map(function ($purchaseData) {
-                $purchaseData->total_price = (int) $purchaseData->total_price;
-                $purchaseData->taxes = (int) $purchaseData->taxes;
-                $purchaseData->shipping_cost = (int) $purchaseData->shipping_cost;
-                $purchaseData->price_per_unit = (int) $purchaseData->price_per_unit;
-                return $purchaseData;
-            });
+        ->join('order_products', 'orders.id', '=', 'order_products.order_id')
+        ->join('products', 'order_products.product_id', '=', 'products.id')
+        ->join('vendors', 'orders.vendor_id', '=', 'vendors.id')
+        ->join('invoices', 'orders.id', '=', 'invoices.order_id')
+        ->select(
+            'orders.*',
+            'vendors.name as vendor_name',
+            'products.name as product_name',
+            'order_products.quantity',
+            'order_products.price_per_unit',
+            'invoices.paid_amount',
+            'invoices.invoice_date',
+            DB::raw('invoices.status as invoice_status'),
+            DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
+            DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
+        )
+        ->where('vendors.transaction_type', 'inbound')
+        ->get()->map(function ($purchaseData) {
+            $purchaseData->total_price = (int) $purchaseData->total_price;
+            $purchaseData->paid_amount = (int) $purchaseData->paid_amount;
+            $purchaseData->taxes = (int) $purchaseData->taxes;
+            $purchaseData->shipping_cost = (int) $purchaseData->shipping_cost;
+            $purchaseData->price_per_unit = (int) $purchaseData->price_per_unit;
+            return $purchaseData;
+        });
+        $purchaseData = $purchaseData->groupBy('kode_order')->map(function ($orders) {
+            $mergedOrder = $orders->first();
+            $mergedOrder->total_price = $orders->sum('total_price');
+            $mergedOrder->quantity = $orders->sum('quantity');
+            return $mergedOrder;
+        })->values()->all();
 
     // Validasi jika data persediaan tidak ditemukan
-    if ($purchaseData->isEmpty()) {
+    if (empty($purchaseData)) {
         return response()->json(['message' => 'No purchase report data found.', 'status' => 404], 404);
     }
     $pdf = PDF::loadView('pdf.purchase_report', compact('purchaseData'));
@@ -178,7 +221,6 @@ class ReportController extends Controller
         'status' => 200,
     ]);
 }
-
 
     public function revenueReport()
     {

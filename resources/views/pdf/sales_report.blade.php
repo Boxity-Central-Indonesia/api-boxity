@@ -6,11 +6,11 @@
             <tr>
                 <th>No.</th>
                 <th>Kode Transaksi</th>
+                <th>Tanggal Penjualan</th>
                 <th>Customer</th>
-                <th>Nama Produk</th>
-                <th class="align-right">Harga Satuan</th>
-                <th class="align-right">Kuantitas</th>
                 <th class="align-right">Total Tagihan</th>
+                <th class="align-right">Tagihan Dibayar</th>
+                <th class="align-center">Status Tagihan</th>
             </tr>
         </thead>
         <tbody>
@@ -18,12 +18,17 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->kode_order }}</td>
+                    <td>{{ $item->invoice_date }}</td>
                     <td>{{ $item->vendor_name }}</td>
-                    <td>{{ $item->product_name }}</td>
-                    <td class="align-right">Rp. {{ number_format($item->price_per_unit, 0, ',', '.') }}</td>
-                    <td class="align-right">{{ number_format($item->quantity, 0, ',', '.') }} Pcs
-                    </td>
                     <td class="align-right">Rp. {{ number_format($item->total_price, 0, ',', '.') }}</td>
+                    <td class="align-right">Rp. {{ number_format($item->paid_amount, 0, ',', '.') }}</td>
+                    <td class="capitalize align-center">
+                        @if ($item->invoice_status == 'paid')
+                            Lunas
+                        @else
+                            Belum Lunas
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>
