@@ -5007,6 +5007,19 @@
 								"url": "{{url}}/api/download/revenue-report"
 							},
 							"response": []
+						},
+						{
+							"name": "Expenses Report",
+							"id": "d2d98a8e-9880-40f4-ba9a-e0e8ddd403d0",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/download/expenses-report"
+							},
+							"response": []
 						}
 					],
 					"id": "bc354480-2c42-4c2e-837b-55fefee491f3"
