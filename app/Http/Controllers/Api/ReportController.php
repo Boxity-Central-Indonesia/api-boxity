@@ -52,6 +52,53 @@ class ReportController extends Controller
             'message' => 'Sales report retrieved successfully.',
         ]);
     }
+    public function downloadSalesReportPdf()
+    {
+        // Panggil fungsi inventoryReport untuk mendapatkan data persediaan
+        $salesData = DB::table('orders')
+            ->join('order_products', 'orders.id', '=', 'order_products.order_id')
+            ->join('products', 'order_products.product_id', '=', 'products.id')
+            ->join('vendors', 'orders.vendor_id', '=', 'vendors.id')
+            ->select(
+                'orders.*',
+                'vendors.name as vendor_name',
+                'products.name as product_name',
+                'order_products.quantity',
+                'order_products.price_per_unit',
+                DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
+                DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
+            )
+            ->where('vendors.transaction_type', 'outbound')
+            ->get()->map(function ($salesData) {
+                $salesData->total_price = (int) $salesData->total_price;
+                $salesData->taxes = (int) $salesData->taxes;
+                $salesData->shipping_cost = (int) $salesData->shipping_cost;
+                $salesData->price_per_unit = (int) $salesData->price_per_unit;
+                return $salesData;
+            });
+
+    // Validasi jika data persediaan tidak ditemukan
+    if ($salesData->isEmpty()) {
+        return response()->json(['message' => 'No sales report data found.', 'status' => 404], 404);
+    }
+    $pdf = PDF::loadView('pdf.sales_report', compact('salesData'));
+
+    // Generate nama file dengan menambahkan tanggal
+    $fileName = 'sales_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+    // Simpan file PDF di storage dengan nama yang baru
+    $pdf->save(public_path('pdf/' . $fileName));
+
+    // Mendapatkan URL untuk di-download
+    $pdfUrl = url('pdf/' . $fileName);
+
+    // Mengirim response dengan URL file yang dapat di-download
+    return response()->json([
+        'message' => 'PDF generated successfully.',
+        'data' => $pdfUrl,
+        'status' => 200,
+    ]);
+}
 
 
     public function purchaseReport()
@@ -84,6 +131,53 @@ class ReportController extends Controller
             'message' => 'Purchase report retrieved successfully.',
         ]);
     }
+    public function downloadPurchaseReportPdf()
+    {
+        // Panggil fungsi inventoryReport untuk mendapatkan data persediaan
+        $purchaseData = DB::table('orders')
+            ->join('order_products', 'orders.id', '=', 'order_products.order_id')
+            ->join('products', 'order_products.product_id', '=', 'products.id')
+            ->join('vendors', 'orders.vendor_id', '=', 'vendors.id')
+            ->select(
+                'orders.*',
+                'vendors.name as vendor_name',
+                'products.name as product_name',
+                'order_products.quantity',
+                'order_products.price_per_unit',
+                DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
+                DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
+            )
+            ->where('vendors.transaction_type', 'inbound')
+            ->get()->map(function ($purchaseData) {
+                $purchaseData->total_price = (int) $purchaseData->total_price;
+                $purchaseData->taxes = (int) $purchaseData->taxes;
+                $purchaseData->shipping_cost = (int) $purchaseData->shipping_cost;
+                $purchaseData->price_per_unit = (int) $purchaseData->price_per_unit;
+                return $purchaseData;
+            });
+
+    // Validasi jika data persediaan tidak ditemukan
+    if ($purchaseData->isEmpty()) {
+        return response()->json(['message' => 'No purchase report data found.', 'status' => 404], 404);
+    }
+    $pdf = PDF::loadView('pdf.purchase_report', compact('purchaseData'));
+
+    // Generate nama file dengan menambahkan tanggal
+    $fileName = 'purchase_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+    // Simpan file PDF di storage dengan nama yang baru
+    $pdf->save(public_path('pdf/' . $fileName));
+
+    // Mendapatkan URL untuk di-download
+    $pdfUrl = url('pdf/' . $fileName);
+
+    // Mengirim response dengan URL file yang dapat di-download
+    return response()->json([
+        'message' => 'PDF generated successfully.',
+        'data' => $pdfUrl,
+        'status' => 200,
+    ]);
+}
 
 
     public function revenueReport()
@@ -101,6 +195,34 @@ class ReportController extends Controller
             'message' => 'Revenue report retrieved successfully.',
         ]);
     }
+    public function downloadRevenueReportPdf(){
+        $revenueData = AccountsTransaction::with('account')->where('type', 'Pendapatan')->orWhere('type', 'credit')->get()->map(function ($revenueData) {
+            $revenueData->amount = (int) $revenueData->amount;
+            $revenueData->account->balance = (int) $revenueData->account->balance;
+            return $revenueData;
+        });
+
+        if ($revenueData->isEmpty()) {
+            return response()->json(['message' => 'No revenue report data found.', 'status' => 404], 404);
+        }
+        $pdf = PDF::loadView('pdf.revenue_report', compact('revenueData'));
+
+        // Generate nama file dengan menambahkan tanggal
+        $fileName = 'revenue_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+        // Simpan file PDF di storage dengan nama yang baru
+        $pdf->save(public_path('pdf/' . $fileName));
+
+        // Mendapatkan URL untuk di-download
+        $pdfUrl = url('pdf/' . $fileName);
+
+        // Mengirim response dengan URL file yang dapat di-download
+        return response()->json([
+            'message' => 'PDF generated successfully.',
+            'data' => $pdfUrl,
+            'status' => 200,
+        ]);
+    }
 
     public function expensesReport()
     {
@@ -115,6 +237,34 @@ class ReportController extends Controller
             'status' => 200,
             'data' => $expensesData,
             'message' => 'Expenses report retrieved successfully.',
+        ]);
+    }
+    public function downloadExpensesReportPdf(){
+        $expensesData = AccountsTransaction::with('account')->where('type', 'Pengeluaran')->orWhere('type', 'debit')->get()->map(function ($expensesData) {
+            $expensesData->amount = (int) $expensesData->amount;
+            $expensesData->account->balance = (int) $expensesData->account->balance;
+            return $expensesData;
+        });
+
+        if ($expensesData->isEmpty()) {
+            return response()->json(['message' => 'No expenses report data found.', 'status' => 404], 404);
+        }
+        $pdf = PDF::loadView('pdf.expenses_report', compact('expensesData'));
+
+        // Generate nama file dengan menambahkan tanggal
+        $fileName = 'expenses_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+        // Simpan file PDF di storage dengan nama yang baru
+        $pdf->save(public_path('pdf/' . $fileName));
+
+        // Mendapatkan URL untuk di-download
+        $pdfUrl = url('pdf/' . $fileName);
+
+        // Mengirim response dengan URL file yang dapat di-download
+        return response()->json([
+            'message' => 'PDF generated successfully.',
+            'data' => $pdfUrl,
+            'status' => 200,
         ]);
     }
 

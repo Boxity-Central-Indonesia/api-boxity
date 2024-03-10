@@ -20,7 +20,7 @@ class PackageProductRequest extends FormRequest
             'package_id' => [
                 'required',
                 'exists:packages,id',
-                Rule::unique('package_products')->ignore($packageProductId),
+                Rule::unique('package_product')->ignore($packageProductId),
             ],
             'product_id' => 'required|exists:products,id',
         ];
