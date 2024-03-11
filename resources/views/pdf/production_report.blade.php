@@ -16,7 +16,7 @@
             @foreach ($groupedActivities as $item)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item['product_name'] }}</td>
+                    <td class="capitalize">{{ $item['product_name'] }}</td>
                     <td>{{ $item['kodeOrder'] }}</td>
                     <td>
                         <table border="0" cellpadding="5" cellspacing="0" width="100%">
@@ -30,8 +30,8 @@
                             <tbody>
                                 @foreach ($item['activities'] as $activity)
                                     <tr>
-                                        <td>{{ $activity['activity_type'] }}</td>
-                                        <td>{{ $activity['status_production'] }}</td>
+                                        <td class="capitalize">{{ $activity['activity_type'] }}</td>
+                                        <td class="capitalize">{{ $activity['status_production'] }}</td>
                                         <td>{{ $activity['tanggal_aktifitas'] }}</td>
                                     </tr>
                                 @endforeach
