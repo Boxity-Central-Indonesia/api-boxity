@@ -5020,6 +5020,19 @@
 								"url": "{{url}}/api/download/expenses-report"
 							},
 							"response": []
+						},
+						{
+							"name": "Download production report",
+							"id": "be3d0f5f-15ea-450d-97b1-169c73b01e05",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/download/production-report"
+							},
+							"response": []
 						}
 					],
 					"id": "bc354480-2c42-4c2e-837b-55fefee491f3"
