@@ -598,9 +598,9 @@ class ReportController extends Controller
                     return [
                         'order_id' => $order->id,
                         'kode_order' => $order->kode_order,
-                        'total_tagihan' => $order->total_tagihan,
-                        'total_dibayar' => $order->total_dibayar,
-                        'sisa_tagihan' => $order->sisa_tagihan,
+                        'total_tagihan' => (int)$order->total_tagihan,
+                        'total_dibayar' => (int)$order->total_dibayar,
+                        'sisa_tagihan' => (int)$order->sisa_tagihan,
                     ];
                 })
             ];
@@ -629,9 +629,9 @@ class ReportController extends Controller
             ->map(function ($invoice) {
                 // Pastikan bahwa instance 'order' tersedia dan memiliki properti yang diperlukan
                 if ($invoice->order) {
-                    $invoice->total_tagihan = $invoice->total_amount;
-                    $invoice->total_dibayar = $invoice->paid_amount;
-                    $invoice->sisa_tagihan = $invoice->balance_due;
+                    $invoice->total_tagihan = (int)$invoice->total_amount;
+                    $invoice->total_dibayar = (int)$invoice->paid_amount;
+                    $invoice->sisa_tagihan = (int)$invoice->balance_due;
                     $invoice->vendor_name = $invoice->order->vendor->name; // Nama pelanggan
                     // Format kode_order sesuai dengan kebutuhan
                     $invoice->kode_inv = 'INV/' . $invoice->order->created_at->format('Y/m/') . str_pad($invoice->order->id, 4, '0', STR_PAD_LEFT);
