@@ -557,6 +557,10 @@ class ReportController extends Controller
         $liabilities = Account::where('type', 'Liabilitas')->sum('balance');
         $equity = Account::where('type', 'Ekuitas')->sum('balance');
 
+        $assets = (int) $assets;
+    $liabilities = (int) $liabilities;
+    $equity = (int) $equity;
+
         return response()->json([
             'data' => [
                 'assets' => $assets,
@@ -660,10 +664,10 @@ class ReportController extends Controller
             return [
                 'account_name' => $account->name,
                 'type' => $account->type,
-                'opening_balance' => $account->balance, // Anggap balance sebagai saldo awal
-                'total_debit' => $totalDebit,
-                'total_credit' => $totalCredit,
-                'net_cash_flow' => $netCashFlow,
+                'opening_balance' => (int)$account->balance, // Anggap balance sebagai saldo awal
+                'total_debit' => (int)$totalDebit,
+                'total_credit' => (int)$totalCredit,
+                'net_cash_flow' => (int)$netCashFlow,
                 // 'closing_balance' => $account->balance + $netCashFlow, // Jika perlu hitung saldo akhir
             ];
         });
@@ -690,9 +694,9 @@ class ReportController extends Controller
                 return [
                     'date' => $entry->date,
                     'description' => $entry->description,
-                    'debit' => $entry->debit,
-                    'credit' => $entry->credit,
-                    'running_balance' => $runningBalance,
+                    'debit' => (int)$entry->debit,
+                    'credit' => (int)$entry->credit,
+                    'running_balance' => (int)$runningBalance,
                 ];
             });
 
@@ -734,9 +738,9 @@ class ReportController extends Controller
             return [
                 'date' => $entry->date,
                 'description' => $entry->description,
-                'debit' => $entry->debit,
-                'credit' => $entry->credit,
-                'running_balance' => $runningBalance,
+                'debit' => (int)$entry->debit,
+                'credit' => (int)$entry->credit,
+                'running_balance' => (int)$runningBalance,
             ];
         });
 
