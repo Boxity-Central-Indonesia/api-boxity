@@ -425,7 +425,8 @@ class ReportController extends Controller
                 DB::raw('CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0")) as kodeOrder'),
                 'products.name as product_name',
                 'manufacturer_processing_activities.activity_type as activity_type',
-                'manufacturer_processing_activities.status_activities as status_production'
+                'manufacturer_processing_activities.status_activities as status_production',
+                'manufacturer_processing_activities.created_at as tanggal_aktifitas'
             )
             ->orderBy('orders.created_at', 'asc')
             ->get();
@@ -446,6 +447,7 @@ class ReportController extends Controller
                     return [
                         'activity_type' => $item->activity_type,
                         'status_production' => $item->status_production,
+                        'tanggal_aktifitas' => $item->tanggal_aktifitas,
                     ];
                 })->values()->all(), // Pastikan untuk mereset index array
             ];
@@ -456,6 +458,62 @@ class ReportController extends Controller
         }
 
         return response()->json(['data' => $groupedActivities, 'status' => 200, 'message' => 'Production summary retrieved successfully.']);
+    }
+    public function downloadProductionReportPdf()
+    {
+        // Panggil fungsi inventoryReport untuk mendapatkan data persediaan
+        $activities = DB::table('manufacturer_processing_activities')
+            ->join('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
+            ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
+            ->select(
+                DB::raw('CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0")) as kodeOrder'),
+                'products.name as product_name',
+                'manufacturer_processing_activities.activity_type as activity_type',
+                'manufacturer_processing_activities.status_activities as status_production',
+                'manufacturer_processing_activities.created_at as tanggal_aktifitas'
+            )
+            ->orderBy('orders.created_at', 'asc')
+            ->get();
+            // Mengelompokkan data berdasarkan kodeOrder
+        $groupedActivities = $activities->groupBy('kodeOrder')->map(function ($items, $kodeOrder) {
+            // Ambil detail produk dari item pertama karena diasumsikan semua item dalam grup memiliki produk yang sama
+            $firstItem = $items->first();
+
+            return [
+                'kodeOrder' => $kodeOrder,
+                'product_name' => $firstItem->product_name,
+                'activities' => $items->map(function ($item) {
+                    return [
+                        'activity_type' => $item->activity_type,
+                        'status_production' => $item->status_production,
+                        'tanggal_aktifitas' => $item->tanggal_aktifitas,
+                    ];
+                })->values()->all(), // Pastikan untuk mereset index array
+            ];
+        })->values()->all(); // Konversi hasil dari map ke array numerik untuk respons JSON
+
+    // Validasi jika data persediaan tidak ditemukan
+        if (empty($groupedActivities)) {
+            return response()->json(['message' => 'No production data found.', 'status' => 404], 404);
+        }
+
+        $pdf = PDF::loadView('pdf.production_report', compact('groupedActivities'))->setPaper('a4', 'landscape');
+
+        // Generate nama file dengan menambahkan tanggal
+        $fileName = 'production_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+        // Simpan file PDF di storage dengan nama yang baru
+        $pdf->save(public_path('pdf/' . $fileName));
+
+        // Mendapatkan URL untuk di-download
+        $pdfUrl = url('pdf/' . $fileName);
+
+    // Mengirim response dengan URL file yang dapat di-download
+        return response()->json([
+            'message' => 'PDF generated successfully.',
+            'data' => $pdfUrl,
+            'status' => 200,
+        ]);
     }
 
     public function productionReportDetails($order_id)
