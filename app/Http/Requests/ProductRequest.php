@@ -13,9 +13,8 @@ class ProductRequest extends FormRequest
 
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|string',
-            'code' => 'required|string|unique:products,code',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'category_id' => 'nullable|exists:products_categories,id',
@@ -30,6 +29,13 @@ class ProductRequest extends FormRequest
             'raw_material' => 'nullable|boolean',
             'image_product' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
+
+        // Add validation rule for 'code' when creating a new product
+        if ($this->isMethod('post')) {
+            $rules['code'] = 'required|string|unique:products,code';
+        }
+
+        return $rules;
     }
 
     public function messages()
@@ -51,8 +57,8 @@ class ProductRequest extends FormRequest
             'unit_of_measure.string' => 'Please specify the unit of measure as a string.',
             'raw_material.string' => 'Please specify if the product is a raw material as a string value ("yes" or "no").',
             'image_product.image' => 'The image_product must be an image.',
-        'image_product.mimes' => 'The image_product must be a file of type: jpeg, png, jpg, gif, svg.',
-        'image_product.max' => 'The image_product may not be greater than 2048 kilobytes.',
+            'image_product.mimes' => 'The image_product must be a file of type: jpeg, png, jpg, gif, svg.',
+            'image_product.max' => 'The image_product may not be greater than 2048 kilobytes.',
         ];
     }
 }
