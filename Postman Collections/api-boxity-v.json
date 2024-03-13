@@ -5072,6 +5072,19 @@
 								"url": "{{url}}/api/download/cashflow-report"
 							},
 							"response": []
+						},
+						{
+							"name": "Ledger Report",
+							"id": "0537557f-611f-45b9-898f-bafc55bc7328",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/download/ledger-report"
+							},
+							"response": []
 						}
 					],
 					"id": "bc354480-2c42-4c2e-837b-55fefee491f3"
