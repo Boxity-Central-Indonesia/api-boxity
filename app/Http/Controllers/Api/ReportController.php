@@ -413,6 +413,61 @@ class ReportController extends Controller
             'message' => 'Vendor report retrieved successfully.',
         ]);
     }
+    public function downloadVendorReportPdf(){
+        // Ambil transaksi vendor terkait dengan detail order dan product
+        $transactions = VendorTransaction::with(['vendor', 'order' => function ($query) {
+            $query->select('id', 'created_at');
+        }, 'product' => function ($query) {
+            $query->select('id', 'name');
+        }])->get()->map(function ($transactions) {
+            $transactions->amount = (int) $transactions->amount;
+            $transactions->unit_price = (int) $transactions->unit_price;
+            $transactions->taxes = (int) $transactions->taxes;
+            $transactions->shipping_cost = (int) $transactions->shipping_cost;
+            $transactions->total_price = (int) $transactions->total_price;
+            return $transactions;
+        });
+
+        // Tampilkan hanya data yang diperlukan
+        $filteredTransactions = $transactions->map(function ($transaction) {
+            $kodeOrder = $transaction->order
+                ? 'ORD/' . $transaction->order->created_at->format('Y/m/') . str_pad($transaction->order->id, 4, '0', STR_PAD_LEFT)
+                : 'N/A'; // Atau format default jika order tidak ada
+            return [
+                'kode_order' => $kodeOrder,
+                'nama_vendor' => $transaction->vendor->name,
+                'nama_product' => $transaction->product ? $transaction->product->name : 'N/A', // Cek apakah product tersedia
+                'amount' => $transaction->amount,
+                'unit_price' => $transaction->unit_price,
+                'taxes' => $transaction->taxes,
+                'shipping_cost' => $transaction->shipping_cost,
+                'total_price' => $transaction->total_price,
+            ];
+        });
+
+        // Validasi jika data persediaan tidak ditemukan
+        if ($filteredTransactions->isEmpty()) {
+            return response()->json(['message' => 'No vendor data found.', 'status' => 404], 404);
+        }
+
+        $pdf = PDF::loadView('pdf.vendor_report', compact('filteredTransactions'))->setPaper('a4', 'landscape');
+
+        // Generate nama file dengan menambahkan tanggal
+        $fileName = 'vendor_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+        // Simpan file PDF di storage dengan nama yang baru
+        $pdf->save(public_path('pdf/' . $fileName));
+
+        // Mendapatkan URL untuk di-download
+        $pdfUrl = url('pdf/' . $fileName);
+
+        // Mengirim response dengan URL file yang dapat di-download
+        return response()->json([
+            'message' => 'PDF generated successfully.',
+            'data' => $pdfUrl,
+            'status' => 200,
+        ]);
+    }
 
 
     // Laporan Produksi
@@ -571,6 +626,39 @@ class ReportController extends Controller
             'message' => 'Balance sheets retrieved successfully.'
         ]);
     }
+    public function downloadBalanceSheetReportPdf(){
+        // Sum the balances for each account type
+        $assets = Account::where('type', 'Aset')->sum('balance');
+        $liabilities = Account::where('type', 'Liabilitas')->sum('balance');
+        $equity = Account::where('type', 'Ekuitas')->sum('balance');
+
+        // Convert to integers if necessary
+        $assets = (int) $assets;
+        $liabilities = (int) $liabilities;
+        $equity = (int) $equity;
+
+        // Load the PDF view with the correct variables
+        $pdf = PDF::loadView('pdf.balance_sheet_report', compact('assets', 'liabilities', 'equity'))
+            ->setPaper('a4', 'landscape');
+
+        // Generate the file name with the current date and time
+        $fileName = 'balance_sheet_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+        // Save the PDF file in the public/pdf directory
+        $pdf->save(public_path('pdf/' . $fileName));
+
+        // Get the URL for downloading the PDF
+        $pdfUrl = url('pdf/' . $fileName);
+
+        // Return a JSON response with the download link
+        return response()->json([
+            'message' => 'PDF generated successfully.',
+            'data' => $pdfUrl,
+            'status' => 200,
+        ]);
+    }
+
+
     // Laporan hutang (piutang usaha)
     public function PayablesReport()
     {
@@ -677,6 +765,39 @@ class ReportController extends Controller
             'data' => $cashFlowDetails,
         ]);
     }
+    public function downloadCashFlowReportPdf()
+    {
+        // Get Cash Flow details from the CashFlowReport function
+        $response = $this->CashFlowReport();
+
+        // If there's an error, return the error response
+        if ($response->getStatusCode() != 200) {
+            return $response;
+        }
+
+        $data = $response->original['data'];
+
+        // Load the PDF view with the correct variables
+        $pdf = PDF::loadView('pdf.cash_flow_report', compact('data'))
+            ->setPaper('a4', 'landscape');
+
+        // Generate the file name with the current date and time
+        $fileName = 'cash_flow_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+        // Save the PDF file in the public/pdf directory
+        $pdf->save(public_path('pdf/' . $fileName));
+
+        // Get the URL for downloading the PDF
+        $pdfUrl = url('pdf/' . $fileName);
+
+        // Return a JSON response with the download link
+        return response()->json([
+            'message' => 'PDF generated successfully.',
+            'data' => $pdfUrl,
+            'status' => 200,
+        ]);
+    }
+
     public function LedgerReport()
     {
         $accounts = Account::with(['journalEntries' => function ($query) {
@@ -684,6 +805,13 @@ class ReportController extends Controller
         }])->get();
 
         $ledgerReport = $accounts->map(function ($account) {
+            if (empty($account['journalEntries'])) {
+                return [
+                    'account_name' => $account->name,
+                    'account_type' => $account->type,
+                    'entries' => [],
+                ];
+            }
             // Inisialisasi saldo berjalan
             $runningBalance = 0;
 
@@ -712,6 +840,39 @@ class ReportController extends Controller
             'data' => $ledgerReport,
         ]);
     }
+    public function downloadLedgerReportPdf()
+{
+    // Get Ledger Report details from the LedgerReport function
+    $response = $this->LedgerReport();
+
+    // If there's an error, return the error response
+    if ($response->getStatusCode() != 200) {
+        return $response;
+    }
+
+    $data = $response->original['data'];
+
+    // Load the PDF view with the correct variables
+    $pdf = PDF::loadView('pdf.ledger_report', compact('data'))
+        ->setPaper('a4', 'landscape');
+
+    // Generate the file name with the current date and time
+    $fileName = 'ledger_report_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+    // Save the PDF file in the public/pdf directory
+    $pdf->save(public_path('pdf/' . $fileName));
+
+    // Get the URL for downloading the PDF
+    $pdfUrl = url('pdf/' . $fileName);
+
+    // Return a JSON response with the download link
+    return response()->json([
+        'message' => 'PDF generated successfully.',
+        'data' => $pdfUrl,
+        'status' => 200,
+    ]);
+}
+
     public function generateCashLedgerReport(Request $request)
     {
         // Menerima account_id dari request

@@ -166,6 +166,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/revenue-report', [ReportController::class, 'downloadRevenueReportPdf']);
         Route::get('/expenses-report', [ReportController::class, 'downloadExpensesReportPdf']);
         Route::get('/production-report', [ReportController::class, 'downloadProductionReportPdf']);
+        Route::get('/vendor-report', [ReportController::class, 'downloadVendorReportPdf']);
+        Route::get('/balance-sheet-report', [ReportController::class, 'downloadBalanceSheetReportPdf']);
+        Route::get('/cashflow-report', [ReportController::class, 'downloadCashFlowReportPdf']);
+        Route::get('/ledger-report', [ReportController::class, 'downloadLedgerReportPdf']);
         Route::get('/orders/{orderId}', [OrderController::class, 'downloadOrderDetail']);
     });
 
