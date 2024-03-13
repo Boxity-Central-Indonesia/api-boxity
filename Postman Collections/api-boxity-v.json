@@ -5046,6 +5046,18 @@
 								"url": "{{url}}/api/download/vendor-report"
 							},
 							"response": []
+						},
+						{
+							"name": "Balance Sheet Report",
+							"id": "87c5aeb5-85ad-4360-8d75-94a77e0f5494",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "bc354480-2c42-4c2e-837b-55fefee491f3"
