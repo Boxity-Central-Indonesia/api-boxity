@@ -5080,6 +5080,12 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{bearer_token}}"
+									}
+								},
 								"method": "GET",
 								"header": [],
 								"url": "{{url}}/api/download/ledger-report"
