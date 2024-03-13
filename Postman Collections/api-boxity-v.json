@@ -5055,7 +5055,21 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/download/balance-sheet-report"
+							},
+							"response": []
+						},
+						{
+							"name": "Cashflow report",
+							"id": "8b94b95f-4d27-4de4-973e-b798fd0935d5",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/download/cashflow-report"
 							},
 							"response": []
 						}
