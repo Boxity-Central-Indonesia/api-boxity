@@ -5035,14 +5035,15 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Vendor Report",
 							"id": "5a4d1f45-8931-4d98-9c1d-208b249bbbe0",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/download/vendor-report"
 							},
 							"response": []
 						}
