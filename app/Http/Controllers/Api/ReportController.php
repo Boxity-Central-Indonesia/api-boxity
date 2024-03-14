@@ -799,47 +799,53 @@ class ReportController extends Controller
     }
 
     public function LedgerReport()
-    {
-        $accounts = Account::with(['journalEntries' => function ($query) {
-            $query->orderBy('date', 'asc');
-        }])->get();
+{
+    $accounts = Account::with(['journalEntries' => function ($query) {
+        $query->orderBy('date', 'asc');
+    }])->get();
 
-        $ledgerReport = $accounts->map(function ($account) {
-            if (empty($account['journalEntries'])) {
-                return [
-                    'account_name' => $account->name,
-                    'account_type' => $account->type,
-                    'entries' => [],
-                ];
-            }
-            // Inisialisasi saldo berjalan
-            $runningBalance = 0;
+    $ledgerReport = $accounts->map(function ($account) {
+        // Inisialisasi saldo berjalan
+        $runningBalance = 0;
 
-            $entries = $account->journalEntries->map(function ($entry) use (&$runningBalance) {
-                // Hitung saldo berjalan
-                $runningBalance += ($entry->debit - $entry->credit);
-
-                return [
-                    'date' => $entry->date,
-                    'description' => $entry->description,
-                    'debit' => (int)$entry->debit,
-                    'credit' => (int)$entry->credit,
-                    'running_balance' => (int)$runningBalance,
-                ];
-            });
+        $entries = $account->journalEntries->map(function ($entry) use (&$runningBalance) {
+            // Hitung saldo berjalan
+            $runningBalance += ($entry->debit - $entry->credit);
 
             return [
-                'account_name' => $account->name,
-                'account_type' => $account->type,
-                'entries' => $entries,
+                'date' => $entry->date,
+                'description' => $entry->description,
+                'debit' => (int)$entry->debit,
+                'credit' => (int)$entry->credit,
+                'running_balance' => (int)$runningBalance,
             ];
         });
 
-        return response()->json([
-            'status' => 200,
-            'data' => $ledgerReport,
-        ]);
-    }
+        // Tambahkan entri default jika tidak ada entri jurnal
+        if ($entries->isEmpty()) {
+            $entries->push([
+                'date' => '0000-00-00',
+                'description' => 'No Description',
+                'debit' => 0,
+                'credit' => 0,
+                'running_balance' => 0,
+            ]);
+        }
+
+        return [
+            'account_name' => $account->name,
+            'account_type' => $account->type,
+            'entries' => $entries,
+        ];
+    });
+
+    return response()->json([
+        'status' => 200,
+        'data' => $ledgerReport,
+    ]);
+}
+
+
     public function downloadLedgerReportPdf()
 {
     // Get Ledger Report details from the LedgerReport function
