@@ -34,7 +34,7 @@ class MasterUsersController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -62,6 +62,7 @@ class MasterUsersController extends Controller
             if ($user) {
                 return response()->json([
                     'status' => 201,
+                    'data'=> $user,
                     'message' => 'data user berhasil di tambahkan'
                 ]);
             }
@@ -73,42 +74,50 @@ class MasterUsersController extends Controller
         }
     }
 
-    public function update(Request $request)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'name'      => 'required|string|max:255',
-                'email'     => 'required|string|email|max:255|',
-                'username' => 'required|string|',
-                'no_handphone' => 'required',
-                'gender' => 'required',
-            ]);
+    public function update(Request $request, $id)
+{
+    try {
+        $validator = Validator::make($request->all(), [
+            'name'          => 'required|string|max:255',
+            'email'         => 'required|string|email|max:255|unique:users,email,'.$id,
+            'username'      => 'required|string|unique:users,username,'.$id,
+            'no_handphone'  => 'required',
+            'gender'        => 'required',
+        ]);
 
-            if ($validator->fails()) {
-                return response()->json($validator->errors());
-            }
-
-            $user = User::where('id', $request->id)->update([
-                'name'          => $request->name,
-                'email'         => $request->email,
-                'username'      => $request->username,
-                'no_handphone'  => $request->no_handphone,
-                'gender'        => $request->gender,
-            ]);
-
-            if ($user) {
-                return response()->json([
-                    'status' => 201,
-                    'message' => 'data user berhasil di rubah'
-                ]);
-            }
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Something went wrong',
-                'error' => $th->getMessage()
-            ], 400);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
         }
+
+        // Perbarui data pengguna
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->username = $request->username;
+        $user->no_handphone = $request->no_handphone;
+        $user->gender = $request->gender;
+        $user->save();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'User data updated successfully',
+            'data' => $user
+        ]);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+            'message' => 'Something went wrong',
+            'error' => $th->getMessage()
+        ], 400);
     }
+}
+
     public function destroy(User $user) // Tambahkan method destroy untuk menghapus user
     {
         try {
