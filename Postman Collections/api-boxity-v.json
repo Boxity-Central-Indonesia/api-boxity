@@ -353,14 +353,37 @@
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Update users",
 					"id": "0a33d2b7-5002-474d-80c9-e7743b23e32d",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nama Pengguna Baru\",\n    \"email\": \"email_baru@contoh.com\",\n    \"username\": \"username_baru\",\n    \"no_handphone\": \"08123456789\",\n    \"gender\": \"female\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/users/{{userID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user by id",
+					"id": "b437d3dc-d371-41c7-a298-119d4787d460",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{url}}/api/users/{{userID}}"
 					},
 					"response": []
 				}
