@@ -270,6 +270,28 @@
 			"name": "User",
 			"item": [
 				{
+					"name": "Create user",
+					"id": "3a408179-17e5-4a92-a3ba-b3f55b3c4ee4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nama Pengguna\",\n    \"email\": \"email@contoh.com\",\n    \"username\": \"username_pengguna\",\n    \"no_handphone\": \"08123456789\",\n    \"gender\": \"male\",\n    \"password\": \"password_pengguna\",\n    \"password_confirmation\": \"password_pengguna\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/users"
+					},
+					"response": []
+				},
+				{
 					"name": "Get Current Profile",
 					"id": "a619bbb4-b926-45d7-a8bc-6a179a153289",
 					"protocolProfileBehavior": {
@@ -327,6 +349,18 @@
 							"urlencoded": []
 						},
 						"url": "{{url}}/api/users/{{userID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"id": "0a33d2b7-5002-474d-80c9-e7743b23e32d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
