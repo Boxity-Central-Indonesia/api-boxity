@@ -47,7 +47,10 @@ class MasterUsersController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return response()->json($validator->errors());
+                return response()->json([
+                    'status' => 400,
+                    'errors' => $validator->errors()
+                ]);
             }
 
             $user = User::create([
@@ -105,7 +108,7 @@ class MasterUsersController extends Controller
         $user->save();
 
         return response()->json([
-            'status' => 200,
+            'status' => 201,
             'message' => 'User data updated successfully',
             'data' => $user
         ]);
