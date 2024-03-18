@@ -208,7 +208,7 @@ public function editProductInOrder(Request $request, $orderId, $productId)
         ]);
     }
 }
-public function getProductInOrder(Request $request, $orderId, $productId)
+public function getProductByOrderIdAndProductId($orderId, $productId)
 {
     $order = Order::find($orderId);
 
@@ -218,28 +218,27 @@ public function getProductInOrder(Request $request, $orderId, $productId)
             'message' => 'Order not found.',
         ]);
     }
-    try {
-        // Perbarui data produk dalam pesanan
-        $existingProduct = $order->products()->where('product_id', $productId)->first();
-            if ($existingProduct) {
-                return response()->json([
-                    'status' => 200,
-                    'data' => $existingProduct,
-                    'message' => 'Product in order updated successfully.',
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 404,
-                    'message' => 'Product not found in order.',
-                ]);
-            }
 
-    } catch (\Exception $e) {
+    $product = $order->products()->where('products.id', $productId)->first();
+
+    if (!$product) {
         return response()->json([
-            'status' => 500,
-            'message' => 'Failed to update product in order. Error: ' . $e->getMessage(),
+            'status' => 404,
+            'message' => 'Product not found in order.',
         ]);
     }
+
+    return response()->json([
+        'status' => 200,
+        'data' => [
+            'id' => $product->id,
+            'name' => $product->name,
+            'quantity' => $product->pivot->quantity,
+            'price_per_unit' => (int)$product->pivot->price_per_unit,
+            'total_price' => (int)$product->pivot->total_price,
+        ],
+        'message' => 'Product retrieved successfully.',
+    ]);
 }
 public function removeProductFromOrder(Request $request, $orderId, $productId)
     {
