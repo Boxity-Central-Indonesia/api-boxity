@@ -82,7 +82,8 @@
 					"response": []
 				}
 			],
-			"id": "8bae32d5-981f-4f9c-9deb-2e496c57b354"
+			"id": "8bae32d5-981f-4f9c-9deb-2e496c57b354",
+			"description": "This folder contains all the APIs related to user authentication and authorization in your system. These APIs allow users to log in, log out, and refresh their access tokens."
 		},
 		{
 			"name": "Role & Permissions",
@@ -264,7 +265,8 @@
 					"id": "9790b96b-50b9-4c12-842e-f50b7eae5c86"
 				}
 			],
-			"id": "9124b4c5-d49a-4b13-bbdd-154e11b78d77"
+			"id": "9124b4c5-d49a-4b13-bbdd-154e11b78d77",
+			"description": "This folder contains APIs specifically designed for managing user roles and permissions within your system. It includes endpoints that administrators or users with the appropriate authorization can use to create, retrieve, update, and delete roles and their associated permissions."
 		},
 		{
 			"name": "User",
@@ -389,7 +391,7 @@
 				}
 			],
 			"id": "1fdcb7b6-2a65-4cb0-99ab-8fe33b5dd68a",
-			"description": "The `/users` endpoints let you manage information about the authenticated user."
+			"description": "This folder contains all APIs related to the management of user accounts and profiles within your system. This includes actions like creating new users, updating user information, retrieving user data, and deleting users."
 		},
 		{
 			"name": "Profile and Businesses",
@@ -638,7 +640,8 @@
 					"id": "22540bcc-6228-4b86-9ad3-d3a2289b2b99"
 				}
 			],
-			"id": "5a0d9168-3281-4791-a80f-90b4d24a0dda"
+			"id": "5a0d9168-3281-4791-a80f-90b4d24a0dda",
+			"description": "This folder contains APIs for managing user profiles and business entities within your system. This can include endpoints for creating and updating profiles, associating businesses with users, and retrieving profile and business information."
 		},
 		{
 			"name": "Organizations",
@@ -3848,7 +3851,8 @@
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/orders/{{orderID}}}/products/{{productID}}"
 							},
 							"response": []
 						}
