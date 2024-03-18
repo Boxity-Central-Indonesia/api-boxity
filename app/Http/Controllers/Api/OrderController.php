@@ -208,6 +208,39 @@ public function editProductInOrder(Request $request, $orderId, $productId)
         ]);
     }
 }
+public function getProductInOrder(Request $request, $orderId, $productId)
+{
+    $order = Order::find($orderId);
+
+    if (!$order) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'Order not found.',
+        ]);
+    }
+    try {
+        // Perbarui data produk dalam pesanan
+        $existingProduct = $order->products()->where('product_id', $productId)->first();
+            if ($existingProduct) {
+                return response()->json([
+                    'status' => 200,
+                    'data' => $existingProduct,
+                    'message' => 'Product in order updated successfully.',
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Product not found in order.',
+                ]);
+            }
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 500,
+            'message' => 'Failed to update product in order. Error: ' . $e->getMessage(),
+        ]);
+    }
+}
 public function removeProductFromOrder(Request $request, $orderId, $productId)
     {
         $order = Order::find($orderId);
