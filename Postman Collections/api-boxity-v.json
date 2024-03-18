@@ -1411,7 +1411,7 @@
 				}
 			],
 			"id": "7cba2ec8-7c95-4549-8d99-ffbe63ad7173",
-			"description": "**Data organisasi mencakup informasi tentang perusahaan, cabang, departemen, dan karyawan. Informasi ini biasanya meliputi:**\n\n- **Data perusahaan, seperti nama perusahaan, alamat, nomor telepon, dan alamat email.**\n    \n- **Data cabang, seperti nama cabang, alamat, nomor telepon, dan alamat email.**\n    \n- **Data departemen, seperti nama departemen, tanggung jawab departemen, dan karyawan yang bekerja di departemen tersebut.**\n    \n- **Data karyawan, seperti nama karyawan, alamat, nomor telepon, alamat email, tanggal lahir, dan jabatan.**\n    \n\n**Data organisasi penting untuk berbagai fungsi ERP, seperti:**\n\n- **Manajemen akuntansi, untuk mencatat transaksi keuangan perusahaan.**\n    \n- **Manajemen sumber daya manusia, untuk mengelola karyawan perusahaan.**\n    \n- **Manajemen rantai pasokan, untuk melacak pergerakan barang dan jasa.**"
+			"description": "**Data organisasi mencakup informasi tentang perusahaan, cabang, departemen, dan karyawan. Informasi ini biasanya meliputi:**\n\n- **Data perusahaan, seperti nama perusahaan, alamat, nomor telepon, dan alamat email.**\n- **Data cabang, seperti nama cabang, alamat, nomor telepon, dan alamat email.**\n- **Data departemen, seperti nama departemen, tanggung jawab departemen, dan karyawan yang bekerja di departemen tersebut.**\n- **Data karyawan, seperti nama karyawan, alamat, nomor telepon, alamat email, tanggal lahir, dan jabatan.**\n    \n\n**Data organisasi penting untuk berbagai fungsi ERP, seperti:**\n\n- **Manajemen akuntansi, untuk mencatat transaksi keuangan perusahaan.**\n- **Manajemen sumber daya manusia, untuk mengelola karyawan perusahaan.**\n- **Manajemen rantai pasokan, untuk melacak pergerakan barang dan jasa.**"
 		},
 		{
 			"name": "Warehouses and Products",
@@ -2210,7 +2210,8 @@
 					"id": "98d56ac0-2ab9-4a28-9520-a6b34c34e472"
 				}
 			],
-			"id": "c46e7a63-d9ac-4c39-b266-021afa83c16b"
+			"id": "c46e7a63-d9ac-4c39-b266-021afa83c16b",
+			"description": "This folder contains all APIs related to the management of warehouses, products, and their associated inventory levels within your system. This includes endpoints for creating and updating warehouses, adding new products, tracking inventory across locations, and potentially handling stock transfers."
 		},
 		{
 			"name": "Vendor",
@@ -4484,10 +4485,11 @@
 					"response": []
 				}
 			],
-			"id": "dcda520f-43be-459f-98ca-f6194ddbed87"
+			"id": "dcda520f-43be-459f-98ca-f6194ddbed87",
+			"description": "This folder contains APIs specifically designed for managing delivery notes (Surat Jalan) within your logistics or order fulfillment system. It likely includes endpoints to create delivery notes, retrieve details, update their status, and potentially integrate with shipping providers."
 		},
 		{
-			"name": "Leads prospek",
+			"name": "Leads prospect",
 			"item": [
 				{
 					"name": "Create leads",
