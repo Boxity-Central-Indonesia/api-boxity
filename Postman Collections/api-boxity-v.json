@@ -82,8 +82,7 @@
 					"response": []
 				}
 			],
-			"id": "8bae32d5-981f-4f9c-9deb-2e496c57b354",
-			"description": "This folder contains all the APIs related to user authentication and authorization in your system. These APIs allow users to log in, log out, and refresh their access tokens."
+			"id": "8bae32d5-981f-4f9c-9deb-2e496c57b354"
 		},
 		{
 			"name": "Role & Permissions",
@@ -265,8 +264,7 @@
 					"id": "9790b96b-50b9-4c12-842e-f50b7eae5c86"
 				}
 			],
-			"id": "9124b4c5-d49a-4b13-bbdd-154e11b78d77",
-			"description": "This folder contains APIs specifically designed for managing user roles and permissions within your system. It includes endpoints that administrators or users with the appropriate authorization can use to create, retrieve, update, and delete roles and their associated permissions."
+			"id": "9124b4c5-d49a-4b13-bbdd-154e11b78d77"
 		},
 		{
 			"name": "User",
@@ -391,7 +389,7 @@
 				}
 			],
 			"id": "1fdcb7b6-2a65-4cb0-99ab-8fe33b5dd68a",
-			"description": "This folder contains all APIs related to the management of user accounts and profiles within your system. This includes actions like creating new users, updating user information, retrieving user data, and deleting users."
+			"description": "The `/users` endpoints let you manage information about the authenticated user."
 		},
 		{
 			"name": "Profile and Businesses",
@@ -640,8 +638,7 @@
 					"id": "22540bcc-6228-4b86-9ad3-d3a2289b2b99"
 				}
 			],
-			"id": "5a0d9168-3281-4791-a80f-90b4d24a0dda",
-			"description": "This folder contains APIs for managing user profiles and business entities within your system. This can include endpoints for creating and updating profiles, associating businesses with users, and retrieving profile and business information."
+			"id": "5a0d9168-3281-4791-a80f-90b4d24a0dda"
 		},
 		{
 			"name": "Organizations",
@@ -1411,7 +1408,7 @@
 				}
 			],
 			"id": "7cba2ec8-7c95-4549-8d99-ffbe63ad7173",
-			"description": "**Data organisasi mencakup informasi tentang perusahaan, cabang, departemen, dan karyawan. Informasi ini biasanya meliputi:**\n\n- **Data perusahaan, seperti nama perusahaan, alamat, nomor telepon, dan alamat email.**\n- **Data cabang, seperti nama cabang, alamat, nomor telepon, dan alamat email.**\n- **Data departemen, seperti nama departemen, tanggung jawab departemen, dan karyawan yang bekerja di departemen tersebut.**\n- **Data karyawan, seperti nama karyawan, alamat, nomor telepon, alamat email, tanggal lahir, dan jabatan.**\n    \n\n**Data organisasi penting untuk berbagai fungsi ERP, seperti:**\n\n- **Manajemen akuntansi, untuk mencatat transaksi keuangan perusahaan.**\n- **Manajemen sumber daya manusia, untuk mengelola karyawan perusahaan.**\n- **Manajemen rantai pasokan, untuk melacak pergerakan barang dan jasa.**"
+			"description": "**Data organisasi mencakup informasi tentang perusahaan, cabang, departemen, dan karyawan. Informasi ini biasanya meliputi:**\n\n- **Data perusahaan, seperti nama perusahaan, alamat, nomor telepon, dan alamat email.**\n    \n- **Data cabang, seperti nama cabang, alamat, nomor telepon, dan alamat email.**\n    \n- **Data departemen, seperti nama departemen, tanggung jawab departemen, dan karyawan yang bekerja di departemen tersebut.**\n    \n- **Data karyawan, seperti nama karyawan, alamat, nomor telepon, alamat email, tanggal lahir, dan jabatan.**\n    \n\n**Data organisasi penting untuk berbagai fungsi ERP, seperti:**\n\n- **Manajemen akuntansi, untuk mencatat transaksi keuangan perusahaan.**\n    \n- **Manajemen sumber daya manusia, untuk mengelola karyawan perusahaan.**\n    \n- **Manajemen rantai pasokan, untuk melacak pergerakan barang dan jasa.**"
 		},
 		{
 			"name": "Warehouses and Products",
@@ -2210,8 +2207,7 @@
 					"id": "98d56ac0-2ab9-4a28-9520-a6b34c34e472"
 				}
 			],
-			"id": "c46e7a63-d9ac-4c39-b266-021afa83c16b",
-			"description": "This folder contains all APIs related to the management of warehouses, products, and their associated inventory levels within your system. This includes endpoints for creating and updating warehouses, adding new products, tracking inventory across locations, and potentially handling stock transfers."
+			"id": "c46e7a63-d9ac-4c39-b266-021afa83c16b"
 		},
 		{
 			"name": "Vendor",
@@ -4485,11 +4481,10 @@
 					"response": []
 				}
 			],
-			"id": "dcda520f-43be-459f-98ca-f6194ddbed87",
-			"description": "This folder contains APIs specifically designed for managing delivery notes (Surat Jalan) within your logistics or order fulfillment system. It likely includes endpoints to create delivery notes, retrieve details, update their status, and potentially integrate with shipping providers."
+			"id": "dcda520f-43be-459f-98ca-f6194ddbed87"
 		},
 		{
-			"name": "Leads prospect",
+			"name": "Leads prospek",
 			"item": [
 				{
 					"name": "Create leads",
