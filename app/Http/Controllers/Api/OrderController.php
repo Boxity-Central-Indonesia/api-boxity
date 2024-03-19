@@ -191,7 +191,7 @@ public function editProductInOrder(Request $request, $orderId, $productId)
             $order->save();
 
             return response()->json([
-                'status' => 200,
+                'status' => 201,
                 'data' => $order,
                 'message' => 'Product in order updated successfully.',
             ]);
