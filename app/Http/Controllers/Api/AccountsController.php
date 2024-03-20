@@ -7,6 +7,7 @@ use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
+use App\Events\formCreated;
 
 class AccountsController extends Controller
 {
@@ -50,7 +51,7 @@ class AccountsController extends Controller
         $validated = $request->validated();
         $account = Account::create($validated);
         broadcast(new formCreated('New Account created successfully.'));
-        
+
         return response()->json([
             'status' => 201,
             'data' => $account,
@@ -70,7 +71,7 @@ class AccountsController extends Controller
         $validated = $request->validated();
         $account->update($validated);
         broadcast(new formCreated('Account updated successfully.'));
-        
+
         return response()->json([
             'status' => 201,
             'data' => $account,
