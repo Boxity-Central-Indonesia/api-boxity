@@ -14,10 +14,10 @@ class ProcessingActivityRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_id' => 'required|exists:products,id',
+            'product_id' => 'sometimes|exists:products,id',
             'order_id' => 'required|exists:orders,id',
-            'activity_type' => 'required|string',
-            'status_activities' => 'nullable|string',
+            'activity_type' => 'sometimes|string',
+            'status_activities' => 'sometimes|string',
             'details' => 'nullable|array',
         ];
     }

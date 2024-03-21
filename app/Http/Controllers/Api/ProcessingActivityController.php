@@ -15,7 +15,8 @@ class ProcessingActivityController extends Controller
     public function index()
     {
         // Ubah 'carcass' menjadi 'product' untuk memuat relasi produk
-        $activities = ProcessingActivity::all();
+        // $activities = ProcessingActivity::all();
+        $activities = ProcessingActivity::all()->groupBy(['order_id', 'product_id']);
         return response()->json([
             'status' => 200,
             'data' => $activities,
@@ -24,28 +25,66 @@ class ProcessingActivityController extends Controller
     }
 
     public function store(ProcessingActivityRequest $request)
-    {
-        $validated = $request->validated();
+{
+    $validated = $request->validated();
 
-        // Pastikan untuk menghapus referensi ke 'carcass_id' dalam validasi dan pembuatan
+    // Ambil data order terlebih dahulu
+    $order = Order::findOrFail($validated['order_id']);
+
+    $activities = [];
+
+    foreach ($order->products as $product) {
         $activity = ProcessingActivity::create([
-            'product_id' => $validated['product_id'],
-            'order_id' => $validated['order_id'],
-            'activity_type' => $validated['activity_type'],
-            'activity_date' => Date::now(),
+            'product_id' => $product->id,
+            'order_id' => $order->id,
+            'activity_type' => 'weight_based_ordering',
+            'activity_date' => now(),
             'status_activities' => 'In Production',
-            'details' => $validated['details'],
+            'details' => [
+                'description' => 'Start to production...'
+            ],
         ]);
-        // Cek dan tandai order sebagai completed jika memenuhi kriteria
-        $this->markOrderAsCompleted($validated['order_id']);
-        broadcast(new formCreated('New Processing activity created successfully.'));
-        
-        return response()->json([
-            'status' => 201,
-            'data' => $activity,
-            'message' => 'Processing activity created successfully.',
-        ]);
+
+        $activities[] = $activity; // Menyimpan aktivitas pemrosesan ke dalam array
     }
+
+    // Cek dan tandai order sebagai completed jika memenuhi kriteria
+    $this->markOrderAsCompleted($order->id);
+    broadcast(new formCreated('New Processing activity created successfully.'));
+
+    return response()->json([
+        'status' => 201,
+        'data' => $activities,
+        'message' => 'Processing activities created successfully.', // Perbarui pesan untuk menunjukkan aktivitas jamak
+    ]);
+}
+
+public function update(ProcessingActivityRequest $request, $id)
+{
+    $activity = ProcessingActivity::findOrFail($id);
+
+    $validated = $request->validated();
+
+    // Buat entri baru dengan menggunakan metode create
+    $newActivity = ProcessingActivity::create([
+        'product_id' => $activity->product_id, // Tetapkan product_id yang sama
+        'order_id' => $activity->order_id, // Tetapkan order_id yang sama
+        'activity_type' => $validated['activity_type'] ?? $activity->activity_type, // Tetapkan nilai baru jika disediakan, jika tidak, gunakan nilai yang sudah ada
+        'activity_date' => now(), // Gunakan waktu sekarang untuk entri baru
+        'status_activities' => $validated['status_activities'] ?? $activity->status_activities, // Tetapkan nilai baru jika disediakan, jika tidak, gunakan nilai yang sudah ada
+        'details' => $validated['details'] ?? $activity->details, // Tetapkan nilai baru jika disediakan, jika tidak, gunakan nilai yang sudah ada
+    ]);
+
+    broadcast(new formCreated('Processing activity updated successfully.'));
+
+    return response()->json([
+        'status' => 201,
+        'data' => $newActivity, // Kirim entri baru sebagai respons
+        'message' => 'New processing activity created successfully.', // Pesan yang sesuai dengan tindakan
+    ]);
+}
+
+
     private function markOrderAsCompleted($order_id)
     {
         $statusActivity = ProcessingActivity::where('order_id', $order_id)->first(); // Ubah ke pencarian berdasarkan order_id
@@ -76,22 +115,6 @@ class ProcessingActivityController extends Controller
         ]);
     }
 
-    public function update(ProcessingActivityRequest $request, $id)
-    {
-        $activity = ProcessingActivity::findOrFail($id);
-
-        $validated = $request->validated();
-
-        // Pastikan untuk menghapus referensi ke 'carcass_id' dalam pembaruan
-        $activity->update($validated);
-        broadcast(new formCreated('Processing activity updated successfully.'));
-        
-        return response()->json([
-            'status' => 201,
-            'data' => $activity,
-            'message' => 'Processing activity updated successfully.',
-        ]);
-    }
 
     public function destroy($id)
     {
