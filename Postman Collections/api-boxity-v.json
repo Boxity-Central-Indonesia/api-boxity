@@ -4703,14 +4703,14 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"order_id\": {{orderID}},\n  \"product_id\": {{productID}},\n  \"activity_type\": \"weight_based_ordering\",\n  \"details\": {\n    \"ordered_weight\": \"1500kg\",\n    \"required_by_date\": \"2024-03-25\",\n    \"note\": \"Pesanan untuk memenuhi target produksi mingguan.\"\n  }\n}",
+									"raw": "{\n  \"order_id\": {{orderID}},\n  \"product_id\": {{productID}},\n\"activity_type\": \"unloading\",\n  \"details\": {\n    \"unloading_time\": \"08:00\",\n    \"number_of_rack\": 50,\n    \"number_of_animals\": 500,\n    \"note\": \"Semua hewan tiba dalam kondisi baik.\"\n  }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{url}}/api/processing-activities/5"
+								"url": "{{url}}/api/processing-activities/{{processID}}"
 							},
 							"response": []
 						},
