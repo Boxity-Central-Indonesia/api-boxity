@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\AssetLocationsController;
 use App\Http\Controllers\Api\AssetsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BusinessController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\MasterUsersController;
 use App\Http\Controllers\Api\CompaniesController;
 use App\Http\Controllers\Api\CompaniesDepartmentController;
@@ -177,6 +178,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Proses produksi
     Route::apiResource('packaging', PackagingController::class);
     Route::apiResource('packages', PackageController::class);
+    Route::apiResource('dashboard', DashboardController::class);
     Route::get('/api/packages/{id}/with-products', [PackageController::class, 'withProducts']);
     Route::apiResource('packages-product', PackageProductController::class);
     Route::apiResource('processing-activities', ProcessingActivityController::class);

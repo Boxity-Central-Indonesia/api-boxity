@@ -34,6 +34,8 @@ class InvoiceController extends Controller
             $invoice->total_amount = (int) $invoice->total_amount;
             $invoice->paid_amount = (int) $invoice->paid_amount;
             $invoice->balance_due = (int) $invoice->balance_due;
+            $totalPaid = (int)$invoice->payments->sum('amount_paid');
+            $invoice->total_paid = $totalPaid;
             return $invoice;
         });
         return response()->json([
@@ -154,94 +156,97 @@ class InvoiceController extends Controller
     }
 
     public function update(InvoiceRequest $request, $id)
-    {
-        $invoice = Invoice::find($id);
-        if (!$invoice) {
+{
+    $invoice = Invoice::find($id);
+    if (!$invoice) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'Invoice not found.',
+        ]);
+    }
+
+    DB::beginTransaction();
+
+    try {
+        $validated = $request->validated(); // Validasi permintaan dan simpan hasilnya
+        $invoice->update($validated); // Perbarui invoice dengan data yang divalidasi
+
+        // Simpan perubahan pada invoice
+        $invoice->save();
+
+        $order = Order::with('vendor')->find($invoice->order_id);
+        if (!$order) {
             return response()->json([
-                'status' => 404,
-                'message' => 'Invoice not found.',
+                'status' => 400,
+                'message' => 'Related order not found.',
             ]);
         }
 
-        DB::beginTransaction();
+        $transactionType = $order->vendor->transaction_type === 'outbound' ? 'credit' : 'debit';
 
-        try {
-            $order = Order::with('vendor')->find($invoice->order_id);
-            if (!$order) {
-                return response()->json([
-                    'status' => 400,
-                    'message' => 'Related order not found.',
-                ]);
-            }
+        // Tentukan account_id berdasarkan logika bisnis Anda
+        $account_id = $this->determineAccountId($order, $transactionType); // Implementasikan fungsi ini
 
-            $transactionType = $order->vendor->transaction_type === 'outbound' ? 'credit' : 'debit';
+        // Cari transaksi yang terkait dengan invoice ini
+        $accountTransaction = AccountsTransaction::where('description', 'like', "%Invoice #{$invoice->id} created%")->first();
 
-            // Tentukan account_id berdasarkan logika bisnis Anda
-            $account_id = $this->determineAccountId($order, $transactionType); // Implementasikan fungsi ini
-
-            // Cari transaksi yang terkait dengan invoice ini
-            $accountTransaction = AccountsTransaction::where('description', 'like', "%Invoice #{$invoice->id} created%")->first();
-
-            if ($accountTransaction) {
-                // Perbarui transaksi jika total_amount invoice berubah
-                if (isset($validated['total_amount']) && $validated['total_amount'] != $invoice->total_amount) {
-                    $description = "Invoice #{$invoice->id} updated";
-                    $accountTransaction->update([
-                        'account_id' => $account_id,
-                        'date' => now(),
-                        'type' => $transactionType,
-                        'amount' => $validated['total_amount'],
-                        'description' => $description,
-                    ]);
-                }
-            } else {
-                // Jika tidak ditemukan transaksi, buat baru (opsional, tergantung kebutuhan)
+        if ($accountTransaction) {
+            // Perbarui transaksi jika total_amount invoice berubah
+            if (isset($validated['total_amount']) && $validated['total_amount'] != $invoice->total_amount) {
                 $description = "Invoice #{$invoice->id} updated";
-                AccountsTransaction::create([
+                $accountTransaction->update([
                     'account_id' => $account_id,
                     'date' => now(),
                     'type' => $transactionType,
-                    'amount' => $invoice->total_amount,
+                    'amount' => $validated['total_amount'],
                     'description' => $description,
                 ]);
             }
-
-            // Perbarui invoice
-            $validated = $request->validated();
-            $invoice->update($validated);
-
-            // Pembaruan status invoice dan saldo Piutang Usaha
-            if ($transactionType === 'credit') {
-                // Jika invoice memiliki balance_due yang nol, maka status menjadi 'paid'
-                if ($invoice->balance_due <= 0) {
-                    $invoice->status = 'paid';
-                    $accountsReceivable = Account::where('name', 'Piutang Usaha')->first();
-                    if ($accountsReceivable) {
-                        // Kurangi saldo Piutang Usaha
-                        $accountsReceivable->balance -= $invoice->total_amount;
-                        $accountsReceivable->save();
-                    }
-                } else {
-                    $invoice->status = 'partial';
-                }
-                $invoice->save();
-            }
-
-            DB::commit();
-
-            return response()->json([
-                'status' => 201,
-                'data' => $invoice,
-                'message' => 'Invoice updated successfully.',
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => 500,
-                'message' => 'Failed to update invoice. Error: ' . $e->getMessage(),
+        } else {
+            // Jika tidak ditemukan transaksi, buat baru (opsional, tergantung kebutuhan)
+            $description = "Invoice #{$invoice->id} updated";
+            AccountsTransaction::create([
+                'account_id' => $account_id,
+                'date' => now(),
+                'type' => $transactionType,
+                'amount' => $invoice->total_amount,
+                'description' => $description,
             ]);
         }
+
+        // Pembaruan status invoice dan saldo Piutang Usaha
+        if ($transactionType === 'credit') {
+            // Jika invoice memiliki balance_due yang nol, maka status menjadi 'paid'
+            if ($invoice->balance_due <= 0) {
+                $invoice->status = 'paid';
+                $accountsReceivable = Account::where('name', 'Piutang Usaha')->first();
+                if ($accountsReceivable) {
+                    // Kurangi saldo Piutang Usaha
+                    $accountsReceivable->balance -= $invoice->total_amount;
+                    $accountsReceivable->save();
+                }
+            } else {
+                $invoice->status = 'partial';
+            }
+            $invoice->save();
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => 201,
+            'data' => $invoice,
+            'message' => 'Invoice updated successfully.',
+        ]);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'status' => 500,
+            'message' => 'Failed to update invoice. Error: ' . $e->getMessage(),
+        ]);
     }
+}
+
 
     public function destroy($id)
     {
