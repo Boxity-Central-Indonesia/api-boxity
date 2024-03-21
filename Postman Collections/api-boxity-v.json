@@ -5778,6 +5778,24 @@
 				}
 			],
 			"id": "c1ae8786-8318-45bd-92ad-82df1abb2aac"
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Get all data",
+					"id": "198a9942-cde4-439e-82b3-4813cc8e3f97",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"id": "465a1dd9-3964-4a5a-b02a-09598a1d7d87"
 		}
 	],
 	"auth": {
