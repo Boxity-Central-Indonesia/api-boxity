@@ -20,7 +20,8 @@ class ProcessingActivityController extends Controller
                     ->orderBy('order_id')
                     ->orderBy('product_id')
                     ->get()
-                    ->groupBy('order_id');
+                    ->groupBy(['order_id', 'product_id']);
+
         return response()->json([
             'status' => 200,
             'data' => $activities,
