@@ -3653,6 +3653,19 @@
 							"response": []
 						},
 						{
+							"name": "Get all orders that not completed",
+							"id": "b80eef5e-a49b-43bd-8ac0-56c5c0f1b3b2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/orders/not-completed"
+							},
+							"response": []
+						},
+						{
 							"name": "Update orders",
 							"id": "c9918362-68f9-4ed1-abfd-94f27db0e37c",
 							"protocolProfileBehavior": {
