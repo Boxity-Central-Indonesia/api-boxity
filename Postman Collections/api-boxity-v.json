@@ -3661,7 +3661,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{url}}/api/orders/not-completed"
+								"url": "{{url}}/api/order/not-completed"
 							},
 							"response": []
 						},
