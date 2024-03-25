@@ -15,10 +15,10 @@ class DashboardController extends Controller
     public function index()
     {
         // Hitung total penjualan
-    $totalSales = Order::where('order_status', 'completed')->sum('total_price');
+    $totalSales = Order::where('order_status', 'Completed')->sum('total_price');
 
     // Hitung total pembelian
-    $totalPurchases = Order::where('order_status', 'completed')->whereHas('vendor', function ($query) {
+    $totalPurchases = Order::where('order_status', 'Completed')->whereHas('vendor', function ($query) {
         $query->where('transaction_type', 'inbound');
     })->sum('total_price');
 
@@ -54,16 +54,26 @@ class DashboardController extends Controller
     foreach ($salesData as $data) {
     $salesByDate[] = [
         'date' => $data->date,
-        'total_sales' => $data->total_sales,
+        'total_sales' => (int)$data->total_sales,
     ];
     }
 
     foreach ($purchaseData as $data) {
     $purchasesByDate[] = [
         'date' => $data->date,
-        'total_purchases' => $data->total_purchases,
+        'total_purchases' => (int)$data->total_purchases,
     ];
     }
+    // Hitung total penjualan minggu ini
+    $startOfMonth = now()->startOfMonth();
+    $endOfMonth = now()->endOfMonth();
+
+    $totalSalesThisMonth = Order::whereHas('vendor', function ($query) {
+            $query->where('transaction_type', 'outbound');
+        })->where('order_status', 'Completed')
+        ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+        ->sum('total_price');
+
 
     return response()->json([
         'status' => 200,
@@ -92,6 +102,10 @@ class DashboardController extends Controller
                 'sales_data' => $salesByDate,
                 'purchase_data' => $purchasesByDate,
             ],
+            [
+                'label'=>'Total sales this month',
+                'total_sales_this_month' => 'Rp ' . number_format($totalSalesThisMonth, 0, ',', '.'),
+            ]
         ],
         'message' => 'Data retrieved successfully.',
     ]);

@@ -16,7 +16,11 @@ class ProcessingActivityController extends Controller
     {
         // Ubah 'carcass' menjadi 'product' untuk memuat relasi produk
         // $activities = ProcessingActivity::all();
-        $activities = ProcessingActivity::all()->groupBy(['order_id', 'product_id']);
+        $activities = ProcessingActivity::with('order', 'product')
+                    ->orderBy('order_id')
+                    ->orderBy('product_id')
+                    ->get()
+                    ->groupBy(['order_id', 'product_id']);
         return response()->json([
             'status' => 200,
             'data' => $activities,

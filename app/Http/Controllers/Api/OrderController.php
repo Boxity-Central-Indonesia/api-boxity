@@ -56,6 +56,38 @@ class OrderController extends Controller
             'message' => 'Orders retrieved successfully.',
         ]);
     }
+    public function notCompleted()
+    {
+        $orders = Order::where('order_status','!=','Completed')->with(['vendor', 'products', 'warehouse', 'invoices'])->get();
+        return response()->json([
+            'status' => 200,
+            'data' => $orders->map(function ($order) {
+                return [
+                    'id' => $order->id,
+                    'kode_order' => $order->kode_order,
+                    'vendor' => $order->vendor,
+                    'products' => $order->products->map(function ($product) {
+                        return [
+                            'id' => $product->id,
+                            'name' => $product->name,
+                            'quantity' => $product->pivot->quantity,
+                            'price_per_unit' => (int)$product->pivot->price_per_unit,
+                            'total_price' => (int)$product->pivot->total_price,
+                        ];
+                    }),
+                    'warehouse' => $order->warehouse,
+                    'invoices' => $order->invoices,
+                    'total_price' => (int)$order->total_price,
+                    'order_status' => $order->order_status,
+                    'order_type' => $order->order_type,
+                    'taxes' => (int)$order->taxes,
+                    'shipping_cost' => (int)$order->shipping_cost,
+                    'created_at' => $order->created_at, // Tambahkan created_at jika diperlukan
+                ];
+            }),
+            'message' => 'Orders retrieved successfully.',
+        ]);
+    }
 
 
     // Membuat order baru

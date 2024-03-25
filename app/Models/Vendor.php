@@ -48,9 +48,9 @@ class Vendor extends Model
     {
         switch ($this->transaction_type) {
             case 'outbound':
-                return 'Outbound';
+                return 'Sales';
             case 'inbound':
-                return 'Inbound';
+                return 'Purchase';
             default:
                 return 'Unknown';
         }
