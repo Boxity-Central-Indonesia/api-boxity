@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($salesData as $item)
+            @foreach ($purchaseData as $item)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->kode_order }}</td>

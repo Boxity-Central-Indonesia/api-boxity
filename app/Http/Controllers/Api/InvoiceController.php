@@ -49,18 +49,27 @@ class InvoiceController extends Controller
     {
         DB::beginTransaction();
 
-        try {
-            $validated = $request->all();
-            $invoice = Invoice::create($validated);
+            try {
+                $validated = $request->all();
+                // Buat invoice dengan mengambil nilai total_amount dari order yang terkait
+                $order = Order::with('vendor')->find($validated['order_id']);
+                if (!$order) {
+                    return response()->json([
+                        'status' => 400,
+                        'message' => 'Order not found.',
+                    ]);
+                }
 
-            // Mengambil order dan vendor terkait
-            $order = Order::with('vendor')->find($validated['order_id']);
-            if (!$order) {
-                return response()->json([
-                    'status' => 400,
-                    'message' => 'Order not found.',
+                $totalAmount = $order->total_price; // Mengambil total_price dari order
+
+                $invoice = Invoice::create([
+                    'order_id' => $validated['order_id'],
+                    'total_amount' => $totalAmount,
+                    'balance_due' => $totalAmount,
+                    'invoice_date' => $validated['invoice_date'],
+                    'due_date' => $validated['due_date'],
+                    'status' => $validated['status'],
                 ]);
-            }
 
             $transactionType = $order->vendor->transaction_type === 'outbound' ? 'credit' : 'debit';
 
@@ -87,6 +96,16 @@ class InvoiceController extends Controller
                 // Tambahkan saldo Piutang Usaha
                 $accountsReceivable->balance += $invoice->total_amount;
                 $accountsReceivable->save();
+            } elseif ($transactionType === 'debit') {
+                // Temukan atau buat record Kas atau Bank, sesuai kebutuhan Anda
+                $cashOrBankAccount = Account::firstOrCreate([
+                    'name' => 'Kas', // Ganti dengan 'Bank' jika transaksi terkait dengan bank
+                    'type' => 'Aset', // Sesuaikan jenis akun dengan akun yang digunakan untuk kas atau bank
+                ]);
+
+                // Kurangi saldo Kas atau Bank
+                $cashOrBankAccount->balance -= $invoice->total_amount;
+                $cashOrBankAccount->save();
             }
 
             $this->updateProductPricesBasedOnInvoice($order, $invoice, $order->vendor->transaction_type);

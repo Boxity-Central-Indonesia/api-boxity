@@ -179,7 +179,10 @@ class OrderController extends Controller
         // Update total_price di order
         $order->total_price += $productTotalPrice;
         $order->save();
-
+        // Proses logika akuntansi dan pencatatan lainnya
+        $vendor = Vendor::find($order->vendor_id);
+        $this->recordProductMovement($request->all(), $vendor);
+        $this->updateProductPrices($request->all(), $vendor);
         return response()->json([
             'status' => 201,
             'data' => $order,
@@ -221,6 +224,11 @@ public function editProductInOrder(Request $request, $orderId, $productId)
             // Perbarui total_price di pesanan
             $order->total_price = $order->products()->sum(DB::raw('quantity * price_per_unit'));
             $order->save();
+
+                    // Proses logika akuntansi dan pencatatan lainnya
+        $vendor = Vendor::find($order->vendor_id);
+        $this->recordProductMovement($request->all(), $vendor);
+        $this->updateProductPrices($request->all(), $vendor);
 
             return response()->json([
                 'status' => 201,
@@ -368,8 +376,19 @@ public function removeProductFromOrder(Request $request, $orderId, $productId)
     }
 }
 
-    private function recordProductMovement($validatedData, $vendor)
-    {
+private function recordProductMovement($validatedData, $vendor)
+{
+    // Periksa apakah kunci 'products' ada dalam data yang diterima
+    if (!isset($validatedData['products'])) {
+        // Kembalikan respons dengan pesan kesalahan yang sesuai
+        Log::error('Products data not found in validated data.');
+        return response()->json([
+            'status' => 400,
+            'message' => 'Products data not found in validated data.',
+        ]);
+    }
+
+    try {
         foreach ($validatedData['products'] as $productData) {
             $productMovement = ProductsMovement::create([
                 'product_id' => $productData['product_id'],
@@ -391,50 +410,79 @@ public function removeProductFromOrder(Request $request, $orderId, $productId)
                 $productModel->update(['stock' => $productModel->stock + $productMovement['quantity']]);
             }
         }
+        return response()->json([
+            'status' => 200,
+            'message' => 'Product movement recorded successfully.',
+        ]);
+    } catch (\Exception $e) {
+        Log::error('Error recording product movement: ' . $e->getMessage());
+        return response()->json([
+            'status' => 500,
+            'message' => 'Failed to record product movement. Error: ' . $e->getMessage(),
+        ]);
     }
-    private function updateProductPrices($validatedData, $vendor)
-    {
-        try {
-            foreach ($validatedData['products'] as $productData) {
-                $productPrice = ProductsPrice::where('product_id', $productData['product_id'])->first();
-                $latestCost = $this->getLatestCost($productData['product_id'], $vendor->transaction_type);
+}
 
-                if ($latestCost !== null) {
-                    if ($vendor->transaction_type === 'inbound') {
-                        if ($productPrice) {
-                            $productPrice->update(['buying_price' => $latestCost]);
-                        } else {
-                            ProductsPrice::create([
-                                'product_id' => $productData['product_id'],
-                                'buying_price' => $latestCost,
-                                'selling_price' => 0,
-                                'discount_price' => 0,
-                            ]);
-                        }
-                    } else if ($vendor->transaction_type === 'outbound') {
-                        $newSellingPrice = $this->calculateNewSellingPrice($latestCost, $productData['product_id'], $vendor->id);
+private function updateProductPrices($validatedData, $vendor)
+{
+    // Periksa apakah kunci 'products' ada dalam data yang diterima
+    if (!isset($validatedData['products'])) {
+        // Kembalikan respons dengan pesan kesalahan yang sesuai
+        Log::error('Products data not found in validated data.');
+        return response()->json([
+            'status' => 400,
+            'message' => 'Products data not found in validated data.',
+        ]);
+    }
 
-                        if ($productPrice) {
-                            $productPrice->update(['selling_price' => $newSellingPrice]);
-                        } else {
-                            ProductsPrice::create([
-                                'product_id' => $productData['product_id'],
-                                'selling_price' => $newSellingPrice,
-                                'buying_price' => $latestCost,
-                                'discount_price' => 0,
-                            ]);
-                        }
+    try {
+        foreach ($validatedData['products'] as $productData) {
+            $productPrice = ProductsPrice::where('product_id', $productData['product_id'])->first();
+            $latestCost = $this->getLatestCost($productData['product_id'], $vendor->transaction_type);
+
+            if ($latestCost !== null) {
+                if ($vendor->transaction_type === 'inbound') {
+                    if ($productPrice) {
+                        $productPrice->update(['buying_price' => $latestCost]);
+                    } else {
+                        ProductsPrice::create([
+                            'product_id' => $productData['product_id'],
+                            'buying_price' => $latestCost,
+                            'selling_price' => 0,
+                            'discount_price' => 0,
+                        ]);
                     }
-                } else {
-                    Log::error('Latest cost not found for product ID: ' . $productData['product_id'] . ' and transaction type: ' . $vendor->transaction_type);
+                } else if ($vendor->transaction_type === 'outbound') {
+                    $newSellingPrice = $this->calculateNewSellingPrice($latestCost, $productData['product_id'], $vendor->id);
+
+                    if ($productPrice) {
+                        $productPrice->update(['selling_price' => $newSellingPrice]);
+                    } else {
+                        ProductsPrice::create([
+                            'product_id' => $productData['product_id'],
+                            'selling_price' => $newSellingPrice,
+                            'buying_price' => $latestCost,
+                            'discount_price' => 0,
+                        ]);
+                    }
                 }
+            } else {
+                Log::error('Latest cost not found for product ID: ' . $productData['product_id'] . ' and transaction type: ' . $vendor->transaction_type);
             }
-        } catch (\Exception $e) {
-            Log::error('Error updating product prices: ' . $e->getMessage());
-            // Optionally, you can rethrow the exception if you want it to bubble up.
-            // throw $e;
         }
+        return response()->json([
+            'status' => 200,
+            'message' => 'Product prices updated successfully.',
+        ]);
+    } catch (\Exception $e) {
+        Log::error('Error updating product prices: ' . $e->getMessage());
+        return response()->json([
+            'status' => 500,
+            'message' => 'Failed to update product prices. Error: ' . $e->getMessage(),
+        ]);
     }
+}
+
 
 
     private function getLatestCost($productId, $transactionType)

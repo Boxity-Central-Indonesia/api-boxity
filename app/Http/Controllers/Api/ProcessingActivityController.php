@@ -46,6 +46,7 @@ class ProcessingActivityController extends Controller
             'activity_date' => now(),
             'status_activities' => 'In Production',
             'details' => [
+                'ordered_quantity' => $order->id,
                 'description' => 'Start to production...'
             ],
         ]);
