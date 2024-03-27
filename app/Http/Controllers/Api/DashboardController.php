@@ -15,7 +15,9 @@ class DashboardController extends Controller
     public function index()
     {
         // Hitung total penjualan
-    $totalSales = Order::where('order_status', 'Completed')->sum('total_price');
+    $totalSales = Order::where('order_status', 'Completed')->whereHas('vendor', function ($query) {
+        $query->where('transaction_type', 'outbound');
+    })->sum('total_price');
 
     // Hitung total pembelian
     $totalPurchases = Order::where('order_status', 'Completed')->whereHas('vendor', function ($query) {
@@ -70,7 +72,9 @@ class DashboardController extends Controller
 
     $totalSalesThisMonth = Order::whereHas('vendor', function ($query) {
             $query->where('transaction_type', 'outbound');
-        })->where('order_status', 'Completed')
+        })->whereHas('invoices', function ($query) {
+            $query->where('status', 'partial')->OrWhere('status','paid');
+        })
         ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
         ->sum('total_price');
 
