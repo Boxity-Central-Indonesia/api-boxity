@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\CreatedAtDescScope;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,9 +17,10 @@ class CompaniesDepartment extends Model
         'responsibilities',
         'company_id',
     ];
-    public static function boot()
+    protected static function boot()
     {
         parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
         static::creating(function ($model) {
             $model->user_created = Auth::id();
             $model->user_updated = Auth::id();

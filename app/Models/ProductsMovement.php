@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\CreatedAtDescScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
@@ -23,9 +24,10 @@ class ProductsMovement extends Model
     {
         return $this->belongsTo(Warehouse::class);
     }
-    public static function boot()
+    protected static function boot()
     {
         parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
         self::creating(function ($model) {
             $model->user_created = Auth::id();
         });

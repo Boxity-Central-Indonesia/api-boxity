@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\CreatedAtDescScope;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,9 +18,10 @@ class Warehouse extends Model
         'capacity',
         'description'
     ];
-    public static function boot()
+    protected static function boot()
     {
         parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
         self::creating(function ($model) {
             $model->user_created = Auth::id();
         });

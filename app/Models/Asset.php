@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\CreatedAtDescScope;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,9 +16,10 @@ class Asset extends Model
     protected $fillable = [
         'name', 'code', 'type', 'description', 'acquisition_date', 'acquisition_cost', 'book_value', 'location_id', 'condition_id'
     ];
-    public static function boot()
+    protected static function boot()
     {
         parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
         self::creating(function ($model) {
             $model->user_created = Auth::id();
         });

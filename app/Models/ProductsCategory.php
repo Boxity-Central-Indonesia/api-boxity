@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\CreatedAtDescScope;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,9 +16,10 @@ class ProductsCategory extends Model
         'name',
         'description',
     ];
-    public static function boot()
+    protected static function boot()
     {
         parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
         self::creating(function ($model) {
             $model->user_created = Auth::id();
         });
@@ -28,5 +30,10 @@ class ProductsCategory extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+    public function getDescriptionAttribute($description)
+    {
+        // Limit the description to 150 characters
+        return \Str::limit($description, 50, '...');
     }
 }
