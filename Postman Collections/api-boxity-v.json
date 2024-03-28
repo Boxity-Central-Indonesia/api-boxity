@@ -3605,7 +3605,8 @@
 										"exec": [
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -3633,7 +3634,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"vendor_id\": {{customerID}},\n    \"warehouse_id\": {{warehouseID}},\n    \"status\": \"pending\",\n    \"details\": \"Pesanan untuk project X\",\n    \"order_type\": \"Direct Order\",\n    \"products\": [\n        {\n            \"product_id\": {{productID}},\n            \"quantity\": 10,\n            \"price_per_unit\": 10000\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 5,\n            \"price_per_unit\": 15000\n        }\n    ]\n}"
+									"raw": "{\n    \"vendor_id\": {{customerID}},\n    \"warehouse_id\": {{warehouseID}},\n    \"status\": \"pending\",\n    \"details\": \"Pesanan untuk project X\",\n    \"order_type\": \"Direct Order\",\n    \"products\": [\n        {\n            \"product_id\": {{productID}},\n            \"quantity\": 500,\n            \"price_per_unit\": 14500\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 1000,\n            \"price_per_unit\": 14600\n        }\n    ]\n}"
 								},
 								"url": "{{url}}/api/orders"
 							},
