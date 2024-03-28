@@ -10,4 +10,9 @@ class Lead extends Model
 {
     use HasFactory;
     protected $fillable = ['nama_prospek', 'email_prospek', 'nomor_telepon_prospek', 'tipe_prospek'];
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
+    }
 }

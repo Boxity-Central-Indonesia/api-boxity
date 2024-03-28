@@ -16,7 +16,11 @@ class DeliveryNote extends Model
         'vendor_id',
         'details',
     ];
-
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
+    }
     // Relasi ke tabel Warehouse dan Vendor
     public function warehouse()
     {

@@ -25,4 +25,9 @@ class Posts extends Model
     {
         return $this->hasMany(PostsComments::class);
     }
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
+    }
 }

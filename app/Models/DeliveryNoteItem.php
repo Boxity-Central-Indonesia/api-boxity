@@ -20,7 +20,11 @@ class DeliveryNoteItem extends Model
     {
         return $this->belongsTo(DeliveryNote::class);
     }
-
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
+    }
     public function order()
     {
         return $this->belongsTo(Order::class);

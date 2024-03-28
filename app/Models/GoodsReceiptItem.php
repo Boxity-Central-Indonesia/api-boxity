@@ -21,12 +21,6 @@ class GoodsReceiptItem extends Model
     {
         parent::boot();
         static::addGlobalScope(new CreatedAtDescScope());
-        self::creating(function ($model) {
-            $model->user_created = Auth::id();
-        });
-        self::updating(function ($model) {
-            $model->user_updated = Auth::id();
-        });
     }
     // Relasi ke tabel Goods Receipt dan Product
     public function goodsReceipt()

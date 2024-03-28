@@ -22,4 +22,9 @@ class PackageProduct extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
+    }
 }

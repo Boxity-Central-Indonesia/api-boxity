@@ -22,7 +22,11 @@ class JournalEntry extends Model
     {
         return $this->belongsTo(Account::class);
     }
-
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
+    }
     public function transaction()
     {
         return $this->belongsTo(AccountsTransaction::class, 'transaction_id');

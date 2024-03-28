@@ -17,4 +17,9 @@ class Package extends Model
     {
         return $this->hasMany(PackageProduct::class, 'package_id');
     }
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
+    }
 }
