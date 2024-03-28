@@ -62,22 +62,22 @@ class DashboardController extends Controller
             [
                 'label' => 'Total Sales',
                 'amount' => 'Rp ' . number_format($cachedData['sales'], 0, ',', '.'),
-                'information' => 'Information about total sales',
+                'information' => $cachedData['sales'] >= 0 ? 'This is the total sales amount, keep it up!' : 'Looks like your total sales amount is negative, please review your sales strategy!',
             ],
             [
                 'label' => 'Total Purchases',
                 'amount' => 'Rp ' . number_format($cachedData['purchases'], 0, ',', '.'),
-                'information' => 'Information about total purchases',
+                'information' => $cachedData['purchases'] >= 0 ? 'Here\'s the total amount spent on purchases, keep an eye on it!' : 'Your total purchases amount is in the negative, consider optimizing your purchasing process!',
             ],
             [
                 'label' => 'Total Paid',
                 'amount' => 'Rp ' . number_format($cachedData['payments'], 0, ',', '.'),
-                'information' => 'Information about total payments',
+                'information' => $cachedData['payments'] >= 0 ? 'So far, you\'ve paid a total of, keep managing your finances wisely!' : 'It seems your total paid amount is negative, ensure proper management of your payments!',
             ],
             [
                 'label' => 'Profit',
                 'amount' => 'Rp ' . number_format($cachedData['profit'], 0, ',', '.'),
-                'information' => 'Information about profit',
+                'information' => $cachedData['profit'] >= 0 ? 'Great news! This is your profit, keep the momentum going!' : 'Your profit amount is showing a negative value, evaluate your business operations to enhance profitability!',
             ],
             [
                 'sales_data' => $cachedData['sales_data'],

@@ -39,7 +39,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->string('type')->nullable();
             $table->string('subtype')->nullable();

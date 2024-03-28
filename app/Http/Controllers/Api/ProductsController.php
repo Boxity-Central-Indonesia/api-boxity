@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use App\Events\formCreated;
+use App\Models\Warehouse;
 
 class ProductsController extends Controller
 {
@@ -42,6 +43,17 @@ class ProductsController extends Controller
         } else {
             $data['image_product'] = 'https://res.cloudinary.com/boxity-id/image/upload/v1709745192/39b09e1f-0446-4f78-bbf1-6d52d4e7e4df.png';
         }
+        // Assume 'warehouse_id' is passed from the request, adjust accordingly if it's different
+    $warehouseId = $request->input('warehouse_id');
+
+    // Check if the selected warehouse has exceeded its capacity
+    $warehouse = Warehouse::findOrFail($warehouseId);
+    if ($warehouse->exceedsCapacity($data['stock'])) {
+        return response()->json([
+            'status' => 400,
+            'message' => 'Selected warehouse has exceeded its capacity.',
+        ], 400);
+    }
         $data['code'] = $productCode;
         $product = Product::create($data);
         broadcast(new formCreated('New Product created successfully.'));
