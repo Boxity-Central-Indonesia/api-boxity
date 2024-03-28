@@ -149,7 +149,7 @@ class OrderController extends Controller
             return response()->json(['status' => 201, 'data' => $order, 'message' => 'Order created successfully.']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['status' => 500, 'message' => 'Gagal membuat order. Kesalahan: ' . $e->getMessage(), 'data' => [$validatedData, $order, $vendor]], 500);
+            return response()->json(['status' => 500, 'message' => 'Gagal membuat order. Kesalahan: ' . $e->getMessage(), 'data' => [$validatedData, $order]], 500);
         }
     }
 
