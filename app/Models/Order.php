@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\CreatedAtDescScope;
+use Illuminate\Support\Facades\Auth;
+
 
 class Order extends Model
 {
@@ -71,7 +73,13 @@ class Order extends Model
     protected static function boot()
     {
         parent::boot();
-
+        static::addGlobalScope(new CreatedAtDescScope());
+        self::creating(function ($model) {
+            $model->user_created = Auth::id();
+        });
+        self::updating(function ($model) {
+            $model->user_updated = Auth::id();
+        });
         static::saving(function ($order) {
             if ($order->products->isNotEmpty()) {
                 $totalPrice = $order->products->reduce(function ($carry, $product) {

@@ -35,7 +35,7 @@ return new class extends Migration
         Schema::create('vendor_transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('vendors_id');
-            $table->decimal('amount');
+            $table->decimal('amount', 10, 2);
             $table->unsignedBigInteger('product_id')->nullable();
             $table->decimal('unit_price', 10, 2)->nullable();
             $table->decimal('total_price', 10, 2)->nullable();

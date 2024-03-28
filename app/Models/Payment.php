@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\CreatedAtDescScope;
+use Illuminate\Support\Facades\Auth;
+
 
 class Payment extends Model
 {
@@ -15,6 +17,17 @@ class Payment extends Model
         'payment_method',
         'payment_date',
     ];
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
+        self::creating(function ($model) {
+            $model->user_created = Auth::id();
+        });
+        self::updating(function ($model) {
+            $model->user_updated = Auth::id();
+        });
+    }
     protected $appends = ['kode_payment'];
     public function getKodePaymentAttribute()
     {

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\CreatedAtDescScope;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeCategory extends Model
 {
@@ -15,5 +16,16 @@ class EmployeeCategory extends Model
     {
         // Limit the description to 150 characters
         return \Str::limit($description, 50, '...');
+    }
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
+        self::creating(function ($model) {
+            $model->user_created = Auth::id();
+        });
+        self::updating(function ($model) {
+            $model->user_updated = Auth::id();
+        });
     }
 }

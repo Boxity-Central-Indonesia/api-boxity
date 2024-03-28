@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\CreatedAtDescScope;
+use Illuminate\Support\Facades\Auth;
+
 
 class Invoice extends Model
 {
@@ -25,7 +27,17 @@ class Invoice extends Model
             return 'INV/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
         }
     }
-
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
+        self::creating(function ($model) {
+            $model->user_created = Auth::id();
+        });
+        self::updating(function ($model) {
+            $model->user_updated = Auth::id();
+        });
+    }
     // Hubungan ke Order
     public function order()
     {

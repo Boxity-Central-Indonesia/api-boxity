@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\CreatedAtDescScope;
+use Illuminate\Support\Facades\Auth;
+
 
 class OrderProduct extends Model
 {
@@ -16,6 +18,17 @@ class OrderProduct extends Model
         'price_per_unit',
         'total_price'
     ];
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new CreatedAtDescScope());
+        self::creating(function ($model) {
+            $model->user_created = Auth::id();
+        });
+        self::updating(function ($model) {
+            $model->user_updated = Auth::id();
+        });
+    }
     public function product()
     {
         return $this->belongsTo(Product::class);
