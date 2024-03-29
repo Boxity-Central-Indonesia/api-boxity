@@ -66,4 +66,8 @@ class Product extends Model
     {
         return $this->hasMany(ProcessingActivity::class);
     }
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_products');
+    }
 }

@@ -7,6 +7,8 @@ use App\Models\Invoice;
 use App\Models\Order;
 use Carbon\Carbon;
 use Cache;
+use App\Models\Product;
+use DB;
 
 class DashboardController extends Controller
 {
@@ -45,6 +47,26 @@ class DashboardController extends Controller
             $query->whereIn('status', ['partial', 'paid']);
         })->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('total_price');
 
+       // Query to find products ordered by the number of sales/orders
+       $total_all_stock = DB::table('order_products')->sum('quantity');
+
+$products = Product::select('name', 'code', 'unit_of_measure')
+    ->withCount(['orders as order_counted' => function ($query) {
+        $query->selectRaw('sum(quantity) as order_counted');
+        $query->whereHas('vendor', function ($query) {
+            $query->where('transaction_type', 'outbound');
+        });
+    }])
+    ->selectRaw('(SELECT CAST(IFNULL(sum(quantity), 0) AS UNSIGNED) FROM order_products WHERE order_products.product_id = products.id) as total_stock')
+    ->orderByDesc('total_stock')
+    ->limit(5)
+    ->get();
+
+foreach ($products as $product) {
+    $product->total_all_stock = (int)$total_all_stock;
+    $product->percentage = ($product->total_stock * 100) / $total_all_stock;
+}
+
         return [
             'sales' => $sales,
             'purchases' => $purchases,
@@ -53,6 +75,7 @@ class DashboardController extends Controller
             'sales_data' => $salesData,
             'purchase_data' => $purchaseData,
             'total_sales_this_month' => $totalSalesThisMonth,
+            'products' => $products,
         ];
     });
 
@@ -86,7 +109,11 @@ class DashboardController extends Controller
             [
                 'label' => 'Total sales this month',
                 'total_sales_this_month' => 'Rp ' . number_format($cachedData['total_sales_this_month'], 0, ',', '.'),
-            ]
+            ],
+            [
+                'label' => 'Products with Most Sales',
+                'products' => $cachedData['products'] ? $cachedData['products']->toArray() : 0,
+            ],
         ],
         'message' => 'Data retrieved successfully.',
     ]);
