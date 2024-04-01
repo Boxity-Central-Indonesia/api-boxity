@@ -122,6 +122,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/orders/{orderId}/products/{productId}', [OrderController::class, 'editProductInOrder']);
     Route::get('/orders/{orderId}/products/{productId}', [OrderController::class, 'getProductByOrderIdAndProductId']);
     Route::delete('/orders/{orderId}/remove-product/{productId}', [OrderController::class, 'removeProductFromOrder']);
+    Route::get('/orders/product/{orderId}', [OrderController::class, 'getProductByOrderId']);
+    Route::post('/orders/weighing', [ProcessingActivityController::class, 'storeTimbangan']);
+    Route::get('/orders/weighing/today', [ProcessingActivityController::class, 'getProcessActivityToday']);
 
     Route::apiResource('goods-receipt', GoodsReceiptController::class);
     Route::apiResource('delivery-notes', DeliveryNoteController::class);

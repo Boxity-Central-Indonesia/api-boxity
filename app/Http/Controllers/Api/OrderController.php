@@ -814,4 +814,39 @@ Storage::disk('public')->put('qrcodes/' . $filenameQR, $qrCode);
             'message' => 'Processing activities for order retrieved successfully.',
         ]);
     }
+    public function getProductByOrderId($orderId)
+{
+    $order = Order::find($orderId);
+
+    if (!$order) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'Order not found.',
+        ]);
+    }
+
+    $products = $order->products()->get();
+
+    if ($products->isEmpty()) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'No products found in the order.',
+        ]);
+    }
+
+    return response()->json([
+        'status' => 200,
+        'data' => $products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'quantity' => $product->pivot->quantity,
+                'price_per_unit' => (int)$product->pivot->price_per_unit,
+                'total_price' => (int)$product->pivot->total_price,
+            ];
+        }),
+        'message' => 'Products retrieved successfully.',
+    ]);
+}
+
 }

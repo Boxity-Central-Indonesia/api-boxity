@@ -28,6 +28,29 @@ class ProcessingActivityController extends Controller
             'message' => 'All processing activities retrieved successfully.',
         ]);
     }
+    public function getProcessActivityToday()
+    {
+        $activities = DB::table('manufacturer_processing_activities')
+                    ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
+                    ->select(
+                        'manufacturer_processing_activities.activity_date',
+                        'manufacturer_processing_activities.created_at',
+                        'products.name',
+                        'manufacturer_processing_activities.status_activities',
+                        'manufacturer_processing_activities.activity_type',
+                        'manufacturer_processing_activities.details',
+                        'products.code'
+                    )
+                    ->whereDate('manufacturer_processing_activities.created_at', today())
+                    ->orderByDesc('manufacturer_processing_activities.created_at')
+                    ->get();
+
+        return response()->json([
+            'status' => 200,
+            'data' => $activities,
+            'message' => 'All processing activities today retrieved successfully.',
+        ]);
+    }
 
     public function store(ProcessingActivityRequest $request)
 {
@@ -63,6 +86,44 @@ class ProcessingActivityController extends Controller
         'data' => $activities,
         'message' => 'Processing activities created successfully.', // Perbarui pesan untuk menunjukkan aktivitas jamak
     ]);
+}
+
+public function storeTimbangan(Request $request)
+{
+
+    // Ambil data order terlebih dahulu
+    $order = Order::findOrFail($request['order_id']);
+
+    $average_weight_per_animal = 0;
+
+    if ($request->details['number_of_item'] != 0) {
+        $average_weight_per_animal = $request->details['qty_weighing'] / $request->details['number_of_item'];
+    }
+
+    $activity = ProcessingActivity::create([
+        'product_id' => $request->product_id,
+        'order_id' => $order->id,
+        'activity_type' => 'weighing',
+        'activity_date' => now(),
+        'status_activities' => 'In Production',
+        'details' => [
+            'qty_weighing' => $request->details['qty_weighing'],
+            'noa_weighing' => 'Kg',
+            'number_of_item' => $request->details['number_of_item'],
+            'noa_numberofitem' => 'Pcs',
+            'average_weight_per_animal' => $average_weight_per_animal,
+            'vehicle_no'=>$request->details['vehicle_no'],
+            'description' => 'Weighing incoming product based on order'
+        ],
+    ]);
+    broadcast(new formCreated('New weighing incoming product created successfully.'));
+
+    return response()->json([
+        'status' => 201,
+        'data' => $activity,
+        'message' => 'Weighing incoming product created successfully.', // Perbarui pesan untuk menunjukkan aktivitas jamak
+    ]);
+    // return response()->json($request->details['number_of_item']);
 }
 
 public function update(ProcessingActivityRequest $request, $id)
