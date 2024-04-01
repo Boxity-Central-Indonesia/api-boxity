@@ -3870,6 +3870,19 @@
 								"url": "{{url}}/api/orders/{{orderID}}}/products/{{productID}}"
 							},
 							"response": []
+						},
+						{
+							"name": "Get product by order ID",
+							"id": "b657abf7-6f13-4b59-af23-c17ef95fbde9",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/orders/product/{{orderID}}"
+							},
+							"response": []
 						}
 					],
 					"id": "1efb45ac-b7de-4c4f-834a-db47ac6cb29f",
