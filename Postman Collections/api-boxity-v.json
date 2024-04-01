@@ -4753,6 +4753,18 @@
 								"url": "{{url}}/api/processing-activities/{{processID}}"
 							},
 							"response": []
+						},
+						{
+							"name": "Weighing Product",
+							"id": "ae8667bc-529c-4cea-936d-7abd311aff5b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "b157b83f-7e52-44cd-ab3c-1b05ae2b3d4e",
