@@ -4678,7 +4678,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"order_id\": 25,\n    \"product_id\": 26,\n    \"details\": {\n        \"qty_weighing\": 150,\n        \"number_of_item\": 25\n  }\n}",
+									"raw": "{\n    \"order_id\": 25,\n    \"product_id\": 26,\n    \"details\": {\n        \"qty_weighing\": 150,\n        \"number_of_item\": 25,\n        \"vehicle_no\": \"BK 1234 KK\"\n  }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4699,6 +4699,19 @@
 								"method": "GET",
 								"header": [],
 								"url": "{{url}}/api/processing-activities"
+							},
+							"response": []
+						},
+						{
+							"name": "Get list proses timbangan hari ini",
+							"id": "6f7c5cc1-4832-439a-8b60-cce4b75a5a68",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/orders/weighing/today"
 							},
 							"response": []
 						},
@@ -4773,18 +4786,6 @@
 								"method": "DELETE",
 								"header": [],
 								"url": "{{url}}/api/processing-activities/{{processID}}"
-							},
-							"response": []
-						},
-						{
-							"name": "Get list proses timbangan hari ini",
-							"id": "6f7c5cc1-4832-439a-8b60-cce4b75a5a68",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": []
 							},
 							"response": []
 						}
