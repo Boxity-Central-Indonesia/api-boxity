@@ -4668,6 +4668,28 @@
 							"response": []
 						},
 						{
+							"name": "Weighing Product",
+							"id": "ae8667bc-529c-4cea-936d-7abd311aff5b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"order_id\": 25,\n    \"product_id\": 26,\n    \"details\": {\n        \"qty_weighing\": 150,\n        \"number_of_item\": 25\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/orders/weighing"
+							},
+							"response": []
+						},
+						{
 							"name": "Get all processing activities",
 							"id": "32ae8db2-ad7b-4b7f-8f9e-dbc23ea8382a",
 							"protocolProfileBehavior": {
@@ -4751,18 +4773,6 @@
 								"method": "DELETE",
 								"header": [],
 								"url": "{{url}}/api/processing-activities/{{processID}}"
-							},
-							"response": []
-						},
-						{
-							"name": "Weighing Product",
-							"id": "ae8667bc-529c-4cea-936d-7abd311aff5b",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": []
 							},
 							"response": []
 						}
