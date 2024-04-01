@@ -4775,6 +4775,18 @@
 								"url": "{{url}}/api/processing-activities/{{processID}}"
 							},
 							"response": []
+						},
+						{
+							"name": "Get list proses timbangan hari ini",
+							"id": "6f7c5cc1-4832-439a-8b60-cce4b75a5a68",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "b157b83f-7e52-44cd-ab3c-1b05ae2b3d4e",
