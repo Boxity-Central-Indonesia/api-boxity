@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use App\Events\formCreated;
+use App\Models\VendorContact;
 
 class VendorsController extends Controller
 {
@@ -29,7 +30,16 @@ class VendorsController extends Controller
             'message' => 'Vendors retrieved successfully.',
         ]);
     }
+    public function getVendorContactByVendorId($vendorId)
+    {
+        $vendorContacts = VendorContact::where('vendors_id', $vendorId)->get();
 
+        return response()->json([
+            'status' => 200,
+            'data' => $vendorContacts,
+            'message' => 'Vendor contacts retrieved successfully.',
+        ]);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -65,7 +75,7 @@ class VendorsController extends Controller
 
         $vendor = Vendor::create($validated, $customMessages);
         broadcast(new formCreated('New Vendor created successfully.'));
-        
+
         return response()->json([
             'status' => 201,
             'data' => $vendor,
@@ -118,7 +128,7 @@ class VendorsController extends Controller
         $vendor = Vendor::findOrFail($id);
         $vendor->update($validated, $customMessages);
         broadcast(new formCreated('Vendor updated successfully.'));
-        
+
         return response()->json([
             'status' => 201,
             'data' => $vendor,

@@ -32,16 +32,7 @@ class VendorTransactionsController extends Controller
             'message' => 'Vendor transactions retrieved successfully.',
         ]);
     }
-    public function getVendorContactByVendorId($vendorId)
-{
-    $vendorContacts = VendorContact::where('vendor_id', $vendorId)->get();
 
-    return response()->json([
-        'status' => 200,
-        'data' => $vendorContacts,
-        'message' => 'Vendor contacts retrieved successfully.',
-    ]);
-}
     public function store(Request $request)
     {
         $validated = $request->validate([
