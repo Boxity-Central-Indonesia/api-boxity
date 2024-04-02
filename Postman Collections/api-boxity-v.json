@@ -2348,7 +2348,7 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Delete vendor",
 							"id": "4d315415-a62c-4a29-a19c-6bd74516701a",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
@@ -2357,6 +2357,19 @@
 								"method": "DELETE",
 								"header": [],
 								"url": "{{url}}/api/vendors/{{supplierID}}"
+							},
+							"response": []
+						},
+						{
+							"name": "Get contact by vendorID",
+							"id": "f6e45a87-ff72-4d4b-b3d4-31ad9472c651",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/vendors/{{customerID}}/contacts"
 							},
 							"response": []
 						}
