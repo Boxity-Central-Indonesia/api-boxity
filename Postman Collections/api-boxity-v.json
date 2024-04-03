@@ -4691,7 +4691,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"order_id\": 25,\n    \"product_id\": 26,\n    \"details\": {\n        \"qty_weighing\": 150,\n        \"number_of_item\": 25,\n        \"vehicle_no\": \"BK 1234 KK\"\n  }\n}",
+									"raw": "{\n    \"order_id\": 25,\n    \"product_id\": 26,\n    \"details\": {\n        \"basket_weight\": 8,\n        \"qty_weighing\": 150,\n        \"number_of_item\": 25,\n        \"vehicle_no\": \"BK 1234 KK\"\n  }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
