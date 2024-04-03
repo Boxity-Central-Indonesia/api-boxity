@@ -32,6 +32,7 @@ class OrderController extends Controller
             'data' => $orders->map(function ($order) {
                 return [
                     'id' => $order->id,
+                    'no_ref' => $order->no_ref,
                     'kode_order' => $order->kode_order,
                     'vendor' => $order->vendor,
                     'products' => $order->products->map(function ($product) {
@@ -64,6 +65,7 @@ class OrderController extends Controller
             'data' => $orders->map(function ($order) {
                 return [
                     'id' => $order->id,
+                    'no_ref' => $order->no_ref,
                     'kode_order' => $order->kode_order,
                     'vendor' => $order->vendor,
                     'products' => $order->products->map(function ($product) {
@@ -100,6 +102,7 @@ class OrderController extends Controller
             // Asumsikan data yang masuk sudah valid atau lakukan validasi manual sederhana
             $validatedData = $request->all(); // Menggunakan data langsung tanpa validasi dari OrderRequest
             $order = new Order([
+                'no_ref' => $validatedData['no_ref'],
                 'vendor_id' => $validatedData['vendor_id'],
                 'warehouse_id' => $validatedData['warehouse_id'],
                 'status' => $validatedData['status'],
@@ -531,42 +534,93 @@ private function updateProductPrices($validatedData, $vendor)
 
     // Menampilkan satu order
     public function show($id)
-    {
-        $order = Order::with(['vendor', 'products', 'warehouse', 'invoices'])->find($id);
+{
+    $order = Order::with(['vendor', 'products', 'warehouse', 'invoices', 'processingActivities'])->find($id);
 
-        if ($order) {
-            return response()->json([
-                'status' => 200,
-                'data' => [
-                    'id' => $order->id,
-                    'kode_order' => $order->kode_order,
-                    'vendor' => $order->vendor,
-                    'products' => $order->products->map(function ($product) {
-                        return [
-                            'id' => $product->id,
-                            'name' => $product->name,
-                            'quantity' => $product->pivot->quantity,
-                            'price_per_unit' => (int)$product->pivot->price_per_unit,
-                            'total_price' => (int)$product->pivot->total_price,
-                        ];
-                    }),
-                    'warehouse' => $order->warehouse,
-                    'invoices' => $order->invoices,
-                    'total_price' => (int)$order->total_price,
-                    'order_status' => $order->order_status,
-                    'order_type' => $order->order_type,
-                    'taxes' => (int)$order->taxes,
-                    'shipping_cost' => (int)$order->shipping_cost,
-                ],
-                'message' => 'Order retrieved successfully.',
-            ]);
-        } else {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Order not found.',
-            ]);
+    if ($order) {
+        // Menghitung selisih_quantity
+        $timbangKotor = 0;
+        foreach ($order->processingActivities as $activity) {
+            if (isset($activity->details['qty_weighing'])) {
+                $timbangKotor += $activity->details['qty_weighing'];
+            }
         }
+
+        // Menghitung total berat keranjang
+        $totalBeratKeranjang = 0;
+        foreach ($order->processingActivities as $activity) {
+            if (isset($activity->details['basket_weight'])) {
+                $totalBeratKeranjang += $activity->details['basket_weight'];
+            }
+        }
+        $totalCountItem = 0;
+        foreach ($order->processingActivities as $activity) {
+            if (isset($activity->details['number_of_item'])) {
+                $totalCountItem += $activity->details['number_of_item'];
+            }
+        }
+
+        // Menghitung total qty pada products
+        $totalProductQty = 0;
+        foreach ($order->products as $product) {
+            $totalProductQty += $product->pivot->quantity;
+        }
+
+        // menghitung jumlah keranjang
+        $totalKeranjang = $order->processingActivities->count();
+
+        // timbang bersih = total timbang kotor (berat ayam + total berat keranjang) - total berat keranjang
+        $timbangBersih = ($timbangKotor - $totalBeratKeranjang);
+        $averageWeightOfItem = $timbangBersih / $totalCountItem;
+
+        // Menghitung selisih_quantity
+        $selisihQuantity = $totalProductQty - $timbangBersih;
+
+        return response()->json([
+            'status' => 200,
+            'data' => [
+                'id' => $order->id,
+                'no_ref' => $order->no_ref,
+                'kode_order' => $order->kode_order,
+                'quantity_pesanan' => $totalProductQty,
+                'timbang_kotor'=>$timbangKotor,
+                'total_berat_keranjang'=>$totalBeratKeranjang,
+                'total_keranjang' => $totalKeranjang,
+                'selisih_quantity' => $selisihQuantity,
+                'timbang_bersih' => $timbangBersih,
+                'total_jumlah_item' => $totalCountItem,
+                'rata_rata_berat_hewan' => $averageWeightOfItem,
+                'vendor' => $order->vendor,
+                'products' => $order->products->map(function ($product) {
+                    return [
+                        'id' => $product->id,
+                        'name' => $product->name,
+                        'quantity' => $product->pivot->quantity,
+                        'price_per_unit' => (int) $product->pivot->price_per_unit,
+                        'total_price' => (int) $product->pivot->total_price,
+                    ];
+                }),
+                'warehouse' => $order->warehouse,
+                'invoices' => $order->invoices,
+                'processing_activities' => $order->processingActivities,
+                'total_price' => (int) $order->total_price,
+                'order_status' => $order->order_status,
+                'order_type' => $order->order_type,
+                'taxes' => (int) $order->taxes,
+                'shipping_cost' => (int) $order->shipping_cost,
+            ],
+            'message' => 'Order retrieved successfully.',
+        ]);
+    } else {
+        return response()->json([
+            'status' => 404,
+            'message' => 'Order not found.',
+        ]);
     }
+}
+
+
+
 
     public function downloadOrderDetail($orderId)
 {
@@ -582,6 +636,7 @@ private function updateProductPrices($validatedData, $vendor)
     // Format order data
     $formattedOrder = [
         'id' => $order->id,
+        'no_ref'=> $order->no_ref,
         'kode_order' => $order->kode_order,
         'vendor' => $order->vendor,
         'products' => $order->products->map(function ($product) {
@@ -663,6 +718,7 @@ Storage::disk('public')->put('qrcodes/' . $filenameQR, $qrCode);
             // Mengambil data order berdasarkan orderID dengan join ke invoice dan payments
             $orderDetails = Order::select(
                 'orders.id as order_id',
+                'orders.no_ref as no_ref',
                 DB::raw('CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0")) as kodeOrder'),
                 'orders.total_price as order_total_price',
                 'invoices.id as invoice_id',

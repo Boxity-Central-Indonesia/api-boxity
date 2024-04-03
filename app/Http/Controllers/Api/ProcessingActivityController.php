@@ -115,6 +115,8 @@ public function storeTimbangan(Request $request)
         'details' => [
             'qty_weighing' => $request->details['qty_weighing'],
             'noa_weighing' => 'Kg',
+            'basket_weight' => $request->details['basket_weight'],
+            'noa_basket_weight' => 'Kg',
             'number_of_item' => $request->details['number_of_item'],
             'noa_numberofitem' => 'Pcs',
             'average_weight_per_animal' => $average_weight_per_animal,

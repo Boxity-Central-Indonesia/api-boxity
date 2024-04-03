@@ -18,6 +18,10 @@
             <td>{{ $formattedOrder['kode_order'] }}</td>
         </tr>
         <tr>
+            <th>Kode Ref</th>
+            <td>{{ $formattedOrder['no_ref'] }}</td>
+        </tr>
+        <tr>
             <th>{{ $formattedOrder['vendor']['transaction_type'] == 'outbound' ? 'Customer' : 'Supplier' }}</th>
             <td>{{ $formattedOrder['vendor']['name'] }}</td>
         </tr>

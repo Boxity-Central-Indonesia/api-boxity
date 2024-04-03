@@ -33,6 +33,7 @@ class OrderRequest extends FormRequest
                 ]),
             ],
             'details' => 'nullable|string',
+            'no_ref' => 'nullable|string',
             'order_type' => [
                 'required',
                 Rule::in(['Direct Order', 'Production']),

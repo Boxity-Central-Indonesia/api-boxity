@@ -20,7 +20,8 @@ class Order extends Model
         'taxes',
         'shipping_cost',
         'order_status',
-        'order_type'
+        'order_type',
+        'no_ref'
     ];
     protected $appends = ['kode_order'];
     public function getKodeOrderAttribute()
