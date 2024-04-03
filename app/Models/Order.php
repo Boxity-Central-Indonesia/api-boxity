@@ -64,11 +64,11 @@ class Order extends Model
             ->withTimestamps();
     }
     public function calculateTotalPrice()
-{
-    return $this->products->sum(function ($product) {
-        return $product->pivot->total_price;
-    }) + ($this->taxes ?? 0) + ($this->shipping_cost ?? 0);
-}
+    {
+        return $this->products->sum(function ($product) {
+            return $product->pivot->total_price;
+        }) + ($this->taxes ?? 0) + ($this->shipping_cost ?? 0);
+    }
 
     protected static function boot()
     {
