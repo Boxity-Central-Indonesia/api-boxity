@@ -21,7 +21,7 @@ class Order extends Model
         'shipping_cost',
         'order_status',
         'order_type',
-        'no_ref'
+        'no_ref',
     ];
     protected $appends = ['kode_order'];
     public function getKodeOrderAttribute()

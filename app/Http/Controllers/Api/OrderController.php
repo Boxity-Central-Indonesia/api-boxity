@@ -123,6 +123,7 @@ class OrderController extends Controller
 
                 $order->products()->attach($product['product_id'], [
                     'quantity' => $product['quantity'],
+                    'unit_of_measure' => $product['unit_of_measure'],
                     'price_per_unit' => $product['price_per_unit'],
                     'total_price' => $productTotalPrice,
                 ]);
@@ -553,6 +554,8 @@ private function updateProductPrices($validatedData, $vendor)
                 $totalBeratKeranjang += $activity->details['basket_weight'];
             }
         }
+
+        // Menghitung total jumlah item
         $totalCountItem = 0;
         foreach ($order->processingActivities as $activity) {
             if (isset($activity->details['number_of_item'])) {
@@ -560,21 +563,29 @@ private function updateProductPrices($validatedData, $vendor)
             }
         }
 
-        // Menghitung total qty pada products
-        $totalProductQty = 0;
+        // Menghitung total qty pada products dan susut persentase per produk
+        $productsData = [];
         foreach ($order->products as $product) {
-            $totalProductQty += $product->pivot->quantity;
+            $totalProductQty = $product->pivot->quantity;
+            $selisihQuantity = $totalProductQty - $timbangKotor;
+            $susutPercentage = ($selisihQuantity / $totalProductQty) * 100;
+
+            $productsData[] = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'quantity_pesanan' => $totalProductQty,
+                'timbang_kotor' => $timbangKotor,
+                'total_berat_keranjang' => $totalBeratKeranjang,
+                'total_keranjang' => $order->processingActivities->count(),
+                'selisih_quantity' => $selisihQuantity,
+                'timbang_bersih' => $timbangKotor - $totalBeratKeranjang,
+                'total_jumlah_item' => $totalCountItem,
+                'rata_rata_berat_hewan' => ($timbangKotor - $totalBeratKeranjang) / $totalCountItem,
+                'susut_percentage' => $susutPercentage,
+                'price_per_unit' => (int) $product->pivot->price_per_unit,
+                'total_price' => (int) $product->pivot->total_price,
+            ];
         }
-
-        // menghitung jumlah keranjang
-        $totalKeranjang = $order->processingActivities->count();
-
-        // timbang bersih = total timbang kotor (berat ayam + total berat keranjang) - total berat keranjang
-        $timbangBersih = ($timbangKotor - $totalBeratKeranjang);
-        $averageWeightOfItem = $timbangBersih / $totalCountItem;
-
-        // Menghitung selisih_quantity
-        $selisihQuantity = $totalProductQty - $timbangBersih;
 
         return response()->json([
             'status' => 200,
@@ -582,24 +593,8 @@ private function updateProductPrices($validatedData, $vendor)
                 'id' => $order->id,
                 'no_ref' => $order->no_ref,
                 'kode_order' => $order->kode_order,
-                'quantity_pesanan' => $totalProductQty,
-                'timbang_kotor'=>$timbangKotor,
-                'total_berat_keranjang'=>$totalBeratKeranjang,
-                'total_keranjang' => $totalKeranjang,
-                'selisih_quantity' => $selisihQuantity,
-                'timbang_bersih' => $timbangBersih,
-                'total_jumlah_item' => $totalCountItem,
-                'rata_rata_berat_hewan' => $averageWeightOfItem,
+                'products' => $productsData,
                 'vendor' => $order->vendor,
-                'products' => $order->products->map(function ($product) {
-                    return [
-                        'id' => $product->id,
-                        'name' => $product->name,
-                        'quantity' => $product->pivot->quantity,
-                        'price_per_unit' => (int) $product->pivot->price_per_unit,
-                        'total_price' => (int) $product->pivot->total_price,
-                    ];
-                }),
                 'warehouse' => $order->warehouse,
                 'invoices' => $order->invoices,
                 'processing_activities' => $order->processingActivities,
@@ -618,6 +613,7 @@ private function updateProductPrices($validatedData, $vendor)
         ]);
     }
 }
+
 
 
 
