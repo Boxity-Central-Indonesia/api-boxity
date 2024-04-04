@@ -3647,7 +3647,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"vendor_id\": {{customerID}},\n    \"warehouse_id\": {{warehouseID}},\n    \"no_ref\": \"CNTH-REF-000-001\",\n    \"status\": \"pending\",\n    \"details\": \"Pesanan untuk project X\",\n    \"order_type\": \"Direct Order\",\n    \"products\": [\n        {\n            \"product_id\": {{productID}},\n            \"quantity\": 500,\n            \"price_per_unit\": 14500\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 1000,\n            \"price_per_unit\": 14600\n        }\n    ]\n}"
+									"raw": "{\n    \"vendor_id\": {{customerID}},\n    \"warehouse_id\": {{warehouseID}},\n    \"no_ref\": \"CNTH-REF-000-001\",\n    \"status\": \"pending\",\n    \"details\": \"Pesanan untuk project X\",\n    \"order_type\": \"Direct Order\",\n    \"products\": [\n        {\n            \"product_id\": {{productID}},\n            // secara default ini\n            \"unit_of_measure\": \"kg\",\n            \"quantity\": 500,\n            \"price_per_unit\": 14500\n        },\n        {\n            \"product_id\": 2,\n            // secara default ini\n            \"unit_of_measure\": \"kg\",\n            \"quantity\": 1000,\n            \"price_per_unit\": 14600\n        }\n    ]\n}"
 								},
 								"url": "{{url}}/api/orders"
 							},
@@ -3834,7 +3834,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"product\": {\n        \"quantity\": 10,\n        \"price_per_unit\": 15500\n    }\n}\n",
+									"raw": "{\n    \"product\": {\n        // secara default ini\n        \"unit_of_measure\": \"kg\",\n        \"quantity\": 10,\n        \"price_per_unit\": 15500\n    }\n}\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4138,14 +4138,15 @@
 							"response": []
 						},
 						{
-							"name": "New Request",
+							"name": "Download",
 							"id": "bfad5529-cdec-416f-8500-bd38c5b1bd64",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": "{{url}}/api/download/payments/{{paymentID}}"
 							},
 							"response": []
 						}
