@@ -563,6 +563,11 @@ private function updateProductPrices($validatedData, $vendor)
             }
         }
 
+        $averageWeight = 0;
+        if ($totalCountItem > 0) {
+            $averageWeight = ($timbangKotor - $totalBeratKeranjang) / $totalCountItem;
+        }
+
         // Menghitung total qty pada products dan susut persentase per produk
         $productsData = [];
         foreach ($order->products as $product) {
@@ -580,7 +585,7 @@ private function updateProductPrices($validatedData, $vendor)
                 'selisih_quantity' => $selisihQuantity,
                 'timbang_bersih' => $timbangKotor - $totalBeratKeranjang,
                 'total_jumlah_item' => $totalCountItem,
-                'rata_rata_berat_hewan' => ($timbangKotor - $totalBeratKeranjang) / $totalCountItem,
+                'rata_rata_berat_hewan' => $averageWeight,
                 'susut_percentage' => $susutPercentage,
                 'price_per_unit' => (int) $product->pivot->price_per_unit,
                 'total_price' => (int) $product->pivot->total_price,
