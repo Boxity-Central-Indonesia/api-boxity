@@ -4136,6 +4136,18 @@
 								"url": "{{url}}/api/payments/{{paymentID}}"
 							},
 							"response": []
+						},
+						{
+							"name": "New Request",
+							"id": "bfad5529-cdec-416f-8500-bd38c5b1bd64",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
 					],
 					"id": "68406140-2aaf-4f0d-b064-cece8be5a2cb",
