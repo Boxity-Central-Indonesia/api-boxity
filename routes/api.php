@@ -178,6 +178,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/cashflow-report', [ReportController::class, 'downloadCashFlowReportPdf']);
         Route::get('/ledger-report', [ReportController::class, 'downloadLedgerReportPdf']);
         Route::get('/orders/{orderId}', [OrderController::class, 'downloadOrderDetail']);
+        Route::get('/payments/{paymentId}', [PaymentController::class, 'downloadPaymentDetail']);
     });
 
     // Proses produksi

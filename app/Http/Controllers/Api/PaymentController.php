@@ -9,8 +9,12 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\Invoice; // Pastikan Anda memiliki model ini
 use App\Models\ProductsPrice;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB; // Untuk transaksi database
 use App\Events\formCreated;
+use Barryvdh\DomPDF\Facade\Pdf;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Storage;
 
 class PaymentController extends Controller
 {
@@ -26,6 +30,63 @@ class PaymentController extends Controller
             'message' => 'Payments retrieved successfully.',
         ]);
     }
+
+    public function downloadPaymentDetail($paymentId)
+{
+    $payment = Payment::with('invoice.order.vendor')->find($paymentId);
+    if (!$payment) {
+        return response()->json(['message' => 'Payment not found.', 'status' => 404], 404);
+    }
+
+    // Format data pembayaran
+    $formattedOrder = [
+        'id' => $payment->id,
+        'kode_payment' => $payment->kode_payment,
+        'amount_paid' => (int)$payment->amount_paid,
+        'invoice' => [
+            'total_amount' => (int)$payment->invoice->total_amount,
+            'paid_amount' => (int)$payment->invoice->paid_amount,
+            'balance_due' => (int)$payment->invoice->balance_due,
+            'invoice_date' => $payment->invoice->invoice_date,
+            'due_date' => $payment->invoice->due_date,
+            'status' => $payment->invoice->status,
+            'kode_invoice' => $payment->invoice->kode_invoice,
+            'created_at' => $payment->invoice->created_at,
+        ],
+        'vendor' => [
+            'name' => $payment->invoice->order->vendor->name,
+            'address' => $payment->invoice->order->vendor->address,
+            'phone_number' => $payment->invoice->order->vendor->phone_number,
+            'transaction_type' => $payment->invoice->order->vendor->transaction_type,
+        ],
+    ];
+
+    // Generate nama file dengan menambahkan tanggal
+    $fileName = 'payment_receipt_' . $formattedOrder['id'] . '_' . Carbon::now()->format('Ymd_His') . '.pdf';
+
+    // Mendapatkan URL untuk di-download
+    $pdfUrl = url('pdf/' . $fileName);
+    $now = Carbon::now();
+    $filenameQR = 'qrcode_' . $now->format('Ymd_His') . '.png';
+    $qrCodePath = public_path('qrcodes/' . $filenameQR);
+
+    // Generate QR Code
+    $qrCode = QrCode::size(100)->generate($pdfUrl);
+
+    // Save QR Code as an image
+    Storage::disk('public')->put('qrcodes/' . $filenameQR, $qrCode);
+    $pdf = PDF::loadView('pdf.payment_detail', compact('formattedOrder', 'pdfUrl', 'qrCodePath'));
+
+    // Simpan file PDF di storage dengan nama yang baru
+    $pdf->save(public_path('pdf/' . $fileName));
+
+    return response()->json([
+        'message' => 'PDF generated successfully.',
+        'data' => $pdfUrl,
+        'status' => 200,
+    ]);
+}
+
 
     public function store(PaymentRequest $request)
     {
@@ -144,7 +205,7 @@ class PaymentController extends Controller
 
     public function show($id)
     {
-        $payment = Payment::with('invoice')->find($id);
+        $payment = Payment::with('invoice.order.vendor')->find($id);
 
         if (!$payment) {
             return response()->json([
