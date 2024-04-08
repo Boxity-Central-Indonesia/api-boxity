@@ -44,13 +44,14 @@ use App\Http\Controllers\Api\GoodsReceiptController;
 use App\Http\Controllers\Api\GoodsReceiptItemController;
 use App\Http\Controllers\Api\DeliveryNoteController;
 use App\Http\Controllers\Api\DeliveryNoteItemController;
+use App\Http\Controllers\Api\ResetDataController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     // Auth routes
     Route::post('logout', [AuthController::class, 'logout']);
-
+    Route::post('/reset-data', [ResetDataController::class, 'reset']);
     // Profile routes
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index']);
