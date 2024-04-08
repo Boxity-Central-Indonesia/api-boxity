@@ -80,6 +80,18 @@
 						"url": "{{url}}/api/login"
 					},
 					"response": []
+				},
+				{
+					"name": "Reset Data",
+					"id": "60c2a78c-ef25-4de9-9f8c-d1416a6f8d6b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			],
 			"id": "8bae32d5-981f-4f9c-9deb-2e496c57b354",
