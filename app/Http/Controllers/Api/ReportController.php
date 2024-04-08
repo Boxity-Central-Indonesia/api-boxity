@@ -119,8 +119,7 @@ class ReportController extends Controller
         'data' => $pdfUrl,
         'status' => 200,
     ]);
-}
-
+    }
 
     public function purchaseReport()
     {
@@ -702,33 +701,37 @@ class ReportController extends Controller
     // Laporan Piutang
     public function ReceivablesReport()
     {
-        $receivables = Invoice::where('status', '!=', 'paid')
-            ->whereHas('order.vendor', function ($query) {
-                $query->where('transaction_type', 'outbound'); // Asumsi untuk penjualan kepada pelanggan
-            })
-            ->with(['order.vendor' => function ($query) {
-                $query->select('id', 'name');
-            }, 'order' => function ($query) {
-                $query->select('id', 'vendor_id', 'created_at'); // Pastikan 'created_at' juga diambil
-            }])
-            ->get([
-                'id', 'order_id', 'total_amount', 'paid_amount', 'balance_due', 'status'
-            ])
-            ->map(function ($invoice) {
-                // Pastikan bahwa instance 'order' tersedia dan memiliki properti yang diperlukan
-                if ($invoice->order) {
-                    $invoice->total_tagihan = (int)$invoice->total_amount;
-                    $invoice->total_dibayar = (int)$invoice->paid_amount;
-                    $invoice->sisa_tagihan = (int)$invoice->balance_due;
-                    $invoice->vendor_name = $invoice->order->vendor->name; // Nama pelanggan
-                    // Format kode_order sesuai dengan kebutuhan
-                    $invoice->kode_inv = 'INV/' . $invoice->order->created_at->format('Y/m/') . str_pad($invoice->order->id, 4, '0', STR_PAD_LEFT);
-                }
+        $vendors = Vendor::with(['orders' => function ($query) {
+            // Pastikan untuk memilih 'created_at' juga
+            $query->select('id', 'vendor_id', 'created_at');
+        }, 'orders.invoices' => function ($query) {
+            $query->selectRaw('order_id, SUM(total_amount) as total_tagihan, SUM(paid_amount) as total_dibayar')
+                ->groupBy('order_id');
+        }])->where('transaction_type', 'outbound')->get();
 
-                unset($invoice->order); // Hapus 'order' untuk menghindari data yang tidak perlu di respons
-
-                return $invoice;
+        $receivables = $vendors->map(function ($vendor) {
+            $vendor->orders->each(function ($order) {
+                // Tambahkan kode_order ke setiap order
+                $order->kode_order = 'ORD/' . $order->created_at->format('Y/m/') . str_pad($order->id, 4, '0', STR_PAD_LEFT);
+                $order->invoices->each(function ($invoice) use ($order) {
+                    $order->total_tagihan = $invoice->total_tagihan ?? 0;
+                    $order->total_dibayar = $invoice->total_dibayar ?? 0;
+                    $order->sisa_tagihan = $order->total_tagihan - $order->total_dibayar;
+                });
             });
+            return [
+                'vendor_name' => $vendor->name,
+                'orders' => $vendor->orders->map(function ($order) {
+                    return [
+                        'order_id' => $order->id,
+                        'kode_order' => $order->kode_order,
+                        'total_tagihan' => (int)$order->total_tagihan,
+                        'total_dibayar' => (int)$order->total_dibayar,
+                        'sisa_tagihan' => (int)$order->sisa_tagihan,
+                    ];
+                })
+            ];
+        });
 
         return response()->json([
             'status' => 200,
