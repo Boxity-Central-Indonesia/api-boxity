@@ -13,7 +13,7 @@ class ProductsCategory extends Model
     use HasFactory, HasApiTokens;
 
     protected $fillable = [
-        'name',
+        'name', 'image',
         'description',
     ];
     protected static function boot()

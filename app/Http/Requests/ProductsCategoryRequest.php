@@ -16,6 +16,7 @@ class ProductsCategoryRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'image' => 'nullable|string',
         ];
     }
 
