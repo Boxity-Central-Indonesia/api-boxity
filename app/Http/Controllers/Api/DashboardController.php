@@ -23,13 +23,13 @@ class DashboardController extends Controller
                 // Hitung total penjualan, pembelian, dan pembayaran dalam satu query
                 $sales = Order::where('order_status', 'Completed')->whereHas('vendor', function ($query) {
                     $query->where('transaction_type', 'outbound');
-                })->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('total_price');
+                })->sum('total_price');
 
                 $purchases = Order::where('order_status', 'Completed')->whereHas('vendor', function ($query) {
                     $query->where('transaction_type', 'inbound');
-                })->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('total_price');
+                })->sum('total_price');
 
-                $payments = Invoice::whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('paid_amount');
+                $payments = Invoice::sum('paid_amount');
 
                 $profit = $sales - $purchases;
 
@@ -46,7 +46,7 @@ class DashboardController extends Controller
                     $query->where('transaction_type', 'outbound');
                 })->whereHas('invoices', function ($query) {
                     $query->whereIn('status', ['partial', 'paid']);
-                })->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->sum('total_price');
+                })->sum('total_price');
 
                 // Query to find products ordered by the number of sales/orders
                 $total_all_stock = DB::table('order_products')->sum('quantity');
