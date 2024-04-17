@@ -535,89 +535,90 @@ private function updateProductPrices($validatedData, $vendor)
 
     // Menampilkan satu order
     public function show($id)
-{
-    $order = Order::with(['vendor', 'products', 'warehouse', 'invoices', 'processingActivities'])->find($id);
+    {
+        $order = Order::with(['vendor', 'products', 'warehouse', 'invoices', 'processingActivities'])->find($id);
 
-    if ($order) {
-        // Menghitung selisih_quantity
-        $timbangKotor = 0;
-        foreach ($order->processingActivities as $activity) {
-            if (isset($activity->details['qty_weighing'])) {
-                $timbangKotor += $activity->details['qty_weighing'];
+        if ($order) {
+            // Menghitung selisih_quantity
+            $timbangKotor = 0;
+            foreach ($order->processingActivities as $activity) {
+                if (isset($activity->details['qty_weighing'])) {
+                    $timbangKotor += $activity->details['qty_weighing'];
+                }
             }
-        }
 
-        // Menghitung total berat keranjang
-        $totalBeratKeranjang = 0;
-        foreach ($order->processingActivities as $activity) {
-            if (isset($activity->details['basket_weight'])) {
-                $totalBeratKeranjang += $activity->details['basket_weight'];
+            // Menghitung total berat keranjang
+            $totalBeratKeranjang = 0;
+            foreach ($order->processingActivities as $activity) {
+                if (isset($activity->details['basket_weight'])) {
+                    $totalBeratKeranjang += $activity->details['basket_weight'];
+                }
             }
-        }
 
-        // Menghitung total jumlah item
-        $totalCountItem = 0;
-        foreach ($order->processingActivities as $activity) {
-            if (isset($activity->details['number_of_item'])) {
-                $totalCountItem += $activity->details['number_of_item'];
+            // Menghitung total jumlah item
+            $totalCountItem = 0;
+            foreach ($order->processingActivities as $activity) {
+                if (isset($activity->details['number_of_item'])) {
+                    $totalCountItem += $activity->details['number_of_item'];
+                }
             }
+
+            $averageWeight = 0;
+            if ($totalCountItem > 0) {
+                $averageWeight = ($timbangKotor - $totalBeratKeranjang) / $totalCountItem;
+            }
+
+            // Menghitung total qty pada products dan susut persentase per produk
+            $productsData = [];
+            foreach ($order->products as $product) {
+                $totalProductQty = $product->pivot->quantity;
+                $selisihQuantity = $totalProductQty - $timbangKotor;
+                $susutPercentage = $totalProductQty != 0 ? ($selisihQuantity / $totalProductQty) * 100 : 0;
+
+                $productsData[] = [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'quantity_pesanan' => $totalProductQty,
+                    'timbang_kotor' => $timbangKotor,
+                    'total_berat_keranjang' => $totalBeratKeranjang,
+                    'total_keranjang' => $order->processingActivities->count(),
+                    'selisih_quantity' => $selisihQuantity,
+                    'timbang_bersih' => $timbangKotor - $totalBeratKeranjang,
+                    'total_jumlah_item' => $totalCountItem,
+                    'rata_rata_berat_hewan' => $averageWeight,
+                    'susut_percentage' => $susutPercentage,
+                    'price_per_unit' => (int) $product->pivot->price_per_unit,
+                    'total_price' => (int) $product->pivot->total_price,
+                ];
+            }
+
+            return response()->json([
+                'status' => 200,
+                'data' => [
+                    'id' => $order->id,
+                    'no_ref' => $order->no_ref,
+                    'kode_order' => $order->kode_order,
+                    'products' => $productsData,
+                    'vendor' => $order->vendor,
+                    'warehouse' => $order->warehouse,
+                    'invoices' => $order->invoices,
+                    'processing_activities' => $order->processingActivities,
+                    'total_price' => (int) $order->total_price,
+                    'order_status' => $order->order_status,
+                    'order_type' => $order->order_type,
+                    'taxes' => (int) $order->taxes,
+                    'shipping_cost' => (int) $order->shipping_cost,
+                ],
+                'message' => 'Order retrieved successfully.',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Order not found.',
+            ]);
         }
-
-        $averageWeight = 0;
-        if ($totalCountItem > 0) {
-            $averageWeight = ($timbangKotor - $totalBeratKeranjang) / $totalCountItem;
-        }
-
-        // Menghitung total qty pada products dan susut persentase per produk
-        $productsData = [];
-        foreach ($order->products as $product) {
-            $totalProductQty = $product->pivot->quantity;
-            $selisihQuantity = $totalProductQty - $timbangKotor;
-            $susutPercentage = ($selisihQuantity / $totalProductQty) * 100;
-
-            $productsData[] = [
-                'id' => $product->id,
-                'name' => $product->name,
-                'quantity_pesanan' => $totalProductQty,
-                'timbang_kotor' => $timbangKotor,
-                'total_berat_keranjang' => $totalBeratKeranjang,
-                'total_keranjang' => $order->processingActivities->count(),
-                'selisih_quantity' => $selisihQuantity,
-                'timbang_bersih' => $timbangKotor - $totalBeratKeranjang,
-                'total_jumlah_item' => $totalCountItem,
-                'rata_rata_berat_hewan' => $averageWeight,
-                'susut_percentage' => $susutPercentage,
-                'price_per_unit' => (int) $product->pivot->price_per_unit,
-                'total_price' => (int) $product->pivot->total_price,
-            ];
-        }
-
-        return response()->json([
-            'status' => 200,
-            'data' => [
-                'id' => $order->id,
-                'no_ref' => $order->no_ref,
-                'kode_order' => $order->kode_order,
-                'products' => $productsData,
-                'vendor' => $order->vendor,
-                'warehouse' => $order->warehouse,
-                'invoices' => $order->invoices,
-                'processing_activities' => $order->processingActivities,
-                'total_price' => (int) $order->total_price,
-                'order_status' => $order->order_status,
-                'order_type' => $order->order_type,
-                'taxes' => (int) $order->taxes,
-                'shipping_cost' => (int) $order->shipping_cost,
-            ],
-            'message' => 'Order retrieved successfully.',
-        ]);
-    } else {
-        return response()->json([
-            'status' => 404,
-            'message' => 'Order not found.',
-        ]);
     }
-}
+
 
 
 
