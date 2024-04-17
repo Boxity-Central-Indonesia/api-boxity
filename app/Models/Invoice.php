@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\CreatedAtDescScope;
 use Illuminate\Support\Facades\Auth;
 
-
 class Invoice extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'order_id',
         'total_amount',
@@ -20,18 +20,37 @@ class Invoice extends Model
         'due_date',
         'status',
     ];
+
     protected $appends = ['kode_invoice'];
+
     public function getKodeInvoiceAttribute()
     {
         if (!is_null($this->created_at)) {
             return 'INV/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
         }
     }
+
+    // Accessor untuk mengubah nilai status yang tersimpan di database
+    public function getStatusAttribute($value)
+    {
+        switch ($value) {
+            case 'paid':
+                return 'Lunas';
+            case 'unpaid':
+                return 'Belum Lunas';
+            case 'partial':
+                return 'Cicilan';
+            default:
+                return 'Unknown';
+        }
+    }
+
     protected static function boot()
     {
         parent::boot();
         static::addGlobalScope(new CreatedAtDescScope());
     }
+
     // Hubungan ke Order
     public function order()
     {
@@ -43,6 +62,7 @@ class Invoice extends Model
     {
         return $this->hasMany(Payment::class);
     }
+
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
