@@ -25,7 +25,7 @@ class Payment extends Model
     protected $appends = ['kode_payment'];
     public function getKodePaymentAttribute()
     {
-        return 'PAYRECEIPT/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+        return 'PR/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
     }
 
     // Hubungan ke Invoice

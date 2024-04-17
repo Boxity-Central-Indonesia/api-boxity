@@ -39,7 +39,11 @@ class ReportController extends Controller
                 'invoices.invoice_date',
                 DB::raw('invoices.status as invoice_status'),
                 DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
-                DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
+                DB::raw('CASE
+                        WHEN vendors.transaction_type = "inbound" THEN CONCAT("PO/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                        WHEN vendors.transaction_type = "outbound" THEN CONCAT("SO/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                        ELSE CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                    END as kode_order')
             )
             ->where('vendors.transaction_type', 'outbound')
             ->get()->map(function ($salesData) {
@@ -80,7 +84,11 @@ class ReportController extends Controller
                 'invoices.invoice_date',
                 DB::raw('invoices.status as invoice_status'),
                 DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
-                DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
+                DB::raw('CASE
+                        WHEN vendors.transaction_type = "inbound" THEN CONCAT("PO/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                        WHEN vendors.transaction_type = "outbound" THEN CONCAT("SO/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                        ELSE CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                    END as kode_order')
             )
             ->where('vendors.transaction_type', 'outbound')
             ->get()->map(function ($salesData) {
@@ -138,7 +146,11 @@ class ReportController extends Controller
                 'invoices.invoice_date',
                 DB::raw('invoices.status as invoice_status'),
                 DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
-                DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
+                DB::raw('CASE
+                        WHEN vendors.transaction_type = "inbound" THEN CONCAT("PO/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                        WHEN vendors.transaction_type = "outbound" THEN CONCAT("SO/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                        ELSE CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                    END as kode_order')
             )
             ->where('vendors.transaction_type', 'inbound')
             ->get()->map(function ($purchaseData) {
@@ -180,7 +192,11 @@ class ReportController extends Controller
             'invoices.invoice_date',
             DB::raw('invoices.status as invoice_status'),
             DB::raw('order_products.quantity * order_products.price_per_unit as total_price'),
-            DB::raw('CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0")) as kode_order')
+            DB::raw('CASE
+                        WHEN vendors.transaction_type = "inbound" THEN CONCAT("PO/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                        WHEN vendors.transaction_type = "outbound" THEN CONCAT("SO/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                        ELSE CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                    END as kode_order')
         )
         ->where('vendors.transaction_type', 'inbound')
         ->get()->map(function ($purchaseData) {
@@ -389,10 +405,10 @@ class ReportController extends Controller
             return $transactions;
         });
 
-        // Tampilkan hanya data yang diperlukan
+        // Tampilkan hanya data yang diperlukan dan tentukan apakah pesanan merupakan PO atau SO
         $filteredTransactions = $transactions->map(function ($transaction) {
             $kodeOrder = $transaction->order
-                ? 'ORD/' . $transaction->order->created_at->format('Y/m/') . str_pad($transaction->order->id, 4, '0', STR_PAD_LEFT)
+                ? ($transaction->vendor->transaction_type === 'inbound' ? 'PO/' : 'SO/') . $transaction->order->created_at->format('Y/m/') . str_pad($transaction->order->id, 4, '0', STR_PAD_LEFT)
                 : 'N/A'; // Atau format default jika order tidak ada
             return [
                 'kode_order' => $kodeOrder,
@@ -412,7 +428,9 @@ class ReportController extends Controller
             'message' => 'Vendor report retrieved successfully.',
         ]);
     }
-    public function downloadVendorReportPdf(){
+
+    public function downloadVendorReportPdf()
+    {
         // Ambil transaksi vendor terkait dengan detail order dan product
         $transactions = VendorTransaction::with(['vendor', 'order' => function ($query) {
             $query->select('id', 'created_at');
@@ -427,10 +445,10 @@ class ReportController extends Controller
             return $transactions;
         });
 
-        // Tampilkan hanya data yang diperlukan
+        // Tampilkan hanya data yang diperlukan dan tentukan apakah pesanan merupakan PO atau SO
         $filteredTransactions = $transactions->map(function ($transaction) {
             $kodeOrder = $transaction->order
-                ? 'ORD/' . $transaction->order->created_at->format('Y/m/') . str_pad($transaction->order->id, 4, '0', STR_PAD_LEFT)
+                ? ($transaction->vendor->transaction_type === 'inbound' ? 'PO/' : 'SO/') . $transaction->order->created_at->format('Y/m/') . str_pad($transaction->order->id, 4, '0', STR_PAD_LEFT)
                 : 'N/A'; // Atau format default jika order tidak ada
             return [
                 'kode_order' => $kodeOrder,
@@ -444,7 +462,7 @@ class ReportController extends Controller
             ];
         });
 
-        // Validasi jika data persediaan tidak ditemukan
+        // Validasi jika data tidak ditemukan
         if ($filteredTransactions->isEmpty()) {
             return response()->json(['message' => 'No vendor data found.', 'status' => 404], 404);
         }
@@ -476,7 +494,11 @@ class ReportController extends Controller
             ->join('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
             ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
             ->select(
-                DB::raw('CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0")) as kodeOrder'),
+                DB::raw('CASE
+                            WHEN orders.order_type = "inbound" THEN CONCAT("PO/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                            WHEN orders.order_type = "outbound" THEN CONCAT("SO/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                            ELSE CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                        END as kodeOrder'),
                 'products.name as product_name',
                 'manufacturer_processing_activities.activity_type as activity_type',
                 'manufacturer_processing_activities.status_activities as status_production',
@@ -513,14 +535,18 @@ class ReportController extends Controller
 
         return response()->json(['data' => $groupedActivities, 'status' => 200, 'message' => 'Production summary retrieved successfully.']);
     }
+
     public function downloadProductionReportPdf()
     {
-        // Panggil fungsi inventoryReport untuk mendapatkan data persediaan
         $activities = DB::table('manufacturer_processing_activities')
             ->join('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
             ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
             ->select(
-                DB::raw('CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0")) as kodeOrder'),
+                DB::raw('CASE
+                            WHEN orders.order_type = "inbound" THEN CONCAT("PO/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                            WHEN orders.order_type = "outbound" THEN CONCAT("SO/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                            ELSE CONCAT("ORD/", YEAR(orders.created_at), "/", MONTH(orders.created_at), "/", LPAD(orders.id, 4, "0"))
+                        END as kodeOrder'),
                 'products.name as product_name',
                 'manufacturer_processing_activities.activity_type as activity_type',
                 'manufacturer_processing_activities.status_activities as status_production',
@@ -528,7 +554,8 @@ class ReportController extends Controller
             )
             ->orderBy('orders.created_at', 'asc')
             ->get();
-            // Mengelompokkan data berdasarkan kodeOrder
+
+        // Mengelompokkan data berdasarkan kodeOrder
         $groupedActivities = $activities->groupBy('kodeOrder')->map(function ($items, $kodeOrder) {
             // Ambil detail produk dari item pertama karena diasumsikan semua item dalam grup memiliki produk yang sama
             $firstItem = $items->first();
@@ -546,7 +573,7 @@ class ReportController extends Controller
             ];
         })->values()->all(); // Konversi hasil dari map ke array numerik untuk respons JSON
 
-    // Validasi jika data persediaan tidak ditemukan
+        // Validasi jika data tidak ditemukan
         if (empty($groupedActivities)) {
             return response()->json(['message' => 'No production data found.', 'status' => 404], 404);
         }
@@ -562,7 +589,7 @@ class ReportController extends Controller
         // Mendapatkan URL untuk di-download
         $pdfUrl = url('pdf/' . $fileName);
 
-    // Mengirim response dengan URL file yang dapat di-download
+        // Mengirim response dengan URL file yang dapat di-download
         return response()->json([
             'message' => 'PDF generated successfully.',
             'data' => $pdfUrl,

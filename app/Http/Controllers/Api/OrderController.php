@@ -725,7 +725,11 @@ Storage::disk('public')->put('qrcodes/' . $filenameQR, $qrCode);
             $orderDetails = Order::select(
                 'orders.id as order_id',
                 'orders.no_ref as no_ref',
-                DB::raw('CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0")) as kodeOrder'),
+                DB::raw('CASE
+                            WHEN vendor_transactions.transaction_type = "inbound" THEN CONCAT("SO/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
+                            WHEN vendor_transactions.transaction_type = "outbound" THEN CONCAT("PO/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
+                            ELSE CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
+                        END as kodeOrder'),
                 'orders.total_price as order_total_price',
                 'invoices.id as invoice_id',
                 DB::raw('CONCAT("INV/", DATE_FORMAT(invoices.created_at, "%Y"), "/", DATE_FORMAT(invoices.created_at, "%m"), "/", LPAD(invoices.id, 4, "0")) as kodeInvoice'),
@@ -739,10 +743,9 @@ Storage::disk('public')->put('qrcodes/' . $filenameQR, $qrCode);
             )
                 ->leftJoin('invoices', 'invoices.order_id', '=', 'orders.id')
                 ->leftJoin('payments', 'payments.invoice_id', '=', 'invoices.id')
+                ->leftJoin('vendor_transactions', 'orders.vendor_id', '=', 'vendor_transactions.vendor_id')
                 ->where('orders.id', $orderID)
                 ->get();
-
-
 
             // Pastikan order ditemukan
             if ($orderDetails->isEmpty()) {
@@ -765,6 +768,7 @@ Storage::disk('public')->put('qrcodes/' . $filenameQR, $qrCode);
             ]);
         }
     }
+
     // Mengupdate order
     public function update(Request $request, $id)
     {
