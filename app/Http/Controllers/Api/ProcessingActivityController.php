@@ -31,27 +31,27 @@ class ProcessingActivityController extends Controller
     public function getProcessActivityToday()
     {
         $activities = DB::table('manufacturer_processing_activities')
-        ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
-        ->leftJoin('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
-        ->leftJoin('vendor_transactions', 'orders.vendor_id', '=', 'vendor_transactions.vendor_id')
-        ->selectRaw('
-            manufacturer_processing_activities.activity_date,
-            CASE
-                WHEN vendor_transactions.transaction_type = "inbound" THEN CONCAT("PO/", DATE_FORMAT(orders.created_at, "%Y/%m/"), LPAD(orders.id, 4, "0"))
-                WHEN vendor_transactions.transaction_type = "outbound" THEN CONCAT("SO/", DATE_FORMAT(orders.created_at, "%Y/%m/"), LPAD(orders.id, 4, "0"))
-                ELSE CONCAT("ORD/unknown_date/", LPAD(orders.id, 4, "0"))
-            END AS kode_order,
-            orders.*,
-            manufacturer_processing_activities.created_at,
-            products.name,
-            manufacturer_processing_activities.status_activities,
-            manufacturer_processing_activities.activity_type,
-            manufacturer_processing_activities.details,
-            products.code
-        ')
-        ->whereDate('manufacturer_processing_activities.created_at', today())
-        ->orderByDesc('manufacturer_processing_activities.created_at')
-        ->get();
+            ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
+            ->leftJoin('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
+            ->leftJoin('vendor', 'orders.vendor_id', '=', 'vendor.id')
+            ->selectRaw('
+                manufacturer_processing_activities.activity_date,
+                CASE
+                    WHEN vendor.transaction_type = "inbound" THEN CONCAT("PO/", DATE_FORMAT(orders.created_at, "%Y/%m/"), LPAD(orders.id, 4, "0"))
+                    WHEN vendor.transaction_type = "outbound" THEN CONCAT("SO/", DATE_FORMAT(orders.created_at, "%Y/%m/"), LPAD(orders.id, 4, "0"))
+                    ELSE CONCAT("ORD/unknown_date/", LPAD(orders.id, 4, "0"))
+                END AS kode_order,
+                orders.*,
+                manufacturer_processing_activities.created_at,
+                products.name,
+                manufacturer_processing_activities.status_activities,
+                manufacturer_processing_activities.activity_type,
+                manufacturer_processing_activities.details,
+                products.code
+            ')
+            ->whereDate('manufacturer_processing_activities.created_at', today())
+            ->orderByDesc('manufacturer_processing_activities.created_at')
+            ->get();
 
         return response()->json([
             'status' => 200,
@@ -59,6 +59,7 @@ class ProcessingActivityController extends Controller
             'message' => 'All processing activities today retrieved successfully.',
         ]);
     }
+
 
 
     public function store(ProcessingActivityRequest $request)
