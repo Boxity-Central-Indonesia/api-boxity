@@ -34,12 +34,12 @@ class ProcessingActivityController extends Controller
         $activities = DB::table('manufacturer_processing_activities')
             ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
             ->leftJoin('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
-            ->leftJoin('vendor', 'orders.vendor_id', '=', 'vendor.id')
+            ->leftJoin('vendors', 'orders.vendor_id', '=', 'vendors.id')
             ->selectRaw('
                 manufacturer_processing_activities.activity_date,
                 CASE
-                    WHEN vendor.transaction_type = "inbound" THEN CONCAT("PO/", DATE_FORMAT(orders.created_at, "%Y/%m/"), LPAD(orders.id, 4, "0"))
-                    WHEN vendor.transaction_type = "outbound" THEN CONCAT("SO/", DATE_FORMAT(orders.created_at, "%Y/%m/"), LPAD(orders.id, 4, "0"))
+                    WHEN vendors.transaction_type = "inbound" THEN CONCAT("PO/", DATE_FORMAT(orders.created_at, "%Y/%m/"), LPAD(orders.id, 4, "0"))
+                    WHEN vendors.transaction_type = "outbound" THEN CONCAT("SO/", DATE_FORMAT(orders.created_at, "%Y/%m/"), LPAD(orders.id, 4, "0"))
                     ELSE CONCAT("ORD/unknown_date/", LPAD(orders.id, 4, "0"))
                 END AS kode_order,
                 orders.*,
