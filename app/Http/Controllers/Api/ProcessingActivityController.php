@@ -29,7 +29,8 @@ class ProcessingActivityController extends Controller
         ]);
     }
     public function getProcessActivityToday()
-    {
+{
+    try {
         $activities = DB::table('manufacturer_processing_activities')
             ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
             ->leftJoin('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
@@ -53,12 +54,26 @@ class ProcessingActivityController extends Controller
             ->orderByDesc('manufacturer_processing_activities.created_at')
             ->get();
 
+        if ($activities->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No processing activities found today.',
+            ], 404);
+        }
+
         return response()->json([
             'status' => 200,
             'data' => $activities,
             'message' => 'All processing activities today retrieved successfully.',
         ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 500,
+            'message' => 'Failed to retrieve processing activities. Error: ' . $e->getMessage(),
+        ], 500);
     }
+}
+
 
 
 
