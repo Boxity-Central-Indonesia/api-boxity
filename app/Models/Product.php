@@ -23,6 +23,9 @@ class Product extends Model
         static::addGlobalScope(new CreatedAtDescScope());
         self::creating(function ($model) {
             $model->user_created = Auth::id();
+            // Generate a unique product code
+            $uniqueIdentifier = uniqid();
+            $model->code = 'PRD' . strtoupper(substr(md5($uniqueIdentifier), 0, 6));
         });
         self::updating(function ($model) {
             $model->user_updated = Auth::id();

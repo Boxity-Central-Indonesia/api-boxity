@@ -43,4 +43,8 @@ class Warehouse extends Model
     {
         return $this->hasMany(ProductsMovement::class);
     }
+    public function exceedsCapacity($amount)
+    {
+        return $this->capacity < $amount;
+    }
 }

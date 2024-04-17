@@ -33,10 +33,6 @@ class ProductsController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->validated();
-        // Generate a unique product code (e.g., prefix + unique identifier)
-    $uniqueIdentifier = uniqid(); // You can customize this based on your needs
-    $productCode = 'PRD' . strtoupper(substr(md5($uniqueIdentifier), 0, 6));
-
         if ($request->hasFile('image_product')) {
             $result = cloudinary()->upload($request->file('image_product')->getRealPath())->getSecurePath();
             $data['image_product'] = $result;
@@ -54,7 +50,6 @@ class ProductsController extends Controller
             'message' => 'Selected warehouse has exceeded its capacity.',
         ], 400);
     }
-        $data['code'] = $productCode;
         $product = Product::create($data);
         broadcast(new formCreated('New Product created successfully.'));
 

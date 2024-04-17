@@ -15,7 +15,7 @@ class ProductRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|string',
-            'description' => 'sometimes|string',
+            'description' => 'nullable|string',
             'price' => 'required|numeric',
             'category_id' => 'nullable|exists:products_categories,id',
             'warehouse_id' => 'nullable|exists:warehouses,id',
@@ -30,11 +30,6 @@ class ProductRequest extends FormRequest
             'image_product' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
 
-        // Add validation rule for 'code' when creating a new product
-        if ($this->isMethod('post')) {
-            $rules['code'] = 'required|string|unique:products,code';
-        }
-
         return $rules;
     }
 
@@ -42,9 +37,6 @@ class ProductRequest extends FormRequest
     {
         return [
             'name.required' => 'Please provide a name for the product.',
-            'code.required' => 'A unique product code is required.',
-            'code.unique' => 'This product code is already in use. Please use a different code.',
-            'description.sometimes' => 'Please provide a description for the product.',
             'price.required' => 'Please specify the price of the product.',
             'price.numeric' => 'The price must be a number. Please enter a valid numeric value.',
             'category_id.exists' => 'The selected category does not exist. Please choose a valid category.',

@@ -52,6 +52,7 @@ class DeliveryNoteController extends Controller
             'deliveryNoteItems' => 'required|array',
             'deliveryNoteItems.*.order_id' => 'required|exists:orders,id',
             'deliveryNoteItems.*.product_id' => 'required|exists:products,id',
+            'deliveryNoteItems.*.quantity' => 'required|integer',
         ], [
             'number.required' => 'The number field is required.',
             'number.string' => 'The number must be a string.',
@@ -68,19 +69,23 @@ class DeliveryNoteController extends Controller
             'deliveryNoteItems.*.order_id.exists' => 'The selected order ID in delivery note item is invalid.',
             'deliveryNoteItems.*.product_id.required' => 'The product ID in delivery note item is required.',
             'deliveryNoteItems.*.product_id.exists' => 'The selected product ID in delivery note item is invalid.',
+            'deliveryNoteItems.*.quantity.required' => 'Quantity delivery item must be required',
         ]);
 
         $deliveryNote = DeliveryNote::create($request->all());
 
         foreach ($request->deliveryNoteItems as $item) {
-            DeliveryNoteItem::create([
-                'delivery_note_id' => $deliveryNote->id,
-                'order_id' => $item['order_id'],
-                'product_id' => $item['product_id'],
-            ]);
+            // Simpan informasi pengiriman item beserta jumlahnya
+                DeliveryNoteItem::create([
+                    'delivery_note_id' => $deliveryNote->id,
+                    'order_id' => $item['order_id'],
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+
+                ]);
         }
         broadcast(new formCreated('New Delivery Note created successfully.'));
-        
+
         return response()->json([
             'status' => 201,
             'data' => $deliveryNote,
@@ -99,6 +104,7 @@ class DeliveryNoteController extends Controller
             'deliveryNoteItems' => 'required|array',
             'deliveryNoteItems.*.order_id' => 'required|exists:orders,id',
             'deliveryNoteItems.*.product_id' => 'required|exists:products,id',
+            'deliveryNoteItems.*.quantity' => 'required|integer',
         ], [
             'number.required' => 'The number field is required.',
             'number.string' => 'The number must be a string.',
@@ -115,6 +121,7 @@ class DeliveryNoteController extends Controller
             'deliveryNoteItems.*.order_id.exists' => 'The selected order ID in delivery note item is invalid.',
             'deliveryNoteItems.*.product_id.required' => 'The product ID in delivery note item is required.',
             'deliveryNoteItems.*.product_id.exists' => 'The selected product ID in delivery note item is invalid.',
+            'deliveryNoteItems.*.quantity.required' => 'Quantity delivery item must be required',
         ]);
 
         $deliveryNote = DeliveryNote::find($id);
@@ -131,15 +138,17 @@ class DeliveryNoteController extends Controller
         $deliveryNote->deliveryNoteItems()->delete();
 
         foreach ($request->deliveryNoteItems as $item) {
-            DeliveryNoteItem::create([
-                'delivery_note_id' => $deliveryNote->id,
-                'order_id' => $item['order_id'],
-                'product_id' => $item['product_id'],
-            ]);
+            // Simpan informasi pengiriman item beserta jumlahnya
+                DeliveryNoteItem::create([
+                    'delivery_note_id' => $deliveryNote->id,
+                    'order_id' => $item['order_id'],
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                ]);
         }
 
         broadcast(new formCreated('Delivery Note updated successfully.'));
-        
+
         return response()->json([
             'status' => 201,
             'data' => $deliveryNote,

@@ -12,7 +12,7 @@ class DeliveryNoteItem extends Model
     protected $fillable = [
         'delivery_note_id',
         'order_id',
-        'product_id',
+        'product_id', 'quantity'
     ];
 
     // Relasi ke tabel Delivery Note, Order, dan Product
