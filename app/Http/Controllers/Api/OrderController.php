@@ -125,7 +125,7 @@ class OrderController extends Controller
 
                 $order->products()->attach($product['product_id'], [
                     'quantity' => $product['quantity'],
-                    'unit_of_measure' => $product['unit_of_measure'],
+                    'unit_of_measure' => $product['unit_of_measure'] ?? "Kg",
                     'price_per_unit' => $product['price_per_unit'],
                     'total_price' => $productTotalPrice,
                 ]);
