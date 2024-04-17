@@ -27,19 +27,6 @@ class Invoice extends Model
             return 'INV/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
         }
     }
-    public function getStatusAttribute()
-    {
-        switch ($this->status) {
-            case 'paid':
-                return 'Lunas';
-            case 'unpaid':
-                return 'Belum Lunas';
-            case 'partial':
-                return 'Cicilan';
-            default:
-                return 'Unknown';
-        }
-    }
     protected static function boot()
     {
         parent::boot();
