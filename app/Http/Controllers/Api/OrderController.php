@@ -106,7 +106,7 @@ class OrderController extends Controller
             $order = new Order([
                 'no_ref' => $validatedData['no_ref'],
                 'vendor_id' => $validatedData['vendor_id'],
-                'warehouse_id' => $validatedData['warehouse_id'],
+                'warehouse_id' => $validatedData['warehouse_id'] ?? null,
                 'status' => $validatedData['status'],
                 'order_status' => $validatedData['order_type'] == 'Direct Order' ? 'Completed' : 'In Production',
                 'details' => $validatedData['details'] ?? null,
@@ -400,7 +400,7 @@ private function recordProductMovement($validatedData, $vendor)
         foreach ($validatedData['products'] as $productData) {
             $productMovement = ProductsMovement::create([
                 'product_id' => $productData['product_id'],
-                'warehouse_id' => $validatedData['warehouse_id'],
+                'warehouse_id' => $validatedData['warehouse_id'] ?? null,
                 'movement_type' => $vendor->transaction_type === 'outbound' ? 'sale' : 'purchase',
                 'quantity' => $productData['quantity'],
                 'price' => $productData['price_per_unit'],

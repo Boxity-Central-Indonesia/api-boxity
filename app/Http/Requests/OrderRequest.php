@@ -16,7 +16,7 @@ class OrderRequest extends FormRequest
     {
         $rules = [
             'vendor_id' => 'required|exists:vendors,id',
-            'warehouse_id' => 'required|exists:warehouses,id',
+            'warehouse_id' => 'nullable|exists:warehouses,id',
             'status' => [
                 'required',
                 Rule::in(['pending', 'completed', 'cancelled']),
@@ -67,7 +67,7 @@ class OrderRequest extends FormRequest
         return [
             'vendor_id.required' => 'A vendor ID is required.',
             'vendor_id.exists' => 'The selected vendor ID does not exist.',
-            'warehouse_id.required' => 'A warehouse ID is required.',
+            'warehouse_id.nullable' => 'A warehouse ID is optional.',
             'warehouse_id.exists' => 'The selected warehouse ID does not exist.',
             'status.required' => 'Order status is required.',
             'status.in' => 'Invalid order status. Valid statuses are: pending, completed, cancelled.',
