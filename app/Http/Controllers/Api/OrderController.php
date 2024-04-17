@@ -743,7 +743,7 @@ Storage::disk('public')->put('qrcodes/' . $filenameQR, $qrCode);
             )
                 ->leftJoin('invoices', 'invoices.order_id', '=', 'orders.id')
                 ->leftJoin('payments', 'payments.invoice_id', '=', 'invoices.id')
-                ->leftJoin('vendor_transactions', 'orders.vendor_id', '=', 'vendor_transactions.vendor_id')
+                ->leftJoin('vendor_transactions', 'orders.id', '=', 'vendor_transactions.order_id')
                 ->where('orders.id', $orderID)
                 ->get();
 
