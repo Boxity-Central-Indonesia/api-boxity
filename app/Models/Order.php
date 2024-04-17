@@ -25,22 +25,24 @@ class Order extends Model
     ];
     protected $appends = ['kode_order'];
     public function getKodeOrderAttribute()
-    {
-        if ($this->vendorTransaction && $this->vendorTransaction->transaction_type) {
-            $transactionType = $this->vendorTransaction->transaction_type;
-            $prefix = ($transactionType == 'inbound') ? 'PO' : 'SO';
-        } else {
-            // Jika tidak ada informasi transaction_type, kembalikan format standar ORD
-            $prefix = 'ORD';
-        }
-
-        if ($this->created_at) {
-            return $prefix . '/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
-        }
-
-        // Default value jika created_at null
-        return $prefix . '/unknown_date/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+{
+    // Cek apakah ada relasi vendor dan relasi vendorTransaction terkait
+    if ($this->vendor && $this->vendor->transactions && $this->vendor->transactions->transaction_type) {
+        $transactionType = $this->vendor->transactions->transaction_type;
+        $prefix = ($transactionType == 'inbound') ? 'PO' : 'SO';
+    } else {
+        // Jika tidak ada informasi transaction_type, kembalikan format standar ORD
+        $prefix = 'ORD';
     }
+
+    if ($this->created_at) {
+        return $prefix . '/' . $this->created_at->format('Y') . '/' . $this->created_at->format('m') . '/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+    }
+
+    // Default value jika created_at null
+    return $prefix . '/unknown_date/' . str_pad($this->id, 4, '0', STR_PAD_LEFT);
+}
+
 
 
     // Hubungan ke Vendor
