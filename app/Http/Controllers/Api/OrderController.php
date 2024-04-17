@@ -726,8 +726,8 @@ Storage::disk('public')->put('qrcodes/' . $filenameQR, $qrCode);
                 'orders.id as order_id',
                 'orders.no_ref as no_ref',
                 DB::raw('CASE
-                            WHEN vendor_transactions.transaction_type = "inbound" THEN CONCAT("SO/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
-                            WHEN vendor_transactions.transaction_type = "outbound" THEN CONCAT("PO/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
+                            WHEN vendors.transaction_type = "inbound" THEN CONCAT("SO/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
+                            WHEN vendors.transaction_type = "outbound" THEN CONCAT("PO/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
                             ELSE CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
                         END as kodeOrder'),
                 'orders.total_price as order_total_price',
@@ -743,7 +743,7 @@ Storage::disk('public')->put('qrcodes/' . $filenameQR, $qrCode);
             )
                 ->leftJoin('invoices', 'invoices.order_id', '=', 'orders.id')
                 ->leftJoin('payments', 'payments.invoice_id', '=', 'invoices.id')
-                ->leftJoin('vendor_transactions', 'orders.id', '=', 'vendor_transactions.order_id')
+                ->leftJoin('vendors', 'orders.vendor_id', '=', 'vendors.id')
                 ->where('orders.id', $orderID)
                 ->get();
 
@@ -761,6 +761,11 @@ Storage::disk('public')->put('qrcodes/' . $filenameQR, $qrCode);
                 'data' => $orderDetails,
                 'message' => 'Order details retrieved successfully.',
             ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to retrieve order details. Error: ' . $e->getMessage(),
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,
@@ -768,6 +773,7 @@ Storage::disk('public')->put('qrcodes/' . $filenameQR, $qrCode);
             ]);
         }
     }
+
 
     // Mengupdate order
     public function update(Request $request, $id)

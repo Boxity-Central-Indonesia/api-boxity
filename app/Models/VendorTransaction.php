@@ -31,6 +31,11 @@ class VendorTransaction extends Model
         return $this->belongsTo(Vendor::class, 'vendors_id');
     }
 
+    public function vendorTransaction()
+{
+    return $this->hasOne(VendorTransaction::class, 'order_id');
+}
+
     public function product()
     {
         return $this->belongsTo(Product::class);
