@@ -18,7 +18,7 @@ class DashboardController extends Controller
     public function index()
     {
         // Menggunakan cache jika perlu
-        $cachedData = Cache::remember('index_data', now()->addMinutes(10), function () {
+        $cachedData = Cache::remember('index_data', now()->addMinutes(1), function () {
             try {
                 // Hitung total penjualan, pembelian, dan pembayaran dalam satu query
                 $sales = Order::where('order_status', 'Completed')->whereHas('vendor', function ($query) {
