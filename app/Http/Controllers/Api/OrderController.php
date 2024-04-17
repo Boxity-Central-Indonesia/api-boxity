@@ -98,6 +98,8 @@ class OrderController extends Controller
         Log::info("Incoming order data:", $request->all());
         DB::beginTransaction();
 
+        $order = null; // Deklarasi variabel $order di luar blok try
+
         try {
             // Asumsikan data yang masuk sudah valid atau lakukan validasi manual sederhana
             $validatedData = $request->all(); // Menggunakan data langsung tanpa validasi dari OrderRequest
@@ -153,9 +155,11 @@ class OrderController extends Controller
             return response()->json(['status' => 201, 'data' => $order, 'message' => 'Order created successfully.']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['status' => 500, 'message' => 'Gagal membuat order. Kesalahan: ' . $e->getMessage(), 'data' => [$validatedData, $order]], 500);
+            // Menggunakan operator null coalescing untuk memastikan $order tidak null sebelum digunakan
+            return response()->json(['status' => 500, 'message' => 'Gagal membuat order. Kesalahan: ' . $e->getMessage(), 'data' => $order ?? null], 500);
         }
     }
+
 
     public function addProductToOrder(Request $request, $orderId)
 {
