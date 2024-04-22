@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use App\Events\formCreated;
+use App\Models\Product;
 
 class ProcessingActivityController extends Controller
 {
@@ -143,6 +144,10 @@ public function storeTimbangan(Request $request)
             'description' => 'Weighing incoming product based on order'
         ],
     ]);
+    $product = Product::where('id', $activity->product_id)->first();
+    $product->weight = $activity->details['average_weight_per_animal'];
+    $product->stock += $activity->details['number_of_item'];
+    $product->save();
     broadcast(new formCreated('New weighing incoming product created successfully.'));
 
     return response()->json([
