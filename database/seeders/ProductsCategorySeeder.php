@@ -16,10 +16,10 @@ class ProductsCategorySeeder extends Seeder
         // Data kategori produk untuk pabrik produksi daging unggas
         $categories = [
             [
-                'name' => 'Daging Ayam Segar',
-                'description' => 'Daging ayam segar yang telah dipotong dan siap dijual dalam bentuk potongan tertentu.',
+                'name' => 'Ayam Karkas',
+                'description' => 'Daging ayam utuh tanpa kepala dan ceker yang sudah dibersihkan dari bulunya juga jeroannya.',
                 'image' => 'https://res.cloudinary.com/boxity-id/image/upload/v1713273620/ptDHKManufacturing/kategori/dagingayamsegar_gq4pt8.png',
-                'type' => 'Parting',
+                'type' => 'Karkas',
             ],
             [
                 'name' => 'Daging Ayam Olahan',
