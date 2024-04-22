@@ -3683,6 +3683,58 @@
 						},
 						{
 							"name": "Get all orders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "58f2fded-c402-445a-8664-83135c12222c",
+										"exec": [
+											"var template = `",
+											"<style type=\"text/css\">",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+											"    .tftable tr {background-color:#ffffff;}",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+											"    .tftable tr:hover {background-color:#e0ffff;}",
+											"</style>",
+											"",
+											"<table class=\"tftable\" border=\"1\">",
+											"    <tr>",
+											"        <th>ID</th>",
+											"        <th>Order Code</th>",
+											"        <th>Vendor Name</th>",
+											"        <th>Total Price</th>",
+											"        <th>Order Status</th>",
+											"        <th>Order Type</th>",
+											"        <th>Created At</th>",
+											"    </tr>",
+											"    ",
+											"    {{#each response.data}}",
+											"        <tr>",
+											"            <td>{{id}}</td>",
+											"            <td>{{kode_order}}</td>",
+											"            <td>{{vendor.name}}</td>",
+											"            <td>{{total_price}}</td>",
+											"            <td>{{order_status}}</td>",
+											"            <td>{{order_type}}</td>",
+											"            <td>{{created_at}}</td>",
+											"        </tr>",
+											"    {{/each}}",
+											"</table>",
+											"`;",
+											"",
+											"function constructVisualizerPayload() {",
+											"    var res = pm.response.json();",
+											"    return {response: res};",
+											"}",
+											"",
+											"pm.visualizer.set(template, constructVisualizerPayload());"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"id": "d32fad57-ab74-4d02-b385-8a1c305469f7",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
