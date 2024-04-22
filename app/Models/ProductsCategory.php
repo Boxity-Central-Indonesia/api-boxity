@@ -14,7 +14,7 @@ class ProductsCategory extends Model
 
     protected $fillable = [
         'name', 'image',
-        'description',
+        'description', 'type'
     ];
     protected static function boot()
     {
