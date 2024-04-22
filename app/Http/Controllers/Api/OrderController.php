@@ -116,6 +116,9 @@ class OrderController extends Controller
             ]);
             $order->total_price = 0;
             $order->save();
+
+
+
             $vendor = Vendor::find($validatedData['vendor_id']);
             $totalOrderPrice = 0;
 
@@ -145,7 +148,8 @@ class OrderController extends Controller
 
             $order->total_price = $totalOrderPrice + ($validatedData['taxes'] ?? 0) + ($validatedData['shipping_cost'] ?? 0);
             $order->save();
-
+            // Buat invoice
+            $invoice = $order->createInvoice();
             // Proses logika akuntansi dan pencatatan lainnya
             $this->handleAccounting($validatedData, $order, $vendor);
             $this->recordProductMovement($validatedData, $vendor);
