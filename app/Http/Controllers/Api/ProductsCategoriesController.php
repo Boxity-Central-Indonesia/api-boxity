@@ -22,7 +22,7 @@ class ProductsCategoriesController extends Controller
 
     // Jika ada query parameter 'name', maka filter berdasarkan nama kategori
     if($query) {
-        $categories = ProductsCategory::where('name', 'LIKE', "%$query%")->orderBy('name','asc')->get();
+        $categories = ProductsCategory::where('type', 'LIKE', "%$query%")->orderBy('name','asc')->get();
     } else {
         $categories = ProductsCategory::orderBy('name','asc')->get();
     }
