@@ -16,14 +16,22 @@ class ProductsCategoriesController extends Controller
      *
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = $request->query('name');
+
+    // Jika ada query parameter 'name', maka filter berdasarkan nama kategori
+    if($query) {
+        $categories = ProductsCategory::where('name', 'LIKE', "%$query%")->orderBy('name','asc')->get();
+    } else {
         $categories = ProductsCategory::orderBy('name','asc')->get();
-        return response()->json([
-            'status' => 200,
-            'data' => $categories,
-            'message' => 'Categories retrieved successfully.',
-        ]);
+    }
+
+    return response()->json([
+        'status' => 200,
+        'data' => $categories,
+        'message' => 'Categories retrieved successfully.',
+    ]);
     }
 
     public function store(ProductsCategoryRequest $request)
