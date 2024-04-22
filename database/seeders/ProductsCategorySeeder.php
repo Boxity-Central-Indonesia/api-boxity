@@ -60,7 +60,7 @@ class ProductsCategorySeeder extends Seeder
             [
                 'name' => 'Produk Sampingan',
                 'description' => 'Produk-produk sampingan yang dihasilkan selama pemrosesan ayam, seperti bulu ayam, darah ayam, dan tulang yang dapat digunakan untuk berbagai tujuan.',
-                'image' => 'https://res.cloudinary.com/boxity-id/image/upload/v1713271699/ptDHKManufacturing/no-image_erzvuc.jpg',
+                'image' => 'https://res.cloudinary.com/boxity-id/image/upload/v1713817516/ptDHKManufacturing/kategori/produksammmpingan_wspxzl.png',
                 'type' => 'Sampingan',
             ],
             [
