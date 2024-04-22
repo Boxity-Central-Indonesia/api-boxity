@@ -219,30 +219,32 @@ public function update(ProcessingActivityRequest $request, $id)
         ]);
     }
     public function getActivitiesByOrder($order_id)
-    {
-        $activities = DB::table('manufacturer_processing_activities')
-            ->join('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
-            ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
-            ->where('manufacturer_processing_activities.order_id', $order_id)
-            ->select(
-                'manufacturer_processing_activities.*',
-                'orders.order_status as order_status',
-                'products.name as product_name',
-                'products.description as product_description',
-                DB::raw('CASE
-                            WHEN vendor_transactions.transaction_type = "inbound" THEN CONCAT("SO/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
-                            WHEN vendor_transactions.transaction_type = "outbound" THEN CONCAT("PO/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
-                            ELSE CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
-                        END as kodeOrder')
-            )
-            ->get();
+{
+    $activities = DB::table('manufacturer_processing_activities')
+        ->join('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
+        ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
+        ->join('vendors', 'orders.vendor_id', '=', 'vendors.id') // Join ke tabel vendors
+        ->where('manufacturer_processing_activities.order_id', $order_id)
+        ->select(
+            'manufacturer_processing_activities.*',
+            'orders.order_status as order_status',
+            'products.name as product_name',
+            'products.description as product_description',
+            DB::raw('CASE
+                        WHEN vendors.transaction_type = "inbound" THEN CONCAT("SO/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
+                        WHEN vendors.transaction_type = "outbound" THEN CONCAT("PO/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
+                        ELSE CONCAT("ORD/", DATE_FORMAT(orders.created_at, "%Y"), "/", DATE_FORMAT(orders.created_at, "%m"), "/", LPAD(orders.id, 4, "0"))
+                    END as kodeOrder')
+        )
+        ->get();
 
-        if ($activities->isEmpty()) {
-            return response()->json(['message' => 'No activities found for this order.', 'status' => 404], 404);
-        }
-
-        return response()->json(['data' => $activities, 'status' => 200, 'message' => 'Processing activities by Order retrieved successfully.']);
+    if ($activities->isEmpty()) {
+        return response()->json(['message' => 'No activities found for this order.', 'status' => 404], 404);
     }
+
+    return response()->json(['data' => $activities, 'status' => 200, 'message' => 'Processing activities by Order retrieved successfully.']);
+}
+
 
     public function getActivitiesByProduct($product_id)
     {
