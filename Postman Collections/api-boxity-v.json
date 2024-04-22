@@ -1734,7 +1734,22 @@
 										},
 										"method": "GET",
 										"header": [],
-										"url": "{{url}}/api/product-categories"
+										"url": {
+											"raw": "{{url}}/api/product-categories?name=ayam",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"product-categories"
+											],
+											"query": [
+												{
+													"key": "name",
+													"value": "ayam"
+												}
+											]
+										}
 									},
 									"response": []
 								},
