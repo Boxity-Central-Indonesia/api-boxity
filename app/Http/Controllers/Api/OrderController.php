@@ -580,7 +580,7 @@ private function updateProductPrices($validatedData, $vendor)
             $productsData = [];
             foreach ($order->products as $product) {
                 $totalProductQty = $product->pivot->quantity;
-                $selisihQuantity = $totalProductQty - $timbangKotor;
+                $selisihQuantity = $totalProductQty - ($timbangKotor - $totalBeratKeranjang);
                 $susutPercentage = $totalProductQty != 0 ? ($selisihQuantity / $totalProductQty) * 100 : 0;
 
                 $productsData[] = [
