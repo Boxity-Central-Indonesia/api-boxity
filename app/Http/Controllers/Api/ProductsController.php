@@ -17,18 +17,53 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['warehouse', 'category', 'prices'])->get()->map(function ($product) {
-            $product->price = (int) $product->price;
-            return $product;
-        });
+        // Mendapatkan nama kategori dari parameter query string
+        $categoryName = $request->query('category_name');
+
+        // Jika tidak ada parameter kategori yang diberikan, ambil semua produk
+        if (!$categoryName) {
+            $products = Product::with(['warehouse', 'category', 'prices'])
+                                ->get()
+                                ->map(function ($product) {
+                                    $product->price = (int) $product->price;
+                                    return $product;
+                                });
+
+            return response()->json([
+                'status' => 200,
+                'data' => $products,
+                'message' => 'All products retrieved successfully.',
+            ]);
+        }
+
+        // Jika ada parameter kategori, ambil produk dengan kategori yang sesuai
+        $products = Product::with(['warehouse', 'category', 'prices'])
+                            ->whereHas('category', function($query) use ($categoryName) {
+                                $query->where('name', 'LIKE', "%$categoryName%");
+                            })
+                            ->get()
+                            ->map(function ($product) {
+                                $product->price = (int) $product->price;
+                                return $product;
+                            });
+
+        if ($products->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No products found for the specified category.',
+            ], 404);
+        }
+
         return response()->json([
             'status' => 200,
             'data' => $products,
             'message' => 'Products retrieved successfully.',
         ]);
     }
+
+
 
     public function store(ProductRequest $request)
     {
