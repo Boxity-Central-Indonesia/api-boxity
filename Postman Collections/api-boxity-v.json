@@ -1897,7 +1897,23 @@
 									},
 									"request": {
 										"method": "GET",
-										"header": []
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/products?category_name=Karkas",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"products"
+											],
+											"query": [
+												{
+													"key": "category_name",
+													"value": "Karkas"
+												}
+											]
+										}
 									},
 									"response": []
 								},
