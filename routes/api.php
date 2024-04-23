@@ -125,6 +125,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/orders/{orderId}/products/{productId}', [OrderController::class, 'getProductByOrderIdAndProductId']);
     Route::delete('/orders/{orderId}/remove-product/{productId}', [OrderController::class, 'removeProductFromOrder']);
     Route::get('/orders/product/{orderId}', [OrderController::class, 'getProductByOrderId']);
+    Route::post('/orders/weighing/exordered', [ProcessingActivityController::class, 'storeTimbanganNotOrdered']);
+    Route::get('/orders/weighing/exordered', [ProcessingActivityController::class, 'getProcessActivityWeighingExorder']);
     Route::post('/orders/weighing', [ProcessingActivityController::class, 'storeTimbangan']);
     Route::get('/orders/weighing/today', [ProcessingActivityController::class, 'getProcessActivityToday']);
 

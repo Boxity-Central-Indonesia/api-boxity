@@ -30,51 +30,87 @@ class ProcessingActivityController extends Controller
         ]);
     }
     public function getProcessActivityToday()
-{
-    try {
-        $activities = DB::table('manufacturer_processing_activities')
-            ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
-            ->leftJoin('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
-            ->leftJoin('vendors', 'orders.vendor_id', '=', 'vendors.id')
-            ->selectRaw('
-                manufacturer_processing_activities.activity_date,
-                CASE
-                    WHEN vendors.transaction_type = "inbound" THEN CONCAT("PO/", DATE_FORMAT(orders.created_at, "%Y/%m/"), LPAD(orders.id, 4, "0"))
-                    WHEN vendors.transaction_type = "outbound" THEN CONCAT("SO/", DATE_FORMAT(orders.created_at, "%Y/%m/"), LPAD(orders.id, 4, "0"))
-                    ELSE CONCAT("ORD/unknown_date/", LPAD(orders.id, 4, "0"))
-                END AS kode_order,
-                orders.*,
-                manufacturer_processing_activities.created_at,
-                products.name,
-                manufacturer_processing_activities.status_activities,
-                manufacturer_processing_activities.activity_type,
-                manufacturer_processing_activities.details,
-                products.code
-            ')
-            ->whereDate('manufacturer_processing_activities.created_at', today())
-            ->orderByDesc('manufacturer_processing_activities.created_at')
-            ->get();
+    {
+        try {
+            $activities = DB::table('manufacturer_processing_activities')
+                ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
+                ->leftJoin('orders', 'manufacturer_processing_activities.order_id', '=', 'orders.id')
+                ->leftJoin('vendors', 'orders.vendor_id', '=', 'vendors.id')
+                ->selectRaw('
+                    manufacturer_processing_activities.activity_date,
+                    CASE
+                        WHEN vendors.transaction_type = "inbound" THEN CONCAT("PO/", DATE_FORMAT(orders.created_at, "%Y/%m/"), LPAD(orders.id, 4, "0"))
+                        WHEN vendors.transaction_type = "outbound" THEN CONCAT("SO/", DATE_FORMAT(orders.created_at, "%Y/%m/"), LPAD(orders.id, 4, "0"))
+                        ELSE CONCAT("ORD/unknown_date/", LPAD(orders.id, 4, "0"))
+                    END AS kode_order,
+                    orders.*,
+                    manufacturer_processing_activities.created_at,
+                    products.name,
+                    manufacturer_processing_activities.status_activities,
+                    manufacturer_processing_activities.activity_type,
+                    manufacturer_processing_activities.details,
+                    products.code
+                ')
+                ->whereDate('manufacturer_processing_activities.created_at', today())
+                ->orderByDesc('manufacturer_processing_activities.created_at')
+                ->get();
 
-        if ($activities->isEmpty()) {
+            if ($activities->isEmpty()) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No processing activities found today.',
+                ], 404);
+            }
+
             return response()->json([
-                'status' => 404,
-                'message' => 'No processing activities found today.',
-            ], 404);
+                'status' => 200,
+                'data' => $activities,
+                'message' => 'All processing activities today retrieved successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to retrieve processing activities. Error: ' . $e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'status' => 200,
-            'data' => $activities,
-            'message' => 'All processing activities today retrieved successfully.',
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 500,
-            'message' => 'Failed to retrieve processing activities. Error: ' . $e->getMessage(),
-        ], 500);
     }
-}
 
+    public function getProcessActivityWeighingExorder()
+    {
+        try {
+            $activities = DB::table('manufacturer_processing_activities')
+                ->join('products', 'manufacturer_processing_activities.product_id', '=', 'products.id')
+                ->selectRaw('
+                    manufacturer_processing_activities.activity_date,
+                    products.name,
+                    manufacturer_processing_activities.status_activities,
+                    manufacturer_processing_activities.activity_type,
+                    manufacturer_processing_activities.details,
+                    products.code
+                ')
+                ->whereDate('manufacturer_processing_activities.created_at', today())
+                ->orderByDesc('manufacturer_processing_activities.created_at')
+                ->get();
+
+            if ($activities->isEmpty()) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No processing activities found today.',
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 200,
+                'data' => $activities,
+                'message' => 'All processing activities today retrieved successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to retrieve processing activities. Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 
 
 
@@ -115,47 +151,94 @@ class ProcessingActivityController extends Controller
 }
 
 public function storeTimbangan(Request $request)
-{
+    {
 
-    // Ambil data order terlebih dahulu
-    $order = Order::findOrFail($request['order_id']);
+        // Ambil data order terlebih dahulu
+        $order = Order::findOrFail($request['order_id']);
 
-    $average_weight_per_animal = 0;
+        $average_weight_per_animal = 0;
 
-    if ($request->details['number_of_item'] != 0) {
-        $average_weight_per_animal = $request->details['qty_weighing'] / $request->details['number_of_item'];
+        if ($request->details['number_of_item'] != 0) {
+            $average_weight_per_animal = ($request->details['qty_weighing'] - $request->details['basket_weight']) / $request->details['number_of_item'];
+        }
+
+        $activity = ProcessingActivity::create([
+            'product_id' => $request->product_id,
+            'order_id' => $order->id,
+            'activity_type' => 'weighing',
+            'activity_date' => now(),
+            'status_activities' => 'In Production',
+            'details' => [
+                'qty_weighing' => $request->details['qty_weighing'],
+                'noa_weighing' => 'Kg',
+                'basket_weight' => $request->details['basket_weight'],
+                'noa_basket_weight' => 'Kg',
+                'number_of_item' => $request->details['number_of_item'],
+                'noa_numberofitem' => 'Pcs',
+                'average_weight_per_animal' => $average_weight_per_animal,
+                'vehicle_no'=>$request->details['vehicle_no'],
+                'description' => 'Weighing incoming product based on order'
+            ],
+        ]);
+        $product = Product::where('id', $activity->product_id)->first();
+        $product->weight = $activity->details['average_weight_per_animal'];
+        $product->stock += $activity->details['number_of_item'];
+        $product->save();
+        broadcast(new formCreated('New weighing incoming product created successfully.'));
+
+        return response()->json([
+            'status' => 201,
+            'data' => $activity,
+            'message' => 'Weighing incoming product created successfully.', // Perbarui pesan untuk menunjukkan aktivitas jamak
+        ]);
+        // return response()->json($request->details['number_of_item']);
     }
 
+public function storeTimbanganNotOrdered(Request $request)
+    {
+        $average_weight_per_animal = 0;
+
+        if ($request->details['number_of_item'] != 0) {
+            $average_weight_per_animal = ($request->details['qty_weighing'] - $request->details['basket_weight']) / $request->details['number_of_item'];
+        }
+
+        // Buat aktivitas timbangan
     $activity = ProcessingActivity::create([
         'product_id' => $request->product_id,
-        'order_id' => $order->id,
         'activity_type' => 'weighing',
         'activity_date' => now(),
         'status_activities' => 'In Production',
         'details' => [
             'qty_weighing' => $request->details['qty_weighing'],
             'noa_weighing' => 'Kg',
-            'basket_weight' => $request->details['basket_weight'],
-            'noa_basket_weight' => 'Kg',
             'number_of_item' => $request->details['number_of_item'],
             'noa_numberofitem' => 'Pcs',
             'average_weight_per_animal' => $average_weight_per_animal,
-            'vehicle_no'=>$request->details['vehicle_no'],
-            'description' => 'Weighing incoming product based on order'
+            'type_of_item'=> $request->details['type_of_item'],
+            'description' => 'Weighing incoming carcass/parting/sampingan product'
         ],
     ]);
-    $product = Product::where('id', $activity->product_id)->first();
-    $product->weight = $activity->details['average_weight_per_animal'];
-    $product->stock += $activity->details['number_of_item'];
-    $product->save();
-    broadcast(new formCreated('New weighing incoming product created successfully.'));
 
+    // Update stok produk dengan rata-rata berat per hewan dan jumlah hewan
+    $product = Product::find($request->product_id);
+    if ($product) {
+        $product->weight = $activity->details['average_weight_per_animal'];
+        $product->stock += $activity->details['number_of_item'];
+        $product->save();
+    } else {
+        // Handle jika produk tidak ditemukan
+        return response()->json([
+            'status' => 404,
+            'message' => 'Product not found.',
+        ], 404);
+    }
+
+    // Kirim respons JSON
     return response()->json([
         'status' => 201,
         'data' => $activity,
-        'message' => 'Weighing incoming product created successfully.', // Perbarui pesan untuk menunjukkan aktivitas jamak
+        'message' => 'Weighing incoming carcass/parting/sampingan product and updated inventory successfully.',
     ]);
-    // return response()->json($request->details['number_of_item']);
 }
 
 public function update(ProcessingActivityRequest $request, $id)
