@@ -4796,6 +4796,19 @@
 							"response": []
 						},
 						{
+							"name": "Weighing product not ordered",
+							"id": "3a8493c7-d21e-4a3d-927a-f5b84d0fdd0a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "{{url}}/api/orders/weighing/exordered"
+							},
+							"response": []
+						},
+						{
 							"name": "Get all processing activities",
 							"id": "32ae8db2-ad7b-4b7f-8f9e-dbc23ea8382a",
 							"protocolProfileBehavior": {
