@@ -1890,6 +1890,18 @@
 									"response": []
 								},
 								{
+									"name": "Get product by param category name",
+									"id": "5e55feef-de9c-4e33-8218-746011093076",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": []
+									},
+									"response": []
+								},
+								{
 									"name": "Update product by ID",
 									"id": "64db0233-36b2-45e8-af10-66fd3036704e",
 									"protocolProfileBehavior": {
