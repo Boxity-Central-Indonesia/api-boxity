@@ -4804,6 +4804,15 @@
 							"request": {
 								"method": "POST",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"product_id\": 26,\n    \"details\": {\n        \"type_of_item\": \"carcass\",\n        \"basket_weight\": 8,\n        \"qty_weighing\": 150,\n        \"number_of_item\": 25\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": "{{url}}/api/orders/weighing/exordered"
 							},
 							"response": []
@@ -4831,6 +4840,19 @@
 								"method": "GET",
 								"header": [],
 								"url": "{{url}}/api/orders/weighing/today"
+							},
+							"response": []
+						},
+						{
+							"name": "Get list proses timbangan yang tidak ada order",
+							"id": "17668d34-eb0b-49ca-8391-aedd2c00f644",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/orders/weighing/exordered"
 							},
 							"response": []
 						},
