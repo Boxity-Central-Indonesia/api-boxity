@@ -1899,7 +1899,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{url}}/api/products?category_name=Karkas",
+											"raw": "{{url}}/api/products?category_name=sampingan",
 											"host": [
 												"{{url}}"
 											],
@@ -1910,7 +1910,7 @@
 											"query": [
 												{
 													"key": "category_name",
-													"value": "Karkas"
+													"value": "sampingan"
 												}
 											]
 										}
