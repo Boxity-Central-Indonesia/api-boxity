@@ -25,6 +25,7 @@ class ProductsController extends Controller
         // Jika tidak ada parameter kategori yang diberikan, ambil semua produk
         if (!$categoryName) {
             $products = Product::with(['warehouse', 'category', 'prices'])
+            ->orderBy('name','asc')
                                 ->get()
                                 ->map(function ($product) {
                                     $product->price = (int) $product->price;
@@ -43,6 +44,7 @@ class ProductsController extends Controller
                             ->whereHas('category', function($query) use ($categoryName) {
                                 $query->where('name', 'LIKE', "%$categoryName%");
                             })
+                            ->orderBy('name','asc')
                             ->get()
                             ->map(function ($product) {
                                 $product->price = (int) $product->price;

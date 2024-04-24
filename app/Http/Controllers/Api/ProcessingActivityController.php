@@ -86,10 +86,8 @@ class ProcessingActivityController extends Controller
                     manufacturer_processing_activities.status_activities,
                     manufacturer_processing_activities.activity_type,
                     manufacturer_processing_activities.details,
-                    products.code
-                ')
-                ->whereDate('manufacturer_processing_activities.created_at', today())
-                ->orderByDesc('manufacturer_processing_activities.created_at')
+                    products.codefix
+                ')->orderByDesc('manufacturer_processing_activities.created_at')
                 ->get();
 
             if ($activities->isEmpty()) {
