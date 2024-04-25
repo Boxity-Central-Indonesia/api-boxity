@@ -86,7 +86,7 @@ class ProcessingActivityController extends Controller
                     manufacturer_processing_activities.status_activities,
                     manufacturer_processing_activities.activity_type,
                     manufacturer_processing_activities.details,
-                    products.codefix
+                    products.code
                 ')->orderByDesc('manufacturer_processing_activities.created_at')
                 ->get();
 
