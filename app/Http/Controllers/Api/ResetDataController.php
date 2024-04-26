@@ -52,14 +52,13 @@ class ResetDataController extends Controller
         AssetLocation::truncate();
         AssetCondition::truncate();
         AssetDepreciation::truncate();
-        Company::truncate();
-        CompaniesBranch::truncate();
-        CompaniesDepartment::truncate();
-        CompaniesDepartment::truncate();
+        // Company::truncate();
+        // CompaniesBranch::truncate();
+        // CompaniesDepartment::truncate();
         DeliveryNote::truncate();
         DeliveryNoteItem::truncate();
         Employee::truncate();
-        EmployeeCategory::truncate();
+        // EmployeeCategory::truncate();
         GoodsReceipt::truncate();
         GoodsReceiptItem::truncate();
         Invoice::truncate();
@@ -71,15 +70,15 @@ class ResetDataController extends Controller
         PackageProduct::truncate();
         Payment::truncate();
         ProcessingActivity::truncate();
-        Product::truncate();
-        ProductsCategory::truncate();
+        // Product::truncate();
+        // ProductsCategory::truncate();
         ProductsMovement::truncate();
         ProductsPrice::truncate();
-        Vendor::truncate();
+        // Vendor::truncate();
         VendorContact::truncate();
         VendorTransaction::truncate();
-        Warehouse::truncate();
-        WarehouseLocation::truncate();
+        // Warehouse::truncate();
+        // WarehouseLocation::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         return response()->json(
             [
