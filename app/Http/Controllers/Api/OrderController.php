@@ -156,14 +156,21 @@ class OrderController extends Controller
             $this->updateProductPrices($validatedData, $vendor);
 
             DB::commit();
-            return response()->json(['status' => 201, 'data' => $order, 'message' => 'Order created successfully.']);
+            return response()->json([
+                'status' => 201,
+                'data' => [
+                    'order' => $order,
+                    'validated_data' => $validatedData,
+                    'vendor' => $vendor,
+                ],
+                'message' => 'Order created successfully.',
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
             // Menggunakan operator null coalescing untuk memastikan $order tidak null sebelum digunakan
             return response()->json(['status' => 500, 'message' => 'Gagal membuat order. Kesalahan: ' . $e->getMessage(), 'data' => $order ?? null], 500);
         }
     }
-
 
     public function addProductToOrder(Request $request, $orderId)
 {
@@ -343,50 +350,52 @@ public function removeProductFromOrder(Request $request, $orderId, $productId)
     }
 
     private function handleAccounting($validatedData, $order, $vendor)
-{
-    $accountReceivable = Account::where('name', 'Piutang Usaha')->first();
-    $accountPayable = Account::where('name', 'Utang Usaha')->first();
-    $inventoryAccount = Account::where('name', 'Persediaan')->first();
+    {
+        $accountReceivable = Account::where('name', 'Piutang Usaha')->first();
+        $accountPayable = Account::where('name', 'Utang Usaha')->first();
+        $inventoryAccount = Account::where('name', 'Persediaan')->first();
 
-    $journalEntries = [];
+        $journalEntries = [];
 
-    if ($vendor->transaction_type === 'outbound') {
-        // Penjualan (Outbound)
-        $journalEntries[] = [
-            'date' => now(),
-            'description' => 'Penjualan Order ' . $order->kode_order,
-            'account_id' => $accountReceivable->id,
-            'debit' => $order->total_price,
-        ];
+        // Periksa apakah transaksi adalah penjualan (outbound)
+        if ($vendor->transaction_type === 'outbound') {
+            // Jika penjualan, buat entri jurnal untuk piutang usaha dan pengurangan persediaan
+            $journalEntries[] = [
+                'date' => now(),
+                'description' => 'Penjualan Order ' . $order->kode_order,
+                'account_id' => $accountReceivable->id,
+                'debit' => $order->total_price,
+            ];
 
-        $journalEntries[] = [
-            'date' => now(),
-            'description' => 'Pengurangan Persediaan',
-            'account_id' => $inventoryAccount->id,
-            'credit' => $order->total_price,
-        ];
-    } else {
-        // Pembelian (Inbound)
-        $journalEntries[] = [
-            'date' => now(),
-            'description' => 'Pembelian Order ' . $order->kode_order,
-            'account_id' => $inventoryAccount->id,
-            'debit' => $order->total_price,
-        ];
+            $journalEntries[] = [
+                'date' => now(),
+                'description' => 'Pengurangan Persediaan',
+                'account_id' => $inventoryAccount->id,
+                'credit' => $order->total_price,
+            ];
+        } else {
+            // Jika pembelian (inbound), buat entri jurnal untuk persediaan dan utang usaha
+            $journalEntries[] = [
+                'date' => now(),
+                'description' => 'Pembelian Order ' . $order->kode_order,
+                'account_id' => $inventoryAccount->id,
+                'debit' => $order->total_price,
+            ];
 
-        $journalEntries[] = [
-            'date' => now(),
-            'description' => 'Utang Usaha',
-            'account_id' => $accountPayable->id,
-            'credit' => $order->total_price,
-        ];
+            $journalEntries[] = [
+                'date' => now(),
+                'description' => 'Utang Usaha',
+                'account_id' => $accountPayable->id,
+                'credit' => $order->total_price,
+            ];
+        }
+
+        // Simpan jurnal entries
+        foreach ($journalEntries as $entry) {
+            JournalEntry::create($entry);
+        }
     }
 
-    // Simpan jurnal entries
-    foreach ($journalEntries as $entry) {
-        JournalEntry::create($entry);
-    }
-}
 
 private function recordProductMovement($validatedData, $vendor)
 {

@@ -22,13 +22,13 @@ class Product extends Model
         parent::boot();
         static::addGlobalScope(new CreatedAtDescScope());
         self::creating(function ($model) {
-            $model->user_created = Auth::id();
+            $model->user_created = auth()->id();
             // Generate a unique product code
             $uniqueIdentifier = uniqid();
             $model->code = 'PRD' . strtoupper(substr(md5($uniqueIdentifier), 0, 6));
         });
         self::updating(function ($model) {
-            $model->user_updated = Auth::id();
+            $model->user_updated = auth()->id();
         });
     }
     public function getImageProductAttribute($image_product)

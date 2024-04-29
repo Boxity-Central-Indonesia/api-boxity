@@ -16,18 +16,23 @@ class Account extends Model
 
     protected $fillable = [
         'name',
-        'type',
+        'code',
+        'parent_id',
         'balance',
+    ];
+
+    protected $casts = [
+        'balance' => 'decimal:2',
     ];
     protected static function boot()
     {
         parent::boot();
         static::addGlobalScope(new CreatedAtDescScope());
         self::creating(function ($model) {
-            $model->user_created = Auth::id();
+            $model->user_created = auth()->id();
         });
         self::updating(function ($model) {
-            $model->user_updated = Auth::id();
+            $model->user_updated = auth()->id();
         });
     }
     public function transactions()
@@ -42,5 +47,9 @@ class Account extends Model
     public function journalEntries()
     {
         return $this->hasMany(JournalEntry::class);
+    }
+    public function parent()
+    {
+        return $this->belongsTo(Account::class, 'parent_id');
     }
 }

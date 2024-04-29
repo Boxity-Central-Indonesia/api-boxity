@@ -119,8 +119,7 @@ class ProductsCategorySeeder extends Seeder
             ],
             [
                 'name' => 'Kaki & Leher',
-                'description'
-                => 'Potongan kaki dan leher ayam, dapat digunakan untuk membuat kaldu atau hidangan tradisional lainnya.',
+                'description' => 'Potongan kaki dan leher ayam, dapat digunakan untuk membuat kaldu atau hidangan tradisional lainnya.',
                 'image' => 'https://res.cloudinary.com/boxity-id/image/upload/v1713274346/ptDHKManufacturing/kategori/kakileherayam_rdvqmu.png',
                 'type' => 'Parting',
             ],

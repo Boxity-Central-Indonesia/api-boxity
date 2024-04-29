@@ -20,10 +20,10 @@ class VendorTransaction extends Model
         parent::boot();
         static::addGlobalScope(new CreatedAtDescScope());
         self::creating(function ($model) {
-            $model->user_created = Auth::id();
+            $model->user_created = auth()->id();
         });
         self::updating(function ($model) {
-            $model->user_updated = Auth::id();
+            $model->user_updated = auth()->id();
         });
     }
     public function vendor()

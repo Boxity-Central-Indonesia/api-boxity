@@ -22,12 +22,12 @@ class CompaniesDepartment extends Model
         parent::boot();
         static::addGlobalScope(new CreatedAtDescScope());
         static::creating(function ($model) {
-            $model->user_created = Auth::id();
-            $model->user_updated = Auth::id();
+            $model->user_created = auth()->id();
+            $model->user_updated = auth()->id();
         });
 
         static::updating(function ($model) {
-            $model->user_updated = Auth::id();
+            $model->user_updated = auth()->id();
         });
     }
     public function company()

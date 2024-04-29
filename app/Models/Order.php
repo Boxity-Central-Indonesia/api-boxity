@@ -96,11 +96,6 @@ class Order extends Model
                 $order->total_price = $totalPrice + ($order->taxes ?? 0) + ($order->shipping_cost ?? 0);
             }
         });
-        static::created(function ($order) {
-            DB::transaction(function () use ($order) {
-                $invoice = $order->createInvoice();
-            });
-        });
     }
     public function createInvoice()
     {
@@ -132,14 +127,12 @@ class Order extends Model
         if ($transactionType === 'credit') {
             $accountsReceivable = Account::firstOrCreate([
                 'name' => 'Piutang Usaha',
-                'type' => 'Aset',
             ]);
             $accountsReceivable->balance += $invoice->total_amount;
             $accountsReceivable->save();
         } elseif ($transactionType === 'debit') {
             $cashOrBankAccount = Account::firstOrCreate([
                 'name' => 'Kas',
-                'type' => 'Aset',
             ]);
             $cashOrBankAccount->balance -= $invoice->total_amount;
             $cashOrBankAccount->save();
@@ -157,13 +150,11 @@ class Order extends Model
             // Cari atau buat record untuk akun 'Piutang Usaha'
             $account = Account::firstOrCreate([
                 'name' => 'Piutang Usaha',
-                'type' => 'Aset',
             ]);
         } elseif ($transactionType === 'debit') {
             // Cari atau buat record untuk akun 'Kas'
             $account = Account::firstOrCreate([
                 'name' => 'Kas',
-                'type' => 'Aset',
             ]);
         }
 
