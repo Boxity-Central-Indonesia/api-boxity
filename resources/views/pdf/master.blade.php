@@ -40,7 +40,7 @@
                 <div class="col-12 text-left">
                     &copy;Copyright {{ Carbon\Carbon::now()->format('Y') }}&nbsp;{{ getCompanyName() }}. All rights
                     reserved by <abbr title="PT Boxity Central Indonesia"><a href="https://boxity.id"
-                            target="_blank">PT. TNA Manufacturing</a></abbr>.
+                            target="_blank">PT DHK Jaya Manufacturing</a></abbr>.
                 </div>
             </div>
         </div>
