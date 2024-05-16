@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('address');
-            $table->decimal('capacity', 10, 2);
+            $table->integer('capacity');
             $table->timestamps();
         });
 
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('warehouse_id');
             $table->string('number');
-            $table->decimal('capacity', 10, 2);
+            $table->integer('capacity');
             $table->timestamps();
 
             $table->foreign('warehouse_id')->references('id')->on('warehouses')->onDelete('cascade');
