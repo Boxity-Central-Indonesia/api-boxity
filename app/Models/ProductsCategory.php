@@ -31,9 +31,4 @@ class ProductsCategory extends Model
     {
         return $this->hasMany(Product::class);
     }
-    public function getDescriptionAttribute($description)
-    {
-        // Limit the description to 150 characters
-        return \Str::limit($description, 50, '...');
-    }
 }
