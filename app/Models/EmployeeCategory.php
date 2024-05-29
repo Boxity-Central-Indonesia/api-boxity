@@ -12,11 +12,6 @@ class EmployeeCategory extends Model
     use HasFactory;
     protected $table = 'employees_categories';
     protected $fillable = ['name', 'description'];
-    public function getDescriptionAttribute($description)
-    {
-        // Limit the description to 150 characters
-        return \Str::limit($description, 50, '...');
-    }
     protected static function boot()
     {
         parent::boot();
