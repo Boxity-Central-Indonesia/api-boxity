@@ -47,7 +47,7 @@ class ResetDataController extends Controller
         AccountsBalance::truncate();
         AccountsTransaction::truncate();
         JournalEntry::truncate();
-        Account::truncate();
+        // Account::truncate();
         Asset::truncate();
         AssetLocation::truncate();
         AssetCondition::truncate();
@@ -80,10 +80,16 @@ class ResetDataController extends Controller
         // Warehouse::truncate();
         // WarehouseLocation::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        $this->seed();
         return response()->json(
             [
                 'status'=>201,
                 'message'=>'Data berhasil di-reset dan di-format.'
             ]);
+    }
+    protected function seed() {
+        $seeder = new \Database\Seeders\AccountSeeder();
+        $seeder->run();
     }
 }
