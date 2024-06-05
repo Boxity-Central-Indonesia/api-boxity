@@ -34,7 +34,7 @@
     <footer class="my-5">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12 text-left">
+                <div class="col-12 text-left mt-3">
                     Dicetak pada {{ Carbon\Carbon::now()->translatedFormat('d F Y h:m:s') }}
                 </div>
                 <div class="col-12 text-left">

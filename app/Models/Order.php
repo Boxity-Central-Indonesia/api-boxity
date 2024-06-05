@@ -97,9 +97,9 @@ class Order extends Model
             }
         });
         static::created(function ($order) {
-            DB::transaction(function () use ($order) {
-                $invoice = $order->createInvoice();
-            });
+            // DB::transaction(function () use ($order) {
+            //     $invoice = $order->createInvoice();
+            // });
         });
     }
     public function createInvoice()
