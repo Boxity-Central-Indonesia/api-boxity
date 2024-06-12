@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "5ed33479-b6b1-4fcc-9d34-debd4083fb0f",
 		"name": "API Boxity V.0.0.1",
-		"description": "Versi: 0.0.1  \nTanggal: 15 Januari 2024  \nOleh: PT Boxity Central Indonesia\n\n- Data Organisation\n- Data Warehousing\n- Data produk\n- Data pelanggan/customer\n- Data vendor/pemasok/supplier\n- Data aset\n- Data keuangan",
+		"description": "Versi: 0.0.1  \nTanggal: 15 Januari 2024  \nOleh: PT Boxity Central Indonesia\n\n- Data Organisation\n    \n- Data Warehousing\n    \n- Data produk\n    \n- Data pelanggan/customer\n    \n- Data vendor/pemasok/supplier\n    \n- Data aset\n    \n- Data keuangan",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
